@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import moment from 'moment'
 
 import Api, { ApiError } from 'api'
@@ -25,7 +25,7 @@ type Props = ConnectedProps<typeof connector>
  * Displays forms for editing a quiz and directly handles submission of the quiz.
  */
 const QuizCreator = ({ createAlert, loadUser }: Props) => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const defaultQuiz = {
     title: '',
@@ -43,7 +43,7 @@ const QuizCreator = ({ createAlert, loadUser }: Props) => {
   })
 
   const goToDashboard = () => {
-    history.push('/dashboard')
+    navigate('/dashboard')
   }
 
   const submitQuiz = (quiz: Quiz) => {

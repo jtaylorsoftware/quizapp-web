@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 import { Button, Container, Nav, Navbar as BsNavbar } from 'react-bootstrap'
 
@@ -25,11 +25,11 @@ type Props = ConnectedProps<typeof connector>
  * @param {function} props.logout Function to call to log user out
  */
 const Navbar = ({ isAuthenticated, logout }: Props) => {
-  const history = useHistory()
+  const navigate = useNavigate()
 
   const logoutToHome = () => {
     logout()
-    history.push('/')
+    navigate('/')
   }
   return (
     <BsNavbar expand="md" variant="dark">

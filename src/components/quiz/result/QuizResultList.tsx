@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap'
 
@@ -30,14 +30,14 @@ const colSize = {
  * Displays a list of results belonging to a quiz. This would only be accessed by the owner of the quiz.
  */
 const QuizResultList = ({ createAlert }: Props) => {
-  const browserHistory = useHistory()
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
-  const [quiz, quizError, quizLoading] = useQuiz(id, 'form')
-  const [results, resultError, resultLoading] = useResultList(id, 'listing')
+  const [quiz, quizError, quizLoading] = useQuiz(id ?? '', 'form')
+  const [results, resultError, resultLoading] = useResultList(id ?? '', 'listing')
 
   const goToDashboard = () => {
-    browserHistory.push('/dashboard')
+    navigate('/dashboard')
   }
 
   if (quizLoading || resultLoading) {

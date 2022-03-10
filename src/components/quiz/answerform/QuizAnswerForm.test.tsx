@@ -3,9 +3,6 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from 'util/test-utils'
 
-import clone from 'clone'
-
-
 import moment from 'moment'
 import { createMemoryHistory } from 'history'
 

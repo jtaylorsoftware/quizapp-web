@@ -1,5 +1,5 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { Button, Col, Container, Row } from 'react-bootstrap'
@@ -21,14 +21,14 @@ const colSize = {
   sm: 10,
   md: 8,
   lg: 7,
-  xl: 6
+  xl: 6,
 }
 
 /**
  * Displays a single quiz result.
  */
 const QuizResult = ({ createAlert }: Props) => {
-  const browserHistory = useHistory()
+  const navigate = useNavigate()
   const query = useQuery()
   const quizId = query.get('quiz')
   const userId = query.get('user')
@@ -37,55 +37,55 @@ const QuizResult = ({ createAlert }: Props) => {
   const [result, resultError, resultLoading] = useSingleResult(
     quizId ?? '',
     userId ?? '',
-    'full'
+    'full',
   )
 
   if (quizLoading || resultLoading) {
     return <Spinner />
   } else if (resultError && resultError.status !== 404) {
     createAlert({
-      msg: "We couldn't load your quiz results right now.",
-      type: 'danger'
+      msg: 'We couldn\'t load your quiz results right now.',
+      type: 'danger',
     })
     return <ErrorPage status={resultError.status} />
   } else if (quizError) {
     createAlert({
-      msg: "We couldn't load your quiz right now.",
-      type: 'danger'
+      msg: 'We couldn\'t load your quiz right now.',
+      type: 'danger',
     })
     return <ErrorPage status={quizError.status} />
   }
 
   return (
     <>
-      <div className="content">
-        <Container fluid className="quiz-results">
+      <div className='content'>
+        <Container fluid className='quiz-results'>
           <Row>
-            <Col {...colSize} className="quiz-results__block mx-auto">
-              <Row className="mb-4">
-                <Col className="d-flex align-items-center">
-                  <h2 className="mb-0">
+            <Col {...colSize} className='quiz-results__block mx-auto'>
+              <Row className='mb-4'>
+                <Col className='d-flex align-items-center'>
+                  <h2 className='mb-0'>
                     {result!.username}'s results for: <br />"{quiz!.title}"
                   </h2>
                 </Col>
               </Row>
-              <Row className="mb-4">
-                <Col className="d-flex align-items-center">
+              <Row className='mb-4'>
+                <Col className='d-flex align-items-center'>
                   <h4>By {quiz!.user}</h4>
                 </Col>
               </Row>
               <hr />
-              <Row className="mb-4">
-                <Col className="d-flex align-items-center">
-                  <h3 className="mb-0">
+              <Row className='mb-4'>
+                <Col className='d-flex align-items-center'>
+                  <h3 className='mb-0'>
                     Overall score: {result!.score * 100.0}%
                   </h3>
                 </Col>
               </Row>
               <hr />
-              <Row className="mb-4">
-                <Col className="d-flex align-items-center">
-                  <h3 className="mb-0">Graded questions:</h3>
+              <Row className='mb-4'>
+                <Col className='d-flex align-items-center'>
+                  <h3 className='mb-0'>Graded questions:</h3>
                 </Col>
               </Row>
               <ScoredQuestionList
@@ -99,9 +99,9 @@ const QuizResult = ({ createAlert }: Props) => {
 
       <Footer>
         <Button
-          variant="success"
-          className="ms-1"
-          onClick={() => browserHistory.goBack()}>
+          variant='success'
+          className='ms-1'
+          onClick={() => navigate(-1)}>
           Go back
         </Button>
       </Footer>

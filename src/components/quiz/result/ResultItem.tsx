@@ -3,7 +3,7 @@ import { Button, Col, Row } from 'react-bootstrap'
 
 import PropTypes from 'prop-types'
 
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ResultListing } from 'api'
 
 type Props = {
@@ -16,9 +16,9 @@ type Props = {
 const ResultItem = ({
   result: { quiz: quizId, user: userId, username, score }
 }: Props) => {
-  const browserHistory = useHistory()
+  const navigate = useNavigate()
   const goToResult = () => {
-    browserHistory.push(`/results?quiz=${quizId}&user=${userId}`)
+    navigate(`/results?quiz=${quizId}&user=${userId}`)
   }
 
   return (

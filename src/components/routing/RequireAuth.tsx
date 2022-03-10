@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route, RouteProps, useLocation } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 
 import Spinner from 'components/common/Spinner'
@@ -19,20 +19,18 @@ const mapDispatch = {
 
 const connector = connect(mapState, mapDispatch)
 
-type Props = ConnectedProps<typeof connector> &
-  RouteProps & {
-  component: React.ComponentType
-  render?: never
+type Props = ConnectedProps<typeof connector> & {
+  redirectTo: string
 }
 
-const PrivateRoute = function(
+const RequireAuth = function(
   {
     auth,
     user,
     clearAuth,
-    component: Component,
-    ...rest
-  }: Props) {
+    redirectTo,
+    children,
+  }: React.PropsWithChildren<Props>) {
   const location = useLocation()
   let isAuthenticated = auth.isAuthenticated
 
@@ -41,20 +39,15 @@ const PrivateRoute = function(
     isAuthenticated = false
   }
 
-  if (!isAuthenticated) {
-    return (
-      <Route>
-        <Redirect
-          to={{ pathname: '/login', state: { referrer: location.pathname } }}
-        />
-      </Route>
-    )
-  } else if (user && user.loading) {
-    return <Spinner />
+  if(isAuthenticated) {
+    if (user.loading) {
+      return <Spinner />
+    } else {
+      return <>{ children }</>
+    }
   } else {
-    // @ts-ignore
-    return <Route {...rest} children={<Component />} />
+    return <Navigate to={redirectTo} state={{ referrer: location.pathname }} replace />
   }
 }
 
-export default connector(PrivateRoute)
+export default connector(RequireAuth)

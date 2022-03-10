@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Col, Container, Form } from 'react-bootstrap'
 
-import { Redirect, Link, useHistory } from 'react-router-dom'
+import { Navigate, Link, useLocation } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { login } from 'store/auth/thunks'
@@ -27,8 +27,13 @@ const colSize = {
   xl: 4
 }
 
+interface LocationState {
+  referrer: string
+}
+
 const Login = ({ isAuthenticated, login }: Props) => {
-  const history = useHistory<{ referrer: string }>()
+  const location = useLocation()
+  const referrer = (location.state as LocationState | null | undefined)?.referrer
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -66,11 +71,10 @@ const Login = ({ isAuthenticated, login }: Props) => {
   }
 
   if (isAuthenticated) {
-    const { location } = history
-    if (location.state && location.state.referrer) {
-      return <Redirect to={location.state.referrer} />
+    if (referrer) {
+      return <Navigate to={referrer} replace/>
     }
-    return <Redirect to="/dashboard" />
+    return <Navigate to="/dashboard" replace/>
   }
 
   return (

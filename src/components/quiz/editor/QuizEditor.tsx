@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import ErrorPage from 'components/errors/ErrorPage'
 import Spinner from 'components/common/Spinner'
@@ -28,7 +28,7 @@ type Props = ConnectedProps<typeof connector>
  * Displays forms for editing a quiz and directly handles submission of the quiz.
  */
 const QuizEditor = ({ createAlert, loadUser }: Props) => {
-  const history = useHistory()
+  const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
   const [userQuiz, quizError, loading] = useQuiz(id ?? '', 'full')
@@ -40,7 +40,7 @@ const QuizEditor = ({ createAlert, loadUser }: Props) => {
   })
 
   const goToDashboard = () => {
-    history.push('/dashboard')
+    navigate('/dashboard')
   }
 
   const submitQuiz = (quiz: Quiz) => {

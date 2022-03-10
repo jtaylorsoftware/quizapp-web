@@ -41,8 +41,8 @@ describe('Login', () => {
     mockState.auth!.isAuthenticated = true
     const history = createMemoryHistory()
     const referrer = '/myroute'
-    history.push('/login', { referrer })
-    render(<Login />, mockState, history)
+    const location = { pathname: '/login', state: { referrer } }
+    render(<Login />, mockState, history, location)
     expect(history.location.pathname).toEqual(referrer)
   })
 

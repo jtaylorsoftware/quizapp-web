@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Col, Container, Form } from 'react-bootstrap'
 
 import { connect, ConnectedProps } from 'react-redux'
-import { Redirect, Link } from 'react-router-dom'
+import { Navigate, Link } from 'react-router-dom'
 import { ApiError } from 'api'
 
 import { register } from 'store/auth/thunks'
@@ -91,7 +91,7 @@ const Register = ({ isAuthenticated, register }: Props) => {
   }
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />
+    return <Navigate to="/dashboard" replace/>
   }
 
   return (

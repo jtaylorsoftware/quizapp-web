@@ -7,13 +7,12 @@ import { createMemoryHistory } from 'history'
 jest.mock('util/jwt')
 import { tokenIsExpired } from 'util/jwt'
 
-import PrivateRoute from './PrivateRoute'
+import RequireAuth from './RequireAuth'
 import { AuthState } from 'store/auth/types'
 import { UserState } from 'store/user/types'
 
-describe('PrivateRoute', () => {
+describe('RequireAuth', () => {
   const tokenIsExpiredMock = jest.mocked(tokenIsExpired)
-  const FakeComponent = jest.fn(() => <p>FakeComponent</p>)
   const mockAuth: AuthState = {
     token: '',
     isAuthenticated: false
@@ -32,26 +31,15 @@ describe('PrivateRoute', () => {
   }
   beforeEach(() => {
     tokenIsExpiredMock.mockClear()
-    FakeComponent.mockClear()
   })
 
   it('renders without crashing', () => {
     const mockStore = {
       auth: mockAuth
     }
-    render(<PrivateRoute exact path="/" component={FakeComponent} />, mockStore)
+    render(<RequireAuth redirectTo='/login' />, mockStore)
   })
 
-  it('does not call/render the render prop if unauthenticated', () => {
-    const mockStore = {
-      auth: {
-        token: '',
-        isAuthenticated: false
-      }
-    }
-    render(<PrivateRoute component={FakeComponent} />, mockStore)
-    expect(FakeComponent).not.toHaveBeenCalled()
-  })
   it('does not render if authenticated but token is expired', () => {
     const mockStore = {
       auth: {
@@ -60,9 +48,10 @@ describe('PrivateRoute', () => {
       }
     }
     tokenIsExpiredMock.mockReturnValueOnce(true)
-    render(<PrivateRoute exact path="/" component={FakeComponent} />, mockStore)
+    const history = createMemoryHistory()
+    render(<RequireAuth redirectTo='/login' />, mockStore, history)
     expect(tokenIsExpiredMock).toHaveBeenCalled()
-    expect(FakeComponent).not.toHaveBeenCalled()
+    expect(history.location.pathname).toEqual('/login')
   })
 
   it('calls/renders the render prop when user is authenticated and not loading', () => {
@@ -73,8 +62,8 @@ describe('PrivateRoute', () => {
       },
       user: mockUser
     }
-    render(<PrivateRoute component={FakeComponent} />, mockStore)
-    expect(FakeComponent).toHaveBeenCalled()
+    render(<RequireAuth redirectTo='/login'><p>Success</p></RequireAuth>, mockStore)
+    expect(screen.queryByText("Success")).not.toBeNull()
   })
 
   it('renders spinner if authenticated but user is loading', () => {
@@ -88,7 +77,7 @@ describe('PrivateRoute', () => {
         loading: true
       }
     }
-    render(<PrivateRoute component={FakeComponent} />, mockStore)
+    render(<RequireAuth redirectTo='/login' />, mockStore)
     expect(screen.queryByRole('status')).not.toBeNull()
   })
 
@@ -97,7 +86,7 @@ describe('PrivateRoute', () => {
       auth: mockAuth
     }
     const history = createMemoryHistory()
-    render(<PrivateRoute component={FakeComponent} />, mockStore, history)
+    render(<RequireAuth redirectTo='/login' />, mockStore, history)
     expect(history.location.pathname).toEqual('/login')
   })
 })

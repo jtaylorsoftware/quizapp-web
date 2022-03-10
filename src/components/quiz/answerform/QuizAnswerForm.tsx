@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { useHistory, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 
 import { Button, Col, Container, Row } from 'react-bootstrap'
@@ -21,11 +21,11 @@ import { useQuiz, useSingleResult } from 'hooks'
 import Api, { ApiError, FormResponse } from 'api'
 
 const mapState = (state: RootState) => ({
-  userId: state.user.user?._id
+  userId: state.user.user?._id,
 })
 
 const mapDispatch = {
-  createAlert
+  createAlert,
 }
 
 const connector = connect(mapState, mapDispatch)
@@ -36,14 +36,14 @@ type Props = ConnectedProps<typeof connector>
  * Displays a form for a user to take/answer a quiz.
  */
 const QuizAnswerForm = ({ userId, createAlert }: Props) => {
-  const browserHistory = useHistory()
+  const navigate = useNavigate()
   const { id: quizId } = useParams<{ id: string }>()
 
-  const [quiz, quizError, quizLoading] = useQuiz(quizId, 'form')
+  const [quiz, quizError, quizLoading] = useQuiz(quizId ?? '', 'form')
   const [result, , resultLoading] = useSingleResult(
-    quizId,
+    quizId ?? '',
     userId ?? '',
-    'full'
+    'full',
   )
   const [submitError, setSubmitError] = useState<ApiError>()
 
@@ -57,7 +57,7 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
   }, [quiz])
 
   const goToDashboard = () => {
-    browserHistory.push('/dashboard')
+    navigate('/dashboard')
   }
 
   const changeAnswer = (answerIndex: number, questionIndex: number) => {
@@ -70,13 +70,13 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
         createAlert({
           msg:
             'Failed to submit answers - are there invalid or missing answers?',
-          type: 'danger'
+          type: 'danger',
         })
         setSubmitError(res.error)
       } else {
         createAlert({
           msg: 'Quiz answers submitted successfully',
-          type: 'success'
+          type: 'success',
         })
         goToDashboard()
       }
@@ -105,17 +105,17 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
 
   return (
     <>
-      <div data-testid="quiz-answer-form" className="content">
-        <Container fluid className="quiz-answer-form">
+      <div data-testid='quiz-answer-form' className='content'>
+        <Container fluid className='quiz-answer-form'>
           <Row>
-            <Col sm={8} className="quiz-answer-form__block mx-auto mt-3">
-              <Row className="mb-4">
-                <Col className="d-flex align-items-center">
-                  <h1 className="mb-0">{quiz!.title}</h1>
+            <Col sm={8} className='quiz-answer-form__block mx-auto mt-3'>
+              <Row className='mb-4'>
+                <Col className='d-flex align-items-center'>
+                  <h1 className='mb-0'>{quiz!.title}</h1>
                 </Col>
               </Row>
-              <Row className="row mb-4">
-                <Col className="d-flex align-items-center">
+              <Row className='row mb-4'>
+                <Col className='d-flex align-items-center'>
                   <h3>By {quiz!.user}</h3>
                 </Col>
               </Row>
@@ -129,10 +129,10 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
         </Container>
       </div>
       <Footer>
-        <Button variant="secondary" className="ms-1" onClick={goToDashboard}>
+        <Button variant='secondary' className='ms-1' onClick={goToDashboard}>
           Cancel
         </Button>
-        <Button variant="success" className="ms-1" onClick={submitAnswers}>
+        <Button variant='success' className='ms-1' onClick={submitAnswers}>
           Submit
         </Button>
       </Footer>

@@ -2,7 +2,7 @@ import { ResultListing } from 'api'
 import React from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
 
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   result: ResultListing
@@ -20,9 +20,9 @@ const ResultItem = ({
     ownerUsername: createdBy
   }
 }: Props) => {
-  const browserHistory = useHistory()
+  const navigate = useNavigate()
   const goToResult = () => {
-    browserHistory.push(`/results?quiz=${quizId}&user=${userId}`)
+    navigate(`/results?quiz=${quizId}&user=${userId}`)
   }
   return (
     <>

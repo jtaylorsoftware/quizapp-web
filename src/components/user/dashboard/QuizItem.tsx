@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 import moment from 'moment'
 
@@ -28,14 +28,14 @@ const QuizItem = ({
   quiz: { _id: id, title, expiration, date, questionCount, resultsCount },
   deleteQuiz
 }: Props) => {
-  const browserHistory = useHistory()
+  const navigate = useNavigate()
 
   const goToQuizEditor = () => {
-    browserHistory.push(`/quizzes/${id}/edit`)
+    navigate(`/quizzes/${id}/edit`)
   }
 
   const goToQuiz = () => {
-    browserHistory.push(`/quizzes/${id}`)
+    navigate(`/quizzes/${id}`)
   }
 
   const [isExpired, setIsExpired] = useState(false)
