@@ -3,7 +3,6 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
-import { mocked } from 'ts-jest/utils'
 import moment from 'moment'
 
 jest.mock('hooks/usequiz')
@@ -17,8 +16,8 @@ import { Quiz, ResultListing } from 'api'
 import QuizResultList from './QuizResultList'
 
 describe('QuizResultList', () => {
-  const mockUseQuiz = mocked(useQuiz)
-  const mockUseResultList = mocked(useResultList)
+  const mockUseQuiz = jest.mocked(useQuiz)
+  const mockUseResultList = jest.mocked(useResultList)
   const mockQuiz: Quiz = {
     _id: 'quizid0',
     title: 'My Quiz',

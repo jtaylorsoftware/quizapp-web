@@ -2,7 +2,7 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
-import { mocked } from 'ts-jest/utils'
+
 import { createMemoryHistory } from 'history'
 jest.mock('util/jwt')
 import { tokenIsExpired } from 'util/jwt'
@@ -12,7 +12,7 @@ import { AuthState } from 'store/auth/types'
 import { UserState } from 'store/user/types'
 
 describe('PrivateRoute', () => {
-  const tokenIsExpiredMock = mocked(tokenIsExpired)
+  const tokenIsExpiredMock = jest.mocked(tokenIsExpired)
   const FakeComponent = jest.fn(() => <p>FakeComponent</p>)
   const mockAuth: AuthState = {
     token: '',

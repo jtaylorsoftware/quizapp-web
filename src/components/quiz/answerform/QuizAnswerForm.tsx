@@ -129,10 +129,10 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
         </Container>
       </div>
       <Footer>
-        <Button variant="secondary" className="ml-1" onClick={goToDashboard}>
+        <Button variant="secondary" className="ms-1" onClick={goToDashboard}>
           Cancel
         </Button>
-        <Button variant="success" className="ml-1" onClick={submitAnswers}>
+        <Button variant="success" className="ms-1" onClick={submitAnswers}>
           Submit
         </Button>
       </Footer>

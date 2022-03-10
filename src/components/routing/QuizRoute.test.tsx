@@ -17,7 +17,7 @@ import { tokenIsExpired } from 'util/jwt'
 
 import QuizRoute from './QuizRoute'
 import { Switch } from 'react-router-dom'
-import { mocked } from 'ts-jest/utils'
+
 import { UserState } from 'store/user/types'
 import { AuthState } from 'store/auth/types'
 import clone from 'clone'
@@ -28,11 +28,11 @@ describe('QuizRoute', () => {
   let mockUser: UserState
   let mockAuth: AuthState
 
-  const mockTokenIsExpired = mocked(tokenIsExpired).mockReturnValue(false)
-  const MockQuizAnswerForm = mocked(QuizAnswerForm).mockReturnValue(
+  const mockTokenIsExpired = jest.mocked(tokenIsExpired).mockReturnValue(false)
+  const MockQuizAnswerForm = jest.mocked(QuizAnswerForm).mockReturnValue(
     <div>QuizAnswerForm</div>
   )
-  const MockQuizResultList = mocked(QuizResultList).mockReturnValue(
+  const MockQuizResultList = jest.mocked(QuizResultList).mockReturnValue(
     <div>QuizResultList</div>
   )
 

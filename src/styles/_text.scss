@@ -1,6 +1,6 @@
-$circle-number-size: (40/16) + rem;
-$circle-number-font-size: (32/16) + rem;
-$circle-number-padding: (8/16) + rem;
+$circle-number-size: calc(40/16) + rem;
+$circle-number-font-size: calc(32/16) + rem;
+$circle-number-padding: calc(8/16) + rem;
 
 .circled-number {
   box-sizing: content-box;

@@ -10,28 +10,29 @@ import { RootState } from 'store/store'
 
 const mapState = (state: RootState) => ({
   auth: state.auth,
-  user: state.user
+  user: state.user,
 })
 
 const mapDispatch = {
-  clearAuth
+  clearAuth,
 }
 
 const connector = connect(mapState, mapDispatch)
 
 type Props = ConnectedProps<typeof connector> &
   RouteProps & {
-    component: React.ComponentType
-    render?: never
-  }
+  component: React.ComponentType
+  render?: never
+}
 
-const PrivateRoute = function ({
-  auth,
-  user,
-  clearAuth,
-  component: Component,
-  ...rest
-}: Props) {
+const PrivateRoute = function(
+  {
+    auth,
+    user,
+    clearAuth,
+    component: Component,
+    ...rest
+  }: Props) {
   const location = useLocation()
   let isAuthenticated = auth.isAuthenticated
 
@@ -40,20 +41,20 @@ const PrivateRoute = function ({
     isAuthenticated = false
   }
 
-  const render = (props: any) => {
-    if (!isAuthenticated) {
-      return (
+  if (!isAuthenticated) {
+    return (
+      <Route>
         <Redirect
           to={{ pathname: '/login', state: { referrer: location.pathname } }}
         />
-      )
-    } else if (user.loading) {
-      return <Spinner />
-    } else {
-      return <Component {...props} />
-    }
+      </Route>
+    )
+  } else if (user && user.loading) {
+    return <Spinner />
+  } else {
+    // @ts-ignore
+    return <Route {...rest} children={<Component />} />
   }
-  return <Route {...rest} render={render} />
 }
 
 export default connector(PrivateRoute)

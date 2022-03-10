@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import clone from 'clone'
-import { mocked } from 'ts-jest/utils'
+
 
 import { quiz, result } from 'mocks/state'
 
@@ -17,8 +17,8 @@ import { useSingleResult } from 'hooks/useresult'
 import QuizResult from './QuizResult'
 
 describe('QuizResult', () => {
-  const mockUseQuiz = mocked(useQuiz)
-  const mockUseSingleResult = mocked(useSingleResult)
+  const mockUseQuiz = jest.mocked(useQuiz)
+  const mockUseSingleResult = jest.mocked(useSingleResult)
   const mockQuiz = quiz
   const mockResult = result
   const mockError404 = { status: 404, errors: [] }

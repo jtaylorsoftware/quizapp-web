@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { changeInput, fireEvent, render, screen } from 'util/test-utils'
-import { mocked } from 'ts-jest/utils'
+
 import { createMemoryHistory } from 'history'
 
 import '@testing-library/jest-dom'
@@ -18,7 +18,7 @@ import Register from './Register'
 
 describe('Register', () => {
   let mockState: Partial<RootState>
-  const registerMock = mocked(register)
+  const registerMock = jest.mocked(register)
 
   beforeEach(() => {
     mockState = { auth: clone(state.auth) }
@@ -46,7 +46,7 @@ describe('Register', () => {
       { username, email, password }: UserRegistration,
       callback: (error: {} | null) => void
     ) {
-      return dispatch => {
+      return async dispatch => {
         callback({
           status: 400,
           errors: [

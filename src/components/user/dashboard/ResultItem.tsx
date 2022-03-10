@@ -34,7 +34,7 @@ const ResultItem = ({
           <Button
             variant="primary"
             size="sm"
-            className="ml-1"
+            className="ms-1"
             onClick={() => goToResult()}>
             Details
           </Button>
@@ -42,7 +42,7 @@ const ResultItem = ({
       </Row>
       <Row>
         <Col>
-          <small className="text-muted text-left">by {createdBy} </small>
+          <small className="text-muted text-start">by {createdBy} </small>
         </Col>
       </Row>
       <Row>

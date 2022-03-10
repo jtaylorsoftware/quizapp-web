@@ -100,7 +100,7 @@ const QuizResult = ({ createAlert }: Props) => {
       <Footer>
         <Button
           variant="success"
-          className="ml-1"
+          className="ms-1"
           onClick={() => browserHistory.goBack()}>
           Go back
         </Button>

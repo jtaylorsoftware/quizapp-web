@@ -31,7 +31,7 @@ const ResultItem = ({
           <Button
             variant="primary"
             size="sm"
-            className="ml-1"
+            className="ms-1"
             onClick={() => goToResult()}>
             Details
           </Button>

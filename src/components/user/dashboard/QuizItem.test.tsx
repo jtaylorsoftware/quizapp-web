@@ -2,7 +2,7 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, within } from 'util/test-utils'
-import { mocked } from 'ts-jest/utils'
+
 import { createMemoryHistory } from 'history'
 import clone from 'clone'
 
@@ -14,9 +14,10 @@ import { QuizListing } from 'api'
 import { quizzes } from 'mocks/state'
 import QuizItem from './QuizItem'
 import moment from 'moment'
+import { calculateTimeDifference, createTimestamp } from '../../../util/date'
 
 describe('QuizItem', () => {
-  const deleteQuizMock = mocked(deleteQuiz).mockReturnValue(async dispatch => {})
+  const deleteQuizMock = jest.mocked(deleteQuiz).mockReturnValue(async dispatch => {})
   let mockState: QuizListing[]
 
   beforeEach(() => {
@@ -52,7 +53,8 @@ describe('QuizItem', () => {
     const quiz = mockState[0]
     quiz.date = moment().subtract(2, 'y').toISOString()
     render(<QuizItem quiz={quiz} />)
-    expect(screen.queryByText(/created 2 years ago/i)).not.toBeNull()
+    const timestamp = createTimestamp(calculateTimeDifference(moment(), moment(quiz.date)))
+    expect(screen.queryByText(`Created ${timestamp}`)).not.toBeNull()
   })
 
   it('renders the expiration text for an expired quiz', () => {

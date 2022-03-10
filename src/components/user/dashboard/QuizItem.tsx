@@ -70,14 +70,14 @@ const QuizItem = ({
           <Button
             variant="info"
             size="sm"
-            className="ml-1"
+            className="ms-1"
             onClick={() => goToQuizEditor()}>
             Edit
           </Button>
           <Button
             variant="primary"
             size="sm"
-            className="ml-1"
+            className="ms-1"
             onClick={() => goToQuiz()}>
             Results
           </Button>
@@ -109,11 +109,11 @@ const QuizItem = ({
       </Row>
       <Row>
         <Col className="d-flex">
-          <small className="text-muted text-left">Created {timestamp}</small>
+          <small data-testid={"created-timestamp"} className="text-muted text-start">Created {timestamp}</small>
         </Col>
         {isExpired ? (
           <Col className="d-flex flex-row-reverse">
-            <small className="text-danger text-right">Expired</small>
+            <small className="text-danger text-end">Expired</small>
           </Col>
         ) : null}
       </Row>

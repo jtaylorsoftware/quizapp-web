@@ -6,7 +6,7 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, waitFor } from 'util/test-utils'
 
-import { mocked } from 'ts-jest/utils'
+
 import { createMemoryHistory } from 'history'
 
 import moment from 'moment'
@@ -34,8 +34,8 @@ const quiz: Quiz = {
 
 describe('QuizCreator', () => {
   let mockQuiz: Quiz
-  const mockCreateAlert = mocked(createAlert).mockReturnValue(() => {})
-  const mockLoadUser = mocked(loadUser).mockReturnValue(async dispatch => {})
+  const mockCreateAlert = jest.mocked(createAlert).mockReturnValue(async () => {})
+  const mockLoadUser = jest.mocked(loadUser).mockReturnValue(async dispatch => {})
 
   beforeEach(() => {
     mockCreateAlert.mockClear()

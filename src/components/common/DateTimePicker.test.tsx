@@ -13,6 +13,7 @@ describe('DateTimePicker', () => {
   const changeMock = jest.fn()
   const validateMock = jest.fn(() => true)
   const props = {
+    id: 'test-datepicker',
     defaultValue: now,
     minValue: now,
     onChange: changeMock,

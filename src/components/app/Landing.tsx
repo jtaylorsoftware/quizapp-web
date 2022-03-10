@@ -1,5 +1,7 @@
 import React from 'react'
-import { Col, Container, Jumbotron, Row } from 'react-bootstrap'
+import  Col  from 'react-bootstrap/Col'
+import  Row  from 'react-bootstrap/Row'
+import  Container  from 'react-bootstrap/Container'
 import { Link } from 'react-router-dom'
 
 const contentSize = {
@@ -14,8 +16,8 @@ const contentSize = {
 const Landing = () => {
   return (
     <>
-      <Jumbotron fluid className="mb-0">
-        <Container>
+      <div className="p-5 mb-0 jumbotron">
+        <Container fluid>
           <Row>
             <Col {...contentSize} className="mx-auto">
               <h1 className="display-4">QuizNow</h1>
@@ -33,7 +35,7 @@ const Landing = () => {
             </Col>
           </Row>
         </Container>
-      </Jumbotron>
+    </div>
       <Container fluid>
         <Row className="info info--about">
           <Col {...contentSize} className="mx-auto">
@@ -122,13 +124,12 @@ const Landing = () => {
         <Row className="h-100">
           <Col className="d-flex align-items-center justify-content-end">
             <p className="mb-0">
-              A project by
+              A project by {' '}
               <a
-                href="https://github.com/jeremyt135/"
+                href="https://github.com/jtaylorsoftware/"
                 target="_blank"
                 rel="noreferrer noopener">
-                {' '}
-                Jeremy Taylor
+                  Jeremy Taylor
               </a>
             </p>
           </Col>

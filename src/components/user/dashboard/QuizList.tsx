@@ -45,7 +45,7 @@ const QuizList = ({ loading, quizzes }: Props) => {
                 <Col>
                   <Link
                     to="/quizzes/create"
-                    className="btn btn-success btn-sm ml-auto">
+                    className="btn btn-success btn-sm ms-auto">
                     Create A Quiz
                   </Link>
                 </Col>

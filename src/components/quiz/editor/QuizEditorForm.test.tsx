@@ -8,6 +8,7 @@ import moment from 'moment'
 
 const mockQuiz = {
   title: '',
+  date: '',
   isPublic: true,
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),

@@ -128,12 +128,12 @@ const QuizEditorForm = ({
         </Container>
       </div>
       <Footer>
-        <Button variant="secondary" className="ml-1" onClick={cancelSubmit}>
+        <Button variant="secondary" className="ms-1" onClick={cancelSubmit}>
           Cancel
         </Button>
         <Button
           variant="success"
-          className="ml-1"
+          className="ms-1"
           onClick={() => {
             onSubmit(quiz)
           }}>

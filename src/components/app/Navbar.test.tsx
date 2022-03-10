@@ -2,7 +2,7 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from 'util/test-utils'
-import { mocked } from 'ts-jest/utils'
+
 
 import Navbar from './Navbar'
 
@@ -10,7 +10,7 @@ import { logout } from 'store/user/thunks'
 jest.mock('store/user/thunks')
 
 describe('Navbar', () => {
-  const logoutMock = mocked(logout)
+  const logoutMock = jest.mocked(logout)
 
   it('renders without crashing', () => {
     const mockStore = {

@@ -2,7 +2,7 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, within } from 'util/test-utils'
-import { mocked } from 'ts-jest/utils'
+
 
 import clone from 'clone'
 
@@ -16,7 +16,7 @@ import * as state from 'mocks/state'
 import UserInfo from './UserInfo'
 
 describe('UserInfo', () => {
-  const deleteUserMock = mocked(deleteUser).mockReturnValue(async dispatch => {})
+  const deleteUserMock = jest.mocked(deleteUser).mockReturnValue(async dispatch => {})
   let mockState: typeof state
 
   beforeEach(() => {

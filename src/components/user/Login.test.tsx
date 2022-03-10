@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { changeInput, fireEvent, render, screen } from 'util/test-utils'
-import { mocked } from 'ts-jest/utils'
+
 import { createMemoryHistory } from 'history'
 
 import '@testing-library/jest-dom'
@@ -18,7 +18,7 @@ import Login from './Login'
 
 describe('Login', () => {
   let mockState: Partial<RootState>
-  const loginMock = mocked(login)
+  const loginMock = jest.mocked(login)
 
   beforeEach(() => {
     mockState = { auth: clone(state.auth) }

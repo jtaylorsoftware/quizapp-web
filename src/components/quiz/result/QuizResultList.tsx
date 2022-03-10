@@ -97,7 +97,7 @@ const QuizResultList = ({ createAlert }: Props) => {
       </div>
 
       <Footer>
-        <Button variant="success" className="ml-1" onClick={goToDashboard}>
+        <Button variant="success" className="ms-1" onClick={goToDashboard}>
           Back to dashboard
         </Button>
       </Footer>

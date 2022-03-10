@@ -54,7 +54,7 @@ const AnswerEditor = ({
             <Button
               variant="danger"
               size="sm"
-              className="ml-auto"
+              className="ms-auto"
               onClick={onRemove}
               disabled={editing}>
               Delete

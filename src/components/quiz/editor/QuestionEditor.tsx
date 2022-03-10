@@ -119,7 +119,7 @@ const QuestionEditor = ({
               <Button
                 variant="secondary"
                 size="sm"
-                className="mr-2"
+                className="me-2"
                 onClick={() => {
                   const updatedQuestion = {
                     ...value,
@@ -138,7 +138,7 @@ const QuestionEditor = ({
               <Button
                 variant="danger"
                 size="sm"
-                className="mr-2"
+                className="me-2"
                 onClick={onRemove}
                 disabled={editing}>
                 Delete Question

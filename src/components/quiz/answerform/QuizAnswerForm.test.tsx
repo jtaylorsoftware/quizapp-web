@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from 'util/test-utils'
 
 import clone from 'clone'
-import { mocked } from 'ts-jest/utils'
+
 
 import moment from 'moment'
 import { createMemoryHistory } from 'history'
@@ -23,8 +23,8 @@ import { user, quiz, result } from 'mocks/state'
 import QuizAnswerForm from './QuizAnswerForm'
 
 describe('QuizAnswerForm', () => {
-  const mockUseQuiz = mocked(useQuiz)
-  const mockUseSingleResult = mocked(useSingleResult)
+  const mockUseQuiz = jest.mocked(useQuiz)
+  const mockUseSingleResult = jest.mocked(useSingleResult)
   const mockQuiz = quiz
   const mockResult = result
   const mockError404 = { status: 404, errors: [] }
@@ -120,7 +120,7 @@ describe('QuizAnswerForm', () => {
     mockUseQuiz.mockReturnValue([mockQuiz, undefined, false])
     mockUseSingleResult.mockReturnValue([undefined, undefined, false])
     renderForm()
-    const mockResultsPost = mocked(Api.results.post).mockResolvedValue({})
+    const mockResultsPost = jest.mocked(Api.results.post).mockResolvedValue({})
     const submitbtn = screen.getByText('Submit')
     fireEvent.click(submitbtn)
     expect(mockResultsPost).toHaveBeenCalled()
