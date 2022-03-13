@@ -4,6 +4,7 @@ import { createAlert } from '../alerts/thunks'
 import { setAuthUser, clearAuthUser } from './actions'
 import { Token, UserLogin, UserRegistration } from './types'
 import { Thunk } from '../store'
+import { config } from 'api'
 
 /**
  * Registers a new User with the server.
@@ -16,7 +17,7 @@ export function register(
 ): Thunk<Promise<void>> {
   return async dispatch => {
     try {
-      const response = await fetch('/api/users', {
+      const response = await fetch(`${config.baseUrl}/users/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -57,7 +58,7 @@ export function login(
 ): Thunk<Promise<void>> {
   return async dispatch => {
     try {
-      const response = await fetch('/api/users/auth', {
+      const response = await fetch(`${config.baseUrl}/users/auth/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

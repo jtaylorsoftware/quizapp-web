@@ -3,6 +3,7 @@ import * as results from './results'
 import * as user from './user'
 export type { ApiError } from './error'
 export type { ApiResponse } from './response'
+export * from './config'
 export * from './types'
 
 const api = {

@@ -6,12 +6,13 @@ import {
   ResultListType,
   FormResponse
 } from './types'
+import { config } from './config'
 
 export const getAll = async <T extends ResultFormat>(
   quizId: string,
   format: T
 ): Promise<ApiResponse<ResultListType<T>>> => {
-  const response = await fetch(`/api/results?quiz=${quizId}&format=${format}`, {
+  const response = await fetch(`${config.baseUrl}/results?quiz=${quizId}&format=${format}`, {
     method: 'GET',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? ''
@@ -32,7 +33,7 @@ export const getOne = async <T extends ResultFormat>(
   format: T
 ): Promise<ApiResponse<SingleResultType<T>>> => {
   const response = await fetch(
-    `/api/results?quiz=${quizId}&user=${userId}&format=${format}`,
+    `${config.baseUrl}/results?quiz=${quizId}&user=${userId}&format=${format}`,
     {
       method: 'GET',
       headers: {
@@ -50,7 +51,7 @@ export const getOne = async <T extends ResultFormat>(
 }
 
 export const post = async (quizId: string, answers: FormResponse[]) => {
-  const response = await fetch(`/api/results?quiz=${quizId}`, {
+  const response = await fetch(`${config.baseUrl}/results?quiz=${quizId}`, {
     method: 'POST',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? '',

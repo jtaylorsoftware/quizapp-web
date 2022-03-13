@@ -1,13 +1,14 @@
 import { Quiz, QuizFormat, QuizType } from './types'
 import { parseError } from 'util/parse-error'
 import { ApiResponse } from './response'
+import { config } from './config'
 
 export const get = async <T extends QuizFormat>(
   id: string,
   format: T
 ): Promise<ApiResponse<QuizType<T>>> => {
   const response = await fetch(
-    `/api/quizzes/${id}${format === 'full' ? '' : '/form'}`,
+    `${config.baseUrl}/quizzes/${id}${format === 'full' ? '' : '/form'}`,
     {
       method: 'GET',
       headers: {
@@ -25,7 +26,7 @@ export const get = async <T extends QuizFormat>(
 }
 
 export const post = async (quiz: Quiz): Promise<ApiResponse> => {
-  const response = await fetch('/api/quizzes', {
+  const response = await fetch(`${config.baseUrl}/quizzes/`, {
     method: 'POST',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? '',
@@ -41,7 +42,7 @@ export const post = async (quiz: Quiz): Promise<ApiResponse> => {
 }
 
 export const put = async (quiz: Quiz): Promise<ApiResponse> => {
-  const response = await fetch(`/api/quizzes/${quiz._id!}/edit`, {
+  const response = await fetch(`${config.baseUrl}/quizzes/${quiz._id!}/edit`, {
     method: 'PUT',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? '',

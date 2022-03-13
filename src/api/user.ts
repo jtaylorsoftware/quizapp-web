@@ -1,11 +1,12 @@
 import { parseError } from 'util/parse-error'
 import { ApiResponse } from './response'
 import { QuizListType, ResultFormat, ResultListType } from './types'
+import { config } from './config'
 
 export const getQuizzes = async <T extends ResultFormat>(
   format: T
 ): Promise<ApiResponse<QuizListType<T>>> => {
-  const response = await fetch(`/api/users/me/quizzes?format=${format}`, {
+  const response = await fetch(`${config.baseUrl}/users/me/quizzes?format=${format}`, {
     method: 'GET',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? ''
@@ -22,7 +23,7 @@ export const getQuizzes = async <T extends ResultFormat>(
 export const getResults = async <T extends ResultFormat>(
   format: T
 ): Promise<ApiResponse<ResultListType<T>>> => {
-  const response = await fetch(`/api/users/me/results?format=${format}`, {
+  const response = await fetch(`${config.baseUrl}/users/me/results?format=${format}`, {
     method: 'GET',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? ''

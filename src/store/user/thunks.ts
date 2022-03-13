@@ -14,7 +14,7 @@ import {
   deleteQuizError
 } from './actions'
 import { clearAuth } from '../auth/thunks'
-import { ApiError, ID } from 'api'
+import { ApiError, ID, config } from 'api'
 /**
  * Loads data for the User represented by the current JWT.
  * Dispatches an action of type LOAD_USER on success and
@@ -23,7 +23,7 @@ import { ApiError, ID } from 'api'
 export function loadUser(): Thunk<Promise<void>> {
   return async dispatch => {
     try {
-      const response = await fetch('/api/users/me', {
+      const response = await fetch(`${config.baseUrl}/users/me/`, {
         method: 'GET',
         headers: {
           'x-auth-token': localStorage.getItem('token') ?? ''
@@ -58,7 +58,7 @@ export function changeUserEmail(
 ): Thunk<Promise<ApiError | undefined>> {
   return async dispatch => {
     try {
-      const response = await fetch('/api/users/me/email', {
+      const response = await fetch(`${config.baseUrl}/users/me/email/`, {
         method: 'PUT',
         headers: {
           'x-auth-token': localStorage.getItem('token') ?? '',
@@ -97,7 +97,7 @@ export function changeUserPassword(
 ): Thunk<Promise<ApiError | undefined>> {
   return async dispatch => {
     try {
-      const response = await fetch('/api/users/me/password', {
+      const response = await fetch(`${config.baseUrl}/users/me/password/`, {
         method: 'PUT',
         headers: {
           'x-auth-token': localStorage.getItem('token') ?? '',
@@ -130,7 +130,7 @@ export function changeUserPassword(
 export function deleteUser(): Thunk<Promise<void>> {
   return async dispatch => {
     try {
-      const response = await fetch('/api/users/me', {
+      const response = await fetch(`${config.baseUrl}/users/me/`, {
         method: 'DELETE',
         headers: {
           'x-auth-token': localStorage.getItem('token') ?? ''
@@ -162,7 +162,7 @@ export function logout(): Thunk {
 export function deleteQuiz(quizId: ID): Thunk<Promise<void>> {
   return async dispatch => {
     try {
-      const response = await fetch(`/api/quizzes/${quizId}`, {
+      const response = await fetch(`${config.baseUrl}/quizzes/${quizId}`, {
         method: 'DELETE',
         headers: {
           'x-auth-token': localStorage.getItem('token') ?? ''
