@@ -3,6 +3,7 @@ import React from 'react'
 import { ApiError, FormQuestion } from 'api'
 
 import Question from './Question'
+import { OnAnswerChanged } from './onanswerchanged'
 
 type Props = {
   /**
@@ -15,22 +16,21 @@ type Props = {
   /**
    * Callback for when the answer choice for a question changes.
    */
-  onChange: (answerIndex: number, questionIndex: number) => void
+  onAnswerChanged: OnAnswerChanged
 }
 
 /**
  * Displays the questions to the quiz answer form
  */
-const QuestionList = ({ error, questions, onChange }: Props) => {
+const QuestionList = ({ error, questions, onAnswerChanged }: Props) => {
   return (
     <div data-testid="questionlist">
       {questions.map((question, index) => (
         <Question
           key={index}
           index={index}
-          text={question.text}
-          answers={question.answers}
-          onChange={onChange}
+          question={question}
+          onAnswerChanged={onAnswerChanged}
           highlightMissing={!!error && error.status === 400}
         />
       ))}

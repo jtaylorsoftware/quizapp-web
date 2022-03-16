@@ -19,6 +19,7 @@ import { isDateInPast } from 'util/date'
 
 import { useQuiz, useSingleResult } from 'hooks'
 import Api, { ApiError, FormResponse } from 'api'
+import { ResponseValue } from './onanswerchanged'
 
 const mapState = (state: RootState) => ({
   userId: state.user.user?._id,
@@ -47,12 +48,12 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
   )
   const [submitError, setSubmitError] = useState<ApiError>()
 
-  const answers = useRef<FormResponse[]>()
+  const responses = useRef<FormResponse[]>()
   useEffect(() => {
     if (quiz) {
-      answers.current = Array.from({ length: quiz.questions.length }, () => {
-        return {}
-      })
+      responses.current = quiz.questions.map(question => ({
+        type: question.type,
+      }))
     }
   }, [quiz])
 
@@ -60,12 +61,17 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
     navigate('/dashboard')
   }
 
-  const changeAnswer = (answerIndex: number, questionIndex: number) => {
-    answers.current![questionIndex].choice = answerIndex
+  const changeAnswer = (answer: ResponseValue, questionIndex: number) => {
+    const response = responses.current![questionIndex]
+    if (response.type === 'FillIn') {
+      response.answer = answer as string
+    } else {
+      response.choice = answer as number
+    }
   }
 
   const submitAnswers = () => {
-    Api.results.post(quizId!, answers.current!).then(res => {
+    Api.results.post(quizId!, responses.current!).then(res => {
       if (res.error) {
         createAlert({
           msg:
@@ -122,7 +128,7 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
               <QuestionList
                 error={submitError}
                 questions={quiz!.questions}
-                onChange={changeAnswer}
+                onAnswerChanged={changeAnswer}
               />
             </Col>
           </Row>

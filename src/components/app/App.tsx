@@ -8,7 +8,6 @@ import QuizEditor from 'components/quiz/editor/QuizEditor'
 import Dashboard from 'components/user/dashboard/Dashboard'
 import QuizResult from 'components/quiz/result/QuizResult'
 import QuizRoute from 'components/routing/QuizRoute'
-import PrivateRoute from 'components/routing/RequireAuth'
 import QuizCreator from 'components/quiz/editor/QuizCreator'
 import ErrorPage from 'components/errors/ErrorPage'
 

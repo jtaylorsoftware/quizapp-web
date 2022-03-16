@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 
-type Props = {
+export type Props = {
   index: number
   text: string
   selected: boolean

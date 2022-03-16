@@ -1,59 +1,92 @@
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 
-import { Answer as QuizAnswer, ResultAnswer } from 'api'
+import { FillInResult, FormQuestion, MultipleChoiceResult, ResultAnswer } from 'api'
 
-import Answer from './Answer'
+import MultipleChoiceAnswer from './MultipleChoice/Answer'
+import FillInAnswer from './Fillin/Answer'
 
 type Props = {
   index: number
-  text: string
   result: ResultAnswer
-  answers: QuizAnswer[]
+  question: FormQuestion
+}
+
+type BodyProps = {
+  result: ResultAnswer
+  question: FormQuestion
+}
+
+/**
+ * Displays the scored answer(s) from a question
+ */
+const QuestionBody = ({ question, result }: BodyProps) => {
+  if (question.type === 'FillIn') {
+    const isCorrect = result.isCorrect ?? false
+
+    return (
+      <>
+        {(result as FillInResult).correctAnswer !== undefined ? (
+          <Row className='mb-4'>
+            <Col className='d-flex align-items-center'>
+              <h5 className='mb-0'>
+                Correct answer: {(result as FillInResult).correctAnswer!!}
+              </h5>
+            </Col>
+          </Row>
+        ) : null}
+        <FillInAnswer text={(result as FillInResult).answer} correct={isCorrect} />
+      </>
+    )
+  } else {
+    return <>
+      {(result as MultipleChoiceResult).correctAnswer !== undefined ? (
+        <Row className='mb-4'>
+          <Col className='d-flex align-items-center'>
+            <h5 className='mb-0'>
+              Correct answer: {(result as MultipleChoiceResult).correctAnswer!! + 1}
+            </h5>
+          </Col>
+        </Row>
+      ) : null}
+      {question.answers.map((answer, index) => {
+        let isCorrect: boolean
+        const selected = (result as MultipleChoiceResult).choice === index
+        if (result.correctAnswer !== undefined) {
+          isCorrect = result.correctAnswer === index
+        } else {
+          isCorrect = (result.isCorrect ?? false) && selected
+        }
+        return (
+          <MultipleChoiceAnswer
+            key={index}
+            index={index}
+            text={answer.text}
+            correct={isCorrect}
+            selected={selected}
+          />
+        )
+      })}
+    </>
+  }
 }
 
 /**
  * Displays a single scored question from a quiz
  */
-const ScoredQuestion = ({
-  index: questionIndex,
-  text,
-  answers,
-  result
-}: Props) => {
+const ScoredQuestion = (
+  {
+    index: questionIndex,
+    question,
+    result,
+  }: Props) => {
   return (
-    <Row className="mb-4">
+    <Row className='mb-4'>
       <Col>
-        <h3 className="mb-2">
-          {questionIndex + 1}. {text}
+        <h3 className='mb-2'>
+          {questionIndex + 1}. {question.text}
         </h3>
-        {result.correctAnswer !== undefined ? (
-          <Row className="mb-4">
-            <Col className="d-flex align-items-center">
-              <h5 className="mb-0">
-                Correct answer: {result.correctAnswer + 1}
-              </h5>
-            </Col>
-          </Row>
-        ) : null}
-        {answers.map((answer, index) => {
-          let isCorrect: boolean
-          const selected = result.choice === index
-          if (result.correctAnswer !== undefined) {
-            isCorrect = result.correctAnswer === index
-          } else {
-            isCorrect = result.isCorrect && selected
-          }
-          return (
-            <Answer
-              key={index}
-              index={index}
-              text={answer.text}
-              correct={isCorrect}
-              selected={selected}
-            />
-          )
-        })}
+        <QuestionBody result={result} question={question} />
       </Col>
     </Row>
   )

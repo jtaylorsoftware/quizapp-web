@@ -15,17 +15,17 @@ describe('QuestionList', () => {
     mockState = clone(quiz)
   })
   it('renders without crashing', () => {
-    render(<QuestionList questions={mockState.questions} onChange={() => {}} />)
+    render(<QuestionList questions={mockState.questions} onAnswerChanged={() => {}} />)
   })
   it('should display questions with errors when error state is not null', () => {
     render(
       <QuestionList
         error={error400}
         questions={mockState.questions}
-        onChange={() => {}}
+        onAnswerChanged={() => {}}
       />
     )
-    expect(screen.queryAllByText(/please select an answer/i)).toHaveLength(
+    expect(screen.queryAllByText(/please input or choose/i)).toHaveLength(
       mockState.questions.length
     )
   })

@@ -27,7 +27,7 @@ const QuestionText = ({ id, defaultValue, validate, onChange }: Props) => {
             onChange(text)
           }}
           value={text}
-          placeholder={'Question text...'}
+          placeholder={'Question prompt...'}
           minLength={1}
         />
         {isInvalid ? (

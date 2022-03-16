@@ -5,6 +5,7 @@ import { changeInput, fireEvent, render, screen } from 'util/test-utils'
 
 import QuizEditorForm from './QuizEditorForm'
 import moment from 'moment'
+import { QuestionType } from '../../../api'
 
 const mockQuiz = {
   title: '',
@@ -12,12 +13,14 @@ const mockQuiz = {
   isPublic: true,
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),
-  questions: []
+  questions: [],
 }
 
 describe('QuizEditorForm', () => {
-  const mockOnSubmit = jest.fn(() => {})
-  const mockCancel = jest.fn(() => {})
+  const mockOnSubmit = jest.fn(() => {
+  })
+  const mockCancel = jest.fn(() => {
+  })
   const renderForm = (editing?: boolean, validate?: boolean) => {
     render(
       <QuizEditorForm
@@ -26,7 +29,7 @@ describe('QuizEditorForm', () => {
         onSubmit={mockOnSubmit}
         editing={editing ?? false}
         validate={validate ?? false}
-      />
+      />,
     )
   }
 
@@ -85,42 +88,57 @@ describe('QuizEditorForm', () => {
     expect(screen.queryByDisplayValue(usernames)).not.toBeNull()
   })
 
-  it('adds a question when clicking "Add Question"', () => {
+  it('can add a MultipleChoice question when clicking "Add Question"', async () => {
     renderForm()
-    addQuestion()
-    expect(screen.queryByText(/question \d:/i)).not.toBeNull()
+    await addQuestion('MultipleChoice')
+    expect(screen.queryByText(/question \d \(multiple choice\)/i)).not.toBeNull()
   })
 
-  it('deletes the question when clicking "Delete Question"', () => {
+  it('can add a FillIn question when clicking "Add Question"', async () => {
     renderForm()
-    addQuestion()
-    expect(screen.queryByText(/question \d:/i)).not.toBeNull()
+    await addQuestion('FillIn')
+    expect(screen.getByText(/question \d \(fill in the blank\)/i)).not.toBeNull()
+  })
+
+  it('can input the answer to a FillIn Question', async () => {
+    renderForm()
+    await addQuestion('FillIn')
+    const input = await screen.findByPlaceholderText<HTMLInputElement>('Answer text...')
+    const answerText = 'my answer'
+    fireEvent.change(input, { target: { value: answerText }})
+    expect(input.value).toEqual(answerText)
+  })
+
+  it('deletes the question when clicking "Delete Question"', async () => {
+    renderForm()
+    await addQuestion()
+    expect(screen.queryByText(/question \d/i)).not.toBeNull()
     deleteQuestion(0)
-    expect(screen.queryByText(/question \d:/i)).toBeNull()
+    expect(screen.queryByText(/question \d/i)).toBeNull()
   })
 
-  it('adds an answer to a question when clicking "Add Answer"', () => {
+  it('adds an answer to a MultipleChoice question when clicking "Add Answer"', async () => {
     renderForm()
-    addQuestion()
+    await addQuestion()
     addAnswerToQuestion(0)
     expect(screen.queryByPlaceholderText(/answer text.../i)).not.toBeNull()
   })
 
-  it('deletes an answer from a question when clicking "Delete"', () => {
+  it('deletes an answer from a MultipleChoice question when clicking "Delete"', async () => {
     renderForm()
-    addQuestion()
+    await addQuestion()
     addAnswerToQuestion(0)
     expect(screen.queryByPlaceholderText(/answer text.../i)).not.toBeNull()
     deleteAnswer(0)
     expect(screen.queryByPlaceholderText(/answer text.../i)).toBeNull()
   })
 
-  it('retains question text after input and blur', () => {
+  it('retains question text after input and blur', async () => {
     renderForm()
-    addQuestion()
+    await addQuestion()
 
     const question = 'My Question'
-    const questionInput = screen.getByPlaceholderText(/question text.../i)
+    const questionInput = screen.getByPlaceholderText(/question prompt/i)
 
     fireEvent.change(questionInput, { target: { value: question } })
     expect(screen.queryByDisplayValue(question)).not.toBeNull()
@@ -129,19 +147,22 @@ describe('QuizEditorForm', () => {
     expect(screen.queryByDisplayValue(question)).not.toBeNull()
   })
 
-  it('keeps question text in correct order after deleting other questions', () => {
+  it('keeps question text in correct order after deleting other questions', async () => {
     renderForm()
 
     const questions = [
       'first question',
       'second question',
       'third question',
-      'fourth question'
+      'fourth question',
     ]
-    const placeholder = /question text.../i
+    const placeholder = /question prompt/i
 
     // Fill out the question text
-    questions.forEach(() => addQuestion())
+    for (const question of questions){
+      await addQuestion()
+    }
+
     let allQuestions = screen.getAllByPlaceholderText(placeholder)
     allQuestions.forEach((input, ind) => {
       changeAndBlurIput(input, questions[ind])
@@ -156,7 +177,7 @@ describe('QuizEditorForm', () => {
       allQuestions = screen.getAllByPlaceholderText(placeholder)
       for (let j = 0; j < allQuestions.length; j++) {
         expect((allQuestions[j] as HTMLInputElement).value).toEqual(
-          questions[j]
+          questions[j],
         )
       }
     }
@@ -166,18 +187,18 @@ describe('QuizEditorForm', () => {
     expect(screen.queryByPlaceholderText(placeholder)).toBeNull()
   })
 
-  it('keeps answer text in correct order after deleting other answers', () => {
+  it('keeps answer text of MultipleChoice Question in correct order after deleting other answers', async () => {
     renderForm()
     const answers = [
       'first answer',
       'second answer',
       'third answer',
-      'fourth answer'
+      'fourth answer',
     ]
 
     const placeholder = /answer text.../i
 
-    addQuestion()
+    await addQuestion()
 
     // Fill out the answer text
     answers.forEach(() => addAnswerToQuestion(0))
@@ -204,7 +225,8 @@ describe('QuizEditorForm', () => {
   })
 })
 
-const addQuestion = () => {
+const addQuestion = async (questionType: QuestionType = 'MultipleChoice') => {
+  await chooseQuestionType(questionType)
   fireEvent.click(screen.getByText('Add Question'))
 }
 const deleteQuestion = (index: number) => {
@@ -219,4 +241,10 @@ const deleteAnswer = (index: number) => {
 const changeAndBlurIput = (input: HTMLElement, value: string) => {
   fireEvent.change(input, { target: { value } })
   fireEvent.blur(input)
+}
+const chooseQuestionType = async (questionType: QuestionType = 'MultipleChoice') => {
+  const selector = await screen.findByRole('button', { expanded: false })
+  fireEvent.click(selector)
+  const dropdownItem = await screen.findByTestId(`dropdown-${questionType}`)
+  fireEvent.click(dropdownItem)
 }

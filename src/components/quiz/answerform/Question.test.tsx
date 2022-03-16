@@ -7,6 +7,7 @@ import { quiz } from 'mocks/state'
 import clone from 'clone'
 
 import Question from './Question'
+import { MultipleChoiceQuestion } from '../../../api'
 
 describe('Question', () => {
   let mockState: typeof quiz
@@ -17,14 +18,12 @@ describe('Question', () => {
   it('renders without crashing', () => {
     const questionIndex = 0
     const question = mockState.questions[questionIndex]
-    const answers = question.answers
     render(
       <Question
         index={questionIndex}
-        text={question.text}
-        answers={answers}
+        question={question}
         highlightMissing={false}
-        onChange={() => {}}
+        onAnswerChanged={() => {}}
       />
     )
   })
@@ -32,14 +31,12 @@ describe('Question', () => {
   it('displays the question number and text', () => {
     const questionIndex = 0
     const question = mockState.questions[questionIndex]
-    const answers = question.answers
     render(
       <Question
         index={questionIndex}
-        text={question.text}
-        answers={answers}
+        question={question}
         highlightMissing={false}
-        onChange={() => {}}
+        onAnswerChanged={() => {}}
       />
     )
     expect(
@@ -49,15 +46,14 @@ describe('Question', () => {
 
   it('renders whatever answers are given', () => {
     const questionIndex = 0
-    const question = mockState.questions[questionIndex]
+    const question = mockState.questions[questionIndex] as MultipleChoiceQuestion
     const answers = question.answers
     render(
       <Question
         index={questionIndex}
-        text={question.text}
-        answers={answers}
+        question={question}
         highlightMissing={true}
-        onChange={() => {}}
+        onAnswerChanged={() => {}}
       />
     )
     expect(screen.queryAllByTestId(/answer-choice/)).toHaveLength(
@@ -67,15 +63,14 @@ describe('Question', () => {
 
   it('does not display an error if an answer is selected', () => {
     const questionIndex = 0
-    const question = mockState.questions[questionIndex]
+    const question = mockState.questions[questionIndex] as MultipleChoiceQuestion
     const answers = question.answers
     render(
       <Question
         index={questionIndex}
-        text={question.text}
-        answers={answers}
+        question={question}
         highlightMissing={true}
-        onChange={() => {}}
+        onAnswerChanged={() => {}}
       />
     )
     const answerInput = screen.getByLabelText(`1. ${answers[0].text}`)
@@ -85,17 +80,16 @@ describe('Question', () => {
 
   it('displays an error message if no answer is selected', () => {
     const questionIndex = 0
-    const question = mockState.questions[questionIndex]
+    const question = mockState.questions[questionIndex] as MultipleChoiceQuestion
     const answers = question.answers
     render(
       <Question
         index={questionIndex}
-        text={question.text}
-        answers={answers}
+        question={question}
         highlightMissing={true}
-        onChange={() => {}}
+        onAnswerChanged={() => {}}
       />
     )
-    expect(screen.queryByText(/please select an answer/i)).not.toBeNull()
+    expect(screen.queryByText(/please input or choose/i)).not.toBeNull()
   })
 })

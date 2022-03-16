@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
-import { Answer as QuizAnswer } from 'api'
+import { MultipleChoiceAnswer as Answer } from 'api'
 
-import AnswerText from './AnswerText'
+import AnswerText from '../AnswerText'
 
 type Props = {
   id: string
-  value: QuizAnswer
+  value: Answer
   index: number
   correct: boolean
   editing: boolean
@@ -20,25 +20,26 @@ type Props = {
 /**
  * Displays an answer with button to remove itself
  */
-const AnswerEditor = ({
-  id,
-  value,
-  index,
-  correct,
-  editing,
-  validate,
-  onChange,
-  onChecked,
-  onRemove
-}: Props) => {
+const AnswerEditor = (
+  {
+    id,
+    value,
+    index,
+    correct,
+    editing,
+    validate,
+    onChange,
+    onChecked,
+    onRemove,
+  }: Props) => {
   return (
     <>
-      <div className={'answer' + (correct ? ' answer--selected' : '')}>
-        <Row className="mt-2">
-          <Col className="d-flex align-items-start">
+      <div className={'p-1 answer' + (correct ? ' answer--selected' : '')}>
+        <Row className='mt-2 mb-1'>
+          <Col className='d-flex align-items-start'>
             <Form.Check
-              type="radio"
-              className="mb-1"
+              type='radio'
+              className='mb-1'
               name={id}
               id={id}
               value={index}
@@ -52,9 +53,9 @@ const AnswerEditor = ({
             />
 
             <Button
-              variant="danger"
-              size="sm"
-              className="ms-auto"
+              variant='outline-danger'
+              size='sm'
+              className='ms-auto'
               onClick={onRemove}
               disabled={editing}>
               Delete

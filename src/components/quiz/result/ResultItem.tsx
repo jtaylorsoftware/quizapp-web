@@ -39,7 +39,7 @@ const ResultItem = ({
       </Row>
       <Row>
         <Col>
-          <p className="mb-1">Score: {score * 100.0}%</p>
+          <p className="mb-1">Score: {(score * 100.0).toFixed(2)}%</p>
         </Col>
       </Row>
     </>

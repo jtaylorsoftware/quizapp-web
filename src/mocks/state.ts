@@ -1,4 +1,12 @@
-import { Quiz, QuizForm, QuizListing, Result, ResultListing } from 'api'
+import {
+  FormQuestion,
+  Question,
+  Quiz,
+  QuizForm,
+  QuizListing,
+  Result,
+  ResultListing,
+} from 'api'
 import moment from 'moment'
 import { AuthState } from 'store/auth/types'
 import { UserState } from 'store/user/types'
@@ -17,6 +25,7 @@ export const auth: AuthState = {
   token: '',
   isAuthenticated: false
 }
+
 export const user: UserState = {
   loading: false,
   error: null,
@@ -29,14 +38,22 @@ export const user: UserState = {
     results: []
   }
 }
+
 export const quiz: QuizForm = {
   _id: quizid(0),
   date: now,
   user: username(0),
   title: 'quiz0',
   expiration: expiration,
-  questions: [{ text: 'Q1', answers: [{ text: 'A1' }, { text: 'A2' }] }]
+  questions: [
+    {
+      type: 'MultipleChoice',
+      text: 'Q1',
+      answers: [{ text: 'A1' }, { text: 'A2' }],
+    } as FormQuestion
+  ]
 }
+
 export const scoredQuiz: Quiz = {
   _id: quizid(0),
   date: now,
@@ -46,9 +63,10 @@ export const scoredQuiz: Quiz = {
   allowedUsers: [],
   isPublic: true,
   questions: [
-    { text: 'Q1', correctAnswer: 0, answers: [{ text: 'A1' }, { text: 'A2' }] }
+    { type: 'MultipleChoice', text: 'Q1', correctAnswer: 0, answers: [{ text: 'A1' }, { text: 'A2' }] }
   ]
 }
+
 export const quizResults: ResultListing[] = [
   {
     _id: resultid(0),
@@ -67,7 +85,7 @@ export const result: Result = {
   date: now,
   user: userid(1),
   quiz: quizid(0),
-  answers: [{ choice: 0, isCorrect: false, correctAnswer: 1 }],
+  answers: [{ type: 'MultipleChoice', choice: 0, isCorrect: false, correctAnswer: 1 }],
   score: 0,
   quizTitle: 'quiz0',
   ownerUsername: username(0),

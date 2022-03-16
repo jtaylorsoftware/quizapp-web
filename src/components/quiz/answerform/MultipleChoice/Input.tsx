@@ -6,16 +6,14 @@ type Props = {
   index: number
   text: string
   selected: boolean
-  /**
-   * Callback for when the user selects this Answer
-   */
+  // Callback for when the user selects this Input
   onChecked: () => void
 }
 
 /**
  * Displays one answer for a question.
  */
-const Answer = ({ questionIndex, index, text, selected, onChecked }: Props) => {
+const Input = ({ questionIndex, index, text, selected, onChecked }: Props) => {
   const question = `question${questionIndex}`
   const answer = `${question}answer${index}`
   return (
@@ -42,4 +40,4 @@ const Answer = ({ questionIndex, index, text, selected, onChecked }: Props) => {
   )
 }
 
-export default Answer
+export default Input

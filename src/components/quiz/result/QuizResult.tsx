@@ -78,7 +78,7 @@ const QuizResult = ({ createAlert }: Props) => {
               <Row className='mb-4'>
                 <Col className='d-flex align-items-center'>
                   <h3 className='mb-0'>
-                    Overall score: {result!.score * 100.0}%
+                    Overall score: {(result!.score * 100.0).toFixed(2)}%
                   </h3>
                 </Col>
               </Row>

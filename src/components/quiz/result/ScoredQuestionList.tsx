@@ -20,8 +20,7 @@ const ScoredQuestionList = ({ questions, results }: Props) => {
           <ScoredQuestion
             key={index}
             index={index}
-            text={question.text}
-            answers={question.answers}
+            question={question}
             result={result}
           />
         )

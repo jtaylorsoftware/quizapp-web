@@ -86,7 +86,7 @@ describe('QuizResult', () => {
     mockUseSingleResult.mockReturnValueOnce([mockResult, undefined, false])
     render(<QuizResult />)
     expect(
-      screen.queryByText(`Overall score: ${mockResult.score * 100.0}%`)
+      screen.queryByText(`Overall score: ${(mockResult.score * 100.0).toFixed(2)}%`)
     ).not.toBeNull()
   })
 
