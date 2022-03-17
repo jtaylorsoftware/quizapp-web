@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Col, Container, Form } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 import { Navigate, Link, useLocation } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
@@ -9,11 +9,11 @@ import { RootState } from 'store/store'
 import { ApiError } from 'api'
 
 const mapState = (state: RootState) => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
 })
 
 const mapDispatch = {
-  login
+  login,
 }
 
 const connector = connect(mapState, mapDispatch)
@@ -24,7 +24,7 @@ const colSize = {
   sm: 8,
   md: 6,
   lg: 5,
-  xl: 4
+  xl: 4,
 }
 
 interface LocationState {
@@ -72,55 +72,57 @@ const Login = ({ isAuthenticated, login }: Props) => {
 
   if (isAuthenticated) {
     if (referrer) {
-      return <Navigate to={referrer} replace/>
+      return <Navigate to={referrer} replace />
     }
-    return <Navigate to="/dashboard" replace/>
+    return <Navigate to='/dashboard' replace />
   }
 
   return (
-    <Container fluid className="login">
-      <Col {...colSize} className="mx-auto">
-        <div className="login__form">
-          <h2 className="text-center mb-4">Sign in:</h2>
-          <Form className="mb-3" onSubmit={onSubmit}>
-            <fieldset>
-              <Form.Group>
-                <Form.Control
-                  type="text"
-                  className={'my-2' + (usernameError ? ' is-invalid' : '')}
-                  name="username"
-                  value={username}
-                  onChange={handleUsernameChange}
-                  placeholder="Username"
-                  required
-                />
-                {usernameError ? (
-                  <div className="invalid-feedback">{usernameError}</div>
-                ) : null}
-                <Form.Control
-                  type="password"
-                  className={'my-2' + (passwordError ? ' is-invalid' : '')}
-                  name="password"
-                  value={password}
-                  onChange={handlePasswordChange}
-                  placeholder="Password"
-                  required
-                />
-                {passwordError ? (
-                  <div className="invalid-feedback">{passwordError}</div>
-                ) : null}
-              </Form.Group>
-            </fieldset>
-            <Button variant="primary" type="submit">
-              Login
-            </Button>
-          </Form>
-          <p>
-            Don't have an account? <Link to="/register">Register</Link>
-          </p>
-        </div>
-      </Col>
-    </Container>
+    <div className='content'>
+      <Container fluid>
+        <Row>
+          <Col {...colSize} className='mx-auto'>
+            <h2 className='text-center mt-4 mb-4'>Sign in:</h2>
+            <Form className='mb-3' onSubmit={onSubmit}>
+              <fieldset>
+                <Form.Group>
+                  <Form.Control
+                    type='text'
+                    className={'my-2' + (usernameError ? ' is-invalid' : '')}
+                    name='username'
+                    value={username}
+                    onChange={handleUsernameChange}
+                    placeholder='Username'
+                    required
+                  />
+                  {usernameError ? (
+                    <div className='invalid-feedback'>{usernameError}</div>
+                  ) : null}
+                  <Form.Control
+                    type='password'
+                    className={'my-2' + (passwordError ? ' is-invalid' : '')}
+                    name='password'
+                    value={password}
+                    onChange={handlePasswordChange}
+                    placeholder='Password'
+                    required
+                  />
+                  {passwordError ? (
+                    <div className='invalid-feedback'>{passwordError}</div>
+                  ) : null}
+                </Form.Group>
+              </fieldset>
+              <Button variant='primary' type='submit'>
+                Login
+              </Button>
+            </Form>
+            <p>
+              Don't have an account? <Link to='/register'>Register</Link>
+            </p>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   )
 }
 

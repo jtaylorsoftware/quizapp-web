@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 type Props = {
@@ -11,22 +11,16 @@ type Props = {
  */
 const QuizError = ({ message }: Props) => {
   return (
-    <Container className="error-container">
-      <Col className="error-widget">
-        <Row>
-          <Col>
-            <h3>{message}</h3>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="d-flex align-items-center justify-content-center">
-            <Link className="btn btn-success" to="/dashboard">
-              Back to dashboard
-            </Link>
-          </Col>
-        </Row>
-      </Col>
-    </Container>
+    <div className='content d-flex flex-column justify-content-center'>
+      <Container fluid>
+        <div className='d-flex flex-column align-items-center'>
+          <h3>{message}</h3>
+          <Link className='mt-3 btn btn-success' to='/dashboard'>
+            Back to dashboard
+          </Link>
+        </div>
+      </Container>
+    </div>
   )
 }
 

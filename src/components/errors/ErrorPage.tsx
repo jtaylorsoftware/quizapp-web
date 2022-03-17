@@ -1,7 +1,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Container } from 'react-bootstrap'
 
 interface Props {
   status: number
@@ -14,7 +14,7 @@ const ErrorPage = ({ status }: Props) => {
   let message = ''
   switch (status) {
     case 404:
-      message = "That resource wasn't found."
+      message = 'That resource wasn\'t found.'
       break
     case 401:
     case 403:
@@ -27,25 +27,19 @@ const ErrorPage = ({ status }: Props) => {
       message = ''
   }
   return (
-    <Container className="error-container">
-      <Col className="error-widget">
-        <Row>
-          <Col>
-            <h1>{status}</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <p>{message}</p>
-          </Col>
-        </Row>
-      </Col>
-    </Container>
+    <div className='content d-flex flex-column justify-content-center'>
+      <Container fluid>
+        <div className='d-flex flex-column align-items-center'>
+          <h1>{status}</h1>
+          <p className='mt-3'>{message}</p>
+        </div>
+      </Container>
+    </div>
   )
 }
 
 ErrorPage.propTypes = {
-  status: PropTypes.number.isRequired
+  status: PropTypes.number.isRequired,
 }
 
 export default ErrorPage
