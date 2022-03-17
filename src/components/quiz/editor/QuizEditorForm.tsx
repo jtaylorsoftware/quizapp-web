@@ -91,7 +91,7 @@ const QuizEditorForm = ({
                 }}
               />
               <QuestionList
-                value={quiz.questions}
+                questions={quiz.questions}
                 onAdd={question => {
                   setQuiz(prev => {
                     return {

@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import { Button, Col, Dropdown, DropdownButton, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 
 import Icon from '@mdi/react'
 import { mdiAlertCircle } from '@mdi/js'
-
-import { v4 as uuid } from 'uuid'
-
-import QuestionEditor from './QuestionEditor'
 import { Question, QuestionType } from 'api'
+import QuestionTypeDropdownButton from './QuestionTypeDropdownButton'
+import QuestionEditorList from './QuestionEditorList'
+import AddQuestionButton from './AddQuestionButton'
 
 export type Props = {
   editing: boolean
   validate: boolean
-  value: Question[]
+  questions: Question[]
   onAdd: (question: Question) => void
   onRemove: (index: number) => void
   onChange: (index: number, question: Question) => void
@@ -35,7 +34,7 @@ const QuestionList = (
   {
     editing,
     validate,
-    value,
+    questions,
     onAdd,
     onRemove,
     onChange,
@@ -65,7 +64,7 @@ const QuestionList = (
   }
   return (
     <>
-      {validate && value.length === 0 ? (
+      {validate && questions.length === 0 ? (
         <Row className='mb-2'>
           <Col className=' d-flex align-items-center'>
             <h5 className='text-danger mb-0'>
@@ -75,71 +74,20 @@ const QuestionList = (
           </Col>
         </Row>
       ) : null}
-      {value.map((question, index) => {
-        let key: string
-        if (question._id) {
-          key = question._id
-        } else {
-          key = uuid()
-          question._id = key
-        }
-        return (
-          <div key={key}>
-            <QuestionEditor
-              id={`question-${index}`}
-              label={`Question ${index + 1} (${questionTypeDisplay[question.type]}):`}
-              editing={editing}
-              validate={validate}
-              value={question}
-              onChange={question => {
-                onChange(index, question)
-              }}
-              onRemove={() => {
-                onRemove(index)
-              }}
-            />
-            <Row className='mt-2'>
-              <Col className='d-flex align-items-center justify-content-start'>
-                <Button
-                  variant='outline-danger'
-                  size='sm'
-                  className='me-2'
-                  onClick={() => {
-                    onRemove(index)
-                  }}
-                  disabled={editing}>
-                  Delete Question
-                </Button>
-              </Col>
-            </Row>
-          </div>
-        )
-      })}
+      <QuestionEditorList
+        editing={editing}
+        validate={validate}
+        questions={questions}
+        onAdd={onAdd}
+        onRemove={onRemove}
+        onChange={onChange} />
       <Row className='mt-4'>
         <Col className='d-flex align-items-center justify-content-start'>
-          <DropdownButton
-            size='sm'
-            variant='secondary'
+          <QuestionTypeDropdownButton
             disabled={editing}
             title={(questionType.length !== 0 && questionTypeDisplay[questionType]) || 'Select Question Type'}
-            onSelect={onTypeSelected}
-          >
-            {
-              (Object.keys(displayQuestionType) as Array<keyof typeof displayQuestionType>)
-                .map((display, ind) =>
-                  <Dropdown.Item key={ind} eventKey={display} data-testid={`dropdown-${displayQuestionType[display]}`}>
-                    {display}
-                  </Dropdown.Item>)
-            }
-          </DropdownButton>
-          <Button
-            size='sm'
-            variant='primary'
-            className='ms-1'
-            onClick={addEmptyQuestion}
-            disabled={editing || questionType.length === 0}>
-            Add Question
-          </Button>
+            onSelect={onTypeSelected} />
+          <AddQuestionButton onClick={addEmptyQuestion} disabled={editing || questionType.length === 0} />
         </Col>
       </Row>
     </>
