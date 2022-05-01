@@ -7,20 +7,20 @@ import {
   render,
   screen,
   waitFor,
-  within
+  within,
 } from 'util/test-utils'
 
 import PasswordForm from './PasswordForm'
 
 describe('PasswordForm', () => {
-  const mockChangeUserPassword = jest.fn(async password => {
-    return undefined
+  const mockChangeUserPassword = jest.fn(async (password) => {
+    return null
   })
 
   const renderForm = () =>
     render(
       <PasswordForm
-        changePassword={password => mockChangeUserPassword(password)}
+        changePassword={(password) => mockChangeUserPassword(password)}
       />
     )
 

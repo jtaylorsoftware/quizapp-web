@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 
 export type Props = {
-  text: string,
+  text: string
   correct: boolean
 }
 
@@ -16,7 +16,7 @@ const Answer = ({ text, correct }: Props) => {
   }
 
   return (
-    <Row className="mb-2">
+    <Row className='mb-2'>
       <Col>
         <p className={'answer answer__text py-1 ' + border}>
           Your answer: {text}

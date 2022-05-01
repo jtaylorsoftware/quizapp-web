@@ -8,8 +8,7 @@ import { fireEvent } from '@testing-library/react'
 
 describe('Input', () => {
   it('renders without crashing', () => {
-    render(<Input questionIndex={0} onChange={() => {
-    }} />)
+    render(<Input questionIndex={0} onChange={() => {}} />)
   })
 
   it('can input some answer text and screen matches input', () => {
@@ -19,9 +18,9 @@ describe('Input', () => {
     }
     const changedValue = 'my input'
     render(<Input questionIndex={0} onChange={onChange} />)
-    fireEvent.change(
-      screen.getByPlaceholderText('Answer text...'),
-      { target: { value: changedValue } })
+    fireEvent.change(screen.getByPlaceholderText('Answer text...'), {
+      target: { value: changedValue },
+    })
     expect(text).toEqual(changedValue)
   })
 })

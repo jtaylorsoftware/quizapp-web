@@ -1,6 +1,12 @@
 import React from 'react'
 
-import { changeInput, fireEvent, render, screen } from 'util/test-utils'
+import {
+  changeInput,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from 'util/test-utils'
 
 import { createMemoryHistory } from 'history'
 
@@ -8,13 +14,14 @@ import '@testing-library/jest-dom'
 
 jest.mock('store/auth/thunks')
 import { register } from 'store/auth/thunks'
-import { UserRegistration } from 'store/auth/types'
 
 import clone from 'clone'
 import * as state from 'mocks/state'
 import { RootState } from 'store/store'
 
 import Register from './Register'
+import { UserRegistration } from 'api/models'
+import { Failure } from 'api/result'
 
 describe('Register', () => {
   let mockState: Partial<RootState>
@@ -36,26 +43,23 @@ describe('Register', () => {
     expect(history.location.pathname).toEqual('/dashboard')
   })
 
-  it('displays any errors from register callback when submitting', () => {
+  it('displays any errors from register callback when submitting', async () => {
     mockState.auth!.isAuthenticated = false
 
     const usernameTakenMsg = 'Username taken'
     const passwordInvalidMsg = 'Password does not meet requirements'
     const emailTakenMsg = 'Email is in use'
-    registerMock.mockImplementationOnce(function (
-      { username, email, password }: UserRegistration,
-      callback: (error: {} | null) => void
-    ) {
-      return async dispatch => {
-        callback({
-          status: 400,
-          errors: [
-            { username: usernameTakenMsg },
-            { password: passwordInvalidMsg },
-            { email: emailTakenMsg }
-          ]
-        })
-      }
+    registerMock.mockImplementationOnce(function ({
+      username,
+      email,
+      password,
+    }: UserRegistration) {
+      return async (dispatch) =>
+        new Failure(400, [
+          { field: 'username', message: usernameTakenMsg },
+          { field: 'password', message: passwordInvalidMsg },
+          { field: 'email', message: emailTakenMsg },
+        ])
     })
 
     render(<Register />, mockState)
@@ -66,9 +70,19 @@ describe('Register', () => {
     changeInput('Email', value)
     const submitBtn = screen.getByText('Register')
     fireEvent.click(submitBtn)
+
     expect(registerMock).toHaveBeenCalled()
-    expect(screen.getByText(usernameTakenMsg)).not.toBeNull()
-    expect(screen.queryByText(passwordInvalidMsg)).not.toBeNull()
-    expect(screen.queryByText(emailTakenMsg)).not.toBeNull()
+
+    await waitFor(() =>
+      expect(screen.getByText(usernameTakenMsg)).not.toBeNull()
+    )
+
+    await waitFor(() =>
+      expect(screen.queryByText(passwordInvalidMsg)).not.toBeNull()
+    )
+
+    await waitFor(() =>
+      expect(screen.queryByText(emailTakenMsg)).not.toBeNull()
+    )
   })
 })

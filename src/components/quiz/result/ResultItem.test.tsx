@@ -9,7 +9,7 @@ import clone from 'clone'
 import { result } from 'mocks/state'
 
 import ResultItem from './ResultItem'
-import { Result } from 'api'
+import { Result } from 'api/models'
 
 describe('ResultItem', () => {
   let mockResult: Result

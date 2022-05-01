@@ -1,13 +1,11 @@
-import * as quiz from './quiz'
-import * as results from './results'
-import * as user from './user'
-export type { ApiError } from './error'
-export type { ApiResponse } from './response'
-export * from './config'
-export * from './types'
+import * as Quiz from './quiz'
+import * as Results from './results'
+import * as User from './user'
 
-const api = {
-  quiz, results, user
+const API = {
+  Quiz,
+  Results,
+  User,
 }
 
-export default api
+export default API

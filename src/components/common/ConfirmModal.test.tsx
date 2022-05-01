@@ -15,7 +15,7 @@ describe('ConfirmModal', () => {
     confirmText: 'Confirm Action',
     onCancel: cancelMock,
     onConfirm: confirmMock,
-    show: true
+    show: true,
   }
 
   beforeEach(() => {

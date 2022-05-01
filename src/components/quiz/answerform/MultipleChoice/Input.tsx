@@ -17,7 +17,7 @@ const Input = ({ questionIndex, index, text, selected, onChecked }: Props) => {
   const question = `question${questionIndex}`
   const answer = `${question}answer${index}`
   return (
-    <Row className="mb-2 px-3">
+    <Row className='mb-2 px-3'>
       <Col>
         <div
           data-testid={`answer-choice-${index}`}
@@ -25,8 +25,8 @@ const Input = ({ questionIndex, index, text, selected, onChecked }: Props) => {
             'mb-0 pt-1 answer' + (selected ? ' answer--selected' : '')
           }>
           <Form.Check
-            className="form-control-lg"
-            type="radio"
+            className='form-control-lg'
+            type='radio'
             name={question}
             id={answer}
             value={index}

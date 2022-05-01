@@ -3,7 +3,7 @@ import { Col, ListGroup, Row } from 'react-bootstrap'
 
 import ResultItem from './ResultItem'
 import Spinner from 'components/common/Spinner'
-import { ResultListing } from 'api'
+import { ResultListing } from 'api/models'
 
 type Props = {
   loading: boolean
@@ -19,22 +19,22 @@ type Props = {
 const ResultList = ({ loading, results }: Props) => {
   return (
     <>
-      <Row className="mb-2 align-items-center">
+      <Row className='mb-2 align-items-center'>
         <Col>
-          <h3 className="mb-0">Your Quiz Results:</h3>
+          <h3 className='mb-0'>Your Quiz Results:</h3>
         </Col>
       </Row>
 
-      <Row className="mb-2">
+      <Row className='mb-2'>
         <Col>
           {loading ? (
             <Spinner />
           ) : (
-            <ListGroup className=" w-100">
+            <ListGroup className=' w-100'>
               {results.length === 0 ? (
-                <Row className="mb-1 align-items-center">
+                <Row className='mb-1 align-items-center'>
                   <Col>
-                    <h6 className="mb-0">You haven't taken any quizzes!</h6>
+                    <h6 className='mb-0'>You haven't taken any quizzes!</h6>
                   </Col>
                 </Row>
               ) : (

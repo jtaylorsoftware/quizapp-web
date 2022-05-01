@@ -18,7 +18,7 @@ describe('DateTimePicker', () => {
     minValue: now,
     onChange: changeMock,
     validate: validateMock,
-    errorStr: 'The date is invalid'
+    errorStr: 'The date is invalid',
   }
 
   beforeEach(() => {

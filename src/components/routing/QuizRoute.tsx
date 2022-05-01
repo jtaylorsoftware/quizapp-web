@@ -1,7 +1,5 @@
 import React from 'react'
-import {
-  useParams,
-} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 
 import QuizAnswerForm from 'components/quiz/answerform/QuizAnswerForm'
@@ -23,7 +21,7 @@ type Props = ConnectedProps<typeof connector>
  */
 const QuizRoute = ({ user }: Props) => {
   const { id: quizId } = useParams<{ id: string }>()
-  if (user && user.quizzes.some(id => id === quizId)) {
+  if (user && user.quizzes.some((id) => id === quizId)) {
     return <QuizResultList />
   } else {
     return <QuizAnswerForm />

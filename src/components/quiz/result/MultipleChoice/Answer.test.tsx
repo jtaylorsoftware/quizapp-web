@@ -10,7 +10,7 @@ describe('Answer', () => {
     index: 0,
     text: 'Text',
     selected: false,
-    correct: false
+    correct: false,
   }
   const queryByAnswerText = () => {
     return screen.queryByText(`${props.index + 1}. ${props.text}`)

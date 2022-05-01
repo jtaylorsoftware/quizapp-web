@@ -6,7 +6,6 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, waitFor } from 'util/test-utils'
 
-
 import { createMemoryHistory } from 'history'
 
 import moment from 'moment'
@@ -18,7 +17,7 @@ import { createAlert } from 'store/alerts/thunks'
 jest.mock('store/user/thunks')
 import { loadUser } from 'store/user/thunks'
 
-import { Quiz } from 'api'
+import { Quiz } from 'api/models'
 
 import QuizCreator from './QuizCreator'
 
@@ -29,13 +28,17 @@ const quiz: Quiz = {
   isPublic: true,
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),
-  questions: []
+  questions: [],
 }
 
 describe('QuizCreator', () => {
   let mockQuiz: Quiz
-  const mockCreateAlert = jest.mocked(createAlert).mockReturnValue(async () => {})
-  const mockLoadUser = jest.mocked(loadUser).mockReturnValue(async dispatch => {})
+  const mockCreateAlert = jest
+    .mocked(createAlert)
+    .mockReturnValue(async () => {})
+  const mockLoadUser = jest
+    .mocked(loadUser)
+    .mockReturnValue(async (dispatch) => {})
 
   beforeEach(() => {
     mockCreateAlert.mockClear()
@@ -51,8 +54,11 @@ describe('QuizCreator', () => {
     const history = createMemoryHistory()
 
     render(<QuizCreator />, { alerts: [] }, history)
-    fetchMock.mockResponseOnce(JSON.stringify({}), {
-      status: 200
+    fetchMock.mockResponseOnce(JSON.stringify({ id: 'abcdef' }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
     const submitBtn = screen.getByText('Submit')
@@ -69,7 +75,7 @@ describe('QuizCreator', () => {
 
     render(<QuizCreator />, {}, history)
     fetchMock.mockResponseOnce(JSON.stringify({ errors: [] }), {
-      status: 400
+      status: 400,
     })
 
     const submitBtn = screen.getByText('Submit')

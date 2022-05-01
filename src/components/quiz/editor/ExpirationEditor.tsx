@@ -23,10 +23,10 @@ const ExpirationEditor = React.memo(
       <>
         <Row>
           <Col>
-            <label htmlFor="expirationEditor">Expires on:</label>
+            <label htmlFor='expirationEditor'>Expires on:</label>
           </Col>
         </Row>
-        <Row className="mb-4">
+        <Row className='mb-4'>
           <Col>
             <DateTimePicker
               id={'expirationEditor'}
@@ -36,7 +36,7 @@ const ExpirationEditor = React.memo(
               validate={isDateValid}
               errorStr={'Expiration date must be in the future.'}
             />
-            <small className="text-muted">Click to change date and time</small>
+            <small className='text-muted'>Click to change date and time</small>
           </Col>
         </Row>
       </>

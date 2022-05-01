@@ -5,19 +5,21 @@ import { useNavigate, useParams } from 'react-router-dom'
 import ErrorPage from 'components/errors/ErrorPage'
 import Spinner from 'components/common/Spinner'
 
-import Api, { ApiError } from 'api'
+import API from 'api'
+import { Failure, isSuccess } from 'api/result'
+
 import { useQuiz, useBeforeUnload } from 'hooks'
 import { createAlert } from 'store/alerts/thunks'
 import { loadUser } from 'store/user/thunks'
 
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Quiz } from 'api'
+import { Quiz } from 'api/models'
 import QuizEditorForm from './QuizEditorForm'
 
 const mapDispatch = {
   createAlert,
-  loadUser
+  loadUser,
 }
 
 const connector = connect(undefined, mapDispatch)
@@ -32,9 +34,9 @@ const QuizEditor = ({ createAlert, loadUser }: Props) => {
   const { id } = useParams<{ id: string }>()
 
   const [userQuiz, quizError, loading] = useQuiz(id ?? '', 'full')
-  const [submitError, setSubmitError] = useState<ApiError>()
+  const [submitError, setSubmitError] = useState<Failure | null>()
 
-  useBeforeUnload(e => {
+  useBeforeUnload((e) => {
     e.returnValue =
       'Are you sure you want to reload? Changes will not be saved.'
   })
@@ -44,17 +46,17 @@ const QuizEditor = ({ createAlert, loadUser }: Props) => {
   }
 
   const submitQuiz = (quiz: Quiz) => {
-    Api.quiz.put(quiz).then(res => {
-      if (res.error) {
-        setSubmitError(res.error)
+    API.Quiz.editQuiz(quiz).then((result) => {
+      if (!isSuccess(result)) {
+        setSubmitError(result)
         createAlert({
           msg: 'Failed to create quiz - are there invalid fields?',
-          type: 'danger'
+          type: 'danger',
         })
       } else {
         createAlert({
           msg: 'Quiz edited successfully',
-          type: 'success'
+          type: 'success',
         })
         loadUser().then(() => goToDashboard())
       }

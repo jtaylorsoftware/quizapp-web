@@ -8,7 +8,7 @@ import clone from 'clone'
 import { quizzes } from 'mocks/state'
 
 import QuizList from './QuizList'
-import { QuizListing } from 'api'
+import { QuizListing } from 'api/models'
 
 describe('QuizList', () => {
   let mockState: { quizzes: QuizListing[]; loading: boolean }
@@ -55,7 +55,7 @@ describe('QuizList', () => {
 
   it('should render whatever quizzes are availble', () => {
     mockState.quizzes?.push({
-      ...clone(mockState.quizzes[0])
+      ...clone(mockState.quizzes[0]),
     })
     renderList()
     expect(screen.queryAllByText(/Link:/).length).toEqual(

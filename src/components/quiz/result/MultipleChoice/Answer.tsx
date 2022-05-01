@@ -20,7 +20,7 @@ const Answer = ({ index, text, selected, correct }: Props) => {
     border = 'answer--incorrect'
   }
   return (
-    <Row className="mb-2">
+    <Row className='mb-2'>
       <Col>
         <p className={'answer answer__text py-1 ' + border}>
           {index + 1}. {text}

@@ -3,10 +3,10 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 import { connect, ConnectedProps } from 'react-redux'
 import { Navigate, Link } from 'react-router-dom'
-import { ApiError } from 'api'
 
 import { register } from 'store/auth/thunks'
 import { RootState } from 'store/store'
+import { Failure } from 'api/result'
 
 const mapState = (state: RootState) => ({
   isAuthenticated: state.auth.isAuthenticated,
@@ -47,31 +47,43 @@ const Register = ({ isAuthenticated, register }: Props) => {
   const { password, passwordConfirm } = passwordInput
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormError(prev => ({ ...prev, username: undefined }))
+    setFormError((prev) => ({ ...prev, username: undefined }))
     setUsername(e.target.value)
   }
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormError(prev => ({ ...prev, email: undefined }))
+    setFormError((prev) => ({ ...prev, email: undefined }))
     setEmail(e.target.value)
   }
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormError(prev => ({ ...prev, password: undefined }))
+    setFormError((prev) => ({ ...prev, password: undefined }))
     setPasswordInput({
       ...passwordInput,
       [e.target.name]: e.target.value,
     })
   }
 
-  const handleFailure = (error: ApiError | null) => {
-    if (error && (error.status === 400 || error.status === 409)) {
-      for (const err of error.errors) {
-        setFormError(prev => ({
-          ...prev,
-          ...err,
-        }))
+  const handleFailure = (failure: Failure | null) => {
+    if (failure != null) {
+      const formErrors: FormError = {}
+      for (const err of failure.errors) {
+        switch (err.field) {
+          case 'username':
+            formErrors.username = err.message
+            break
+          case 'email':
+            formErrors.email = err.message
+            break
+          case 'password':
+            formErrors.password = err.message
+            break
+        }
       }
+      setFormError((prev) => ({
+        ...prev,
+        ...formErrors,
+      }))
     }
   }
 
@@ -79,10 +91,7 @@ const Register = ({ isAuthenticated, register }: Props) => {
     e.preventDefault()
     if (password === passwordConfirm) {
       setFormError({ password: undefined })
-      register(
-        { username, email, password },
-        handleFailure as (error: {} | null) => void,
-      )
+      register({ username, email, password }).then(handleFailure)
     } else {
       setFormError({
         password: 'Passwords do not match.',
@@ -125,7 +134,8 @@ const Register = ({ isAuthenticated, register }: Props) => {
                   <Form.Control
                     type='text'
                     className={
-                      'mb-2' + (formError && formError.email ? ' is-invalid' : '')
+                      'mb-2' +
+                      (formError && formError.email ? ' is-invalid' : '')
                     }
                     name='email'
                     value={email}
@@ -155,7 +165,8 @@ const Register = ({ isAuthenticated, register }: Props) => {
                   <Form.Control
                     type='password'
                     className={
-                      'mb-2 ' + (formError && formError.password ? ' is-invalid' : '')
+                      'mb-2 ' +
+                      (formError && formError.password ? ' is-invalid' : '')
                     }
                     name='passwordConfirm'
                     value={passwordConfirm}

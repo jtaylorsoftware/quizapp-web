@@ -1,15 +1,16 @@
 import React from 'react'
 
-import { ApiError, FormQuestion } from 'api'
+import { FormQuestion } from 'api/models'
 
 import Question from './Question'
 import { OnAnswerChanged } from './onanswerchanged'
+import { Failure } from 'api/result'
 
 type Props = {
   /**
    * Possible error from submitting quiz
    */
-  error?: ApiError
+  error?: Failure | null
 
   questions: FormQuestion[]
 
@@ -24,7 +25,7 @@ type Props = {
  */
 const QuestionList = ({ error, questions, onAnswerChanged }: Props) => {
   return (
-    <div data-testid="questionlist">
+    <div data-testid='questionlist'>
       {questions.map((question, index) => (
         <Question
           key={index}

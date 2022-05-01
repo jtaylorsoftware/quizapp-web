@@ -18,8 +18,10 @@ import { RootState } from 'store/store'
 import { isDateInPast } from 'util/date'
 
 import { useQuiz, useSingleResult } from 'hooks'
-import Api, { ApiError, FormResponse } from 'api'
+import API from 'api'
 import { ResponseValue } from './onanswerchanged'
+import { Failure, isSuccess } from 'api/result'
+import { FormResponse } from 'api/models'
 
 const mapState = (state: RootState) => ({
   userId: state.user.user?._id,
@@ -44,14 +46,14 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
   const [result, , resultLoading] = useSingleResult(
     quizId ?? '',
     userId ?? '',
-    'full',
+    'full'
   )
-  const [submitError, setSubmitError] = useState<ApiError>()
+  const [submitError, setSubmitError] = useState<Failure | null>(null)
 
   const responses = useRef<FormResponse[]>()
   useEffect(() => {
     if (quiz) {
-      responses.current = quiz.questions.map(question => ({
+      responses.current = quiz.questions.map((question) => ({
         type: question.type,
       }))
     }
@@ -71,14 +73,13 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
   }
 
   const submitAnswers = () => {
-    Api.results.post(quizId!, responses.current!).then(res => {
-      if (res.error) {
+    API.Results.uploadResponses(quizId!, responses.current!).then((result) => {
+      if (!isSuccess(result)) {
         createAlert({
-          msg:
-            'Failed to submit answers - are there invalid or missing answers?',
+          msg: 'Failed to submit answers - are there invalid or missing answers?',
           type: 'danger',
         })
-        setSubmitError(res.error)
+        setSubmitError(result)
       } else {
         createAlert({
           msg: 'Quiz answers submitted successfully',
@@ -94,7 +95,7 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
   } else if (quizError) {
     const status = quizError.status
     if (status === 403 && quizError.errors.length > 0) {
-      const expired = quizError.errors.some(e => e.hasOwnProperty('expiration'))
+      const expired = quizError.errors.some((e) => e.field === 'expiration')
       if (expired) {
         return <QuizExpiredError />
       }

@@ -11,7 +11,7 @@ export const dateToLongLocaleString = (date: Date | string) => {
   return dateToFormat.toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   })
 }
 

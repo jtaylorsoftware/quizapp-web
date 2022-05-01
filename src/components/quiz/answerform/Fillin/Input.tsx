@@ -20,12 +20,12 @@ const Input = ({ questionIndex, onChange }: Props) => {
           name={question}
           id={id}
           placeholder={'Answer text...'}
-          onChange={
-          (e: React.ChangeEvent<HTMLInputElement>) => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const value = e.target.value
             setText(value)
             onChange(value)
-          }} />
+          }}
+        />
       </Col>
     </Row>
   )

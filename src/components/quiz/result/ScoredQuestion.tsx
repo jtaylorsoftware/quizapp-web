@@ -1,7 +1,12 @@
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 
-import { FillInResult, FormQuestion, MultipleChoiceResult, ResultAnswer } from 'api'
+import {
+  FillInResult,
+  FormQuestion,
+  MultipleChoiceResult,
+  ResultAnswer,
+} from 'api/models'
 
 import MultipleChoiceAnswer from './MultipleChoice/Answer'
 import FillInAnswer from './Fillin/Answer'
@@ -35,51 +40,52 @@ const QuestionBody = ({ question, result }: BodyProps) => {
             </Col>
           </Row>
         ) : null}
-        <FillInAnswer text={(result as FillInResult).answer} correct={isCorrect} />
+        <FillInAnswer
+          text={(result as FillInResult).answer}
+          correct={isCorrect}
+        />
       </>
     )
   } else {
-    return <>
-      {(result as MultipleChoiceResult).correctAnswer !== undefined ? (
-        <Row className='mb-4'>
-          <Col className='d-flex align-items-center'>
-            <h5 className='mb-0'>
-              Correct answer: {(result as MultipleChoiceResult).correctAnswer!! + 1}
-            </h5>
-          </Col>
-        </Row>
-      ) : null}
-      {question.answers.map((answer, index) => {
-        let isCorrect: boolean
-        const selected = (result as MultipleChoiceResult).choice === index
-        if (result.correctAnswer !== undefined) {
-          isCorrect = result.correctAnswer === index
-        } else {
-          isCorrect = (result.isCorrect ?? false) && selected
-        }
-        return (
-          <MultipleChoiceAnswer
-            key={index}
-            index={index}
-            text={answer.text}
-            correct={isCorrect}
-            selected={selected}
-          />
-        )
-      })}
-    </>
+    return (
+      <>
+        {(result as MultipleChoiceResult).correctAnswer !== undefined ? (
+          <Row className='mb-4'>
+            <Col className='d-flex align-items-center'>
+              <h5 className='mb-0'>
+                Correct answer:{' '}
+                {(result as MultipleChoiceResult).correctAnswer!! + 1}
+              </h5>
+            </Col>
+          </Row>
+        ) : null}
+        {question.answers.map((answer, index) => {
+          let isCorrect: boolean
+          const selected = (result as MultipleChoiceResult).choice === index
+          if (result.correctAnswer !== undefined) {
+            isCorrect = result.correctAnswer === index
+          } else {
+            isCorrect = (result.isCorrect ?? false) && selected
+          }
+          return (
+            <MultipleChoiceAnswer
+              key={index}
+              index={index}
+              text={answer.text}
+              correct={isCorrect}
+              selected={selected}
+            />
+          )
+        })}
+      </>
+    )
   }
 }
 
 /**
  * Displays a single scored question from a quiz
  */
-const ScoredQuestion = (
-  {
-    index: questionIndex,
-    question,
-    result,
-  }: Props) => {
+const ScoredQuestion = ({ index: questionIndex, question, result }: Props) => {
   return (
     <Row className='mb-4'>
       <Col>

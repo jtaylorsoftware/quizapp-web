@@ -11,7 +11,7 @@ export const useConfirmModal = ({
   cancelText,
   confirmText,
   onCancel,
-  onConfirm
+  onConfirm,
 }: Partial<ConfirmModalProps>): [React.ReactNode, HideModalFn, ShowModalFn] => {
   const [show, setShow] = useState(false)
   const showModal = () => setShow(true)

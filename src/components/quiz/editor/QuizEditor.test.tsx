@@ -6,14 +6,13 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, waitFor } from 'util/test-utils'
 
-
 import { createMemoryHistory } from 'history'
 
 import moment from 'moment'
 import clone from 'clone'
 
-jest.mock('hooks/usequiz')
-import { useQuiz } from 'hooks/usequiz'
+jest.mock('hooks/useQuiz')
+import { useQuiz } from 'hooks/useQuiz'
 
 jest.mock('store/alerts/thunks')
 import { createAlert } from 'store/alerts/thunks'
@@ -21,7 +20,7 @@ import { createAlert } from 'store/alerts/thunks'
 jest.mock('store/user/thunks')
 import { loadUser } from 'store/user/thunks'
 
-import { Quiz } from 'api'
+import { Quiz } from 'api/models'
 
 import QuizEditor from './QuizEditor'
 
@@ -32,18 +31,18 @@ const quiz: Quiz = {
   isPublic: true,
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),
-  questions: []
+  questions: [],
 }
 
 describe('QuizEditor', () => {
   let mockQuiz: Quiz
-  const mockUseQuiz = jest.mocked(useQuiz).mockReturnValue([
-    undefined,
-    undefined,
-    false
-  ])
-  const mockCreateAlert = jest.mocked(createAlert).mockReturnValue(async () => {})
-  const mockLoadUser = jest.mocked(loadUser).mockReturnValue(async dispatch => {})
+  const mockUseQuiz = jest.mocked(useQuiz).mockReturnValue([null, null, false])
+  const mockCreateAlert = jest
+    .mocked(createAlert)
+    .mockReturnValue(async () => {})
+  const mockLoadUser = jest
+    .mocked(loadUser)
+    .mockReturnValue(async (dispatch) => {})
 
   beforeEach(() => {
     mockUseQuiz.mockClear()
@@ -53,23 +52,26 @@ describe('QuizEditor', () => {
   })
 
   it('renders without crashing', () => {
-    mockUseQuiz.mockReturnValueOnce([mockQuiz, undefined, false])
+    mockUseQuiz.mockReturnValueOnce([mockQuiz, null, false])
     render(<QuizEditor />)
   })
 
   it('renders a Spinner if quiz is loading', () => {
-    mockUseQuiz.mockReturnValueOnce([undefined, undefined, true])
+    mockUseQuiz.mockReturnValueOnce([null, null, true])
     render(<QuizEditor />)
     expect(screen.queryByRole('status')).not.toBeNull()
   })
 
   it('redirects to /dashboard and creates an alert after successful submit', async () => {
     const history = createMemoryHistory()
-    mockUseQuiz.mockReturnValueOnce([mockQuiz, undefined, false])
+    mockUseQuiz.mockReturnValueOnce([mockQuiz, null, false])
 
     render(<QuizEditor />, { alerts: [] }, history)
     fetchMock.mockResponseOnce(JSON.stringify({}), {
-      status: 200
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
     const submitBtn = screen.getByText('Confirm Edits')
@@ -83,11 +85,11 @@ describe('QuizEditor', () => {
 
   it('shows validation errors if the submission failed', async () => {
     const history = createMemoryHistory()
-    mockUseQuiz.mockReturnValueOnce([mockQuiz, undefined, false])
+    mockUseQuiz.mockReturnValueOnce([mockQuiz, null, false])
 
     render(<QuizEditor />, {}, history)
     fetchMock.mockResponseOnce(JSON.stringify({ errors: [] }), {
-      status: 400
+      status: 400,
     })
 
     const submitBtn = screen.getByText('Confirm Edits')

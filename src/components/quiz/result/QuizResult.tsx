@@ -37,20 +37,20 @@ const QuizResult = ({ createAlert }: Props) => {
   const [result, resultError, resultLoading] = useSingleResult(
     quizId ?? '',
     userId ?? '',
-    'full',
+    'full'
   )
 
   if (quizLoading || resultLoading) {
     return <Spinner />
   } else if (resultError && resultError.status !== 404) {
     createAlert({
-      msg: 'We couldn\'t load your quiz results right now.',
+      msg: "We couldn't load your quiz results right now.",
       type: 'danger',
     })
     return <ErrorPage status={resultError.status} />
   } else if (quizError) {
     createAlert({
-      msg: 'We couldn\'t load your quiz right now.',
+      msg: "We couldn't load your quiz right now.",
       type: 'danger',
     })
     return <ErrorPage status={quizError.status} />
@@ -98,10 +98,7 @@ const QuizResult = ({ createAlert }: Props) => {
       </div>
 
       <Footer>
-        <Button
-          variant='success'
-          className='ms-1'
-          onClick={() => navigate(-1)}>
+        <Button variant='success' className='ms-1' onClick={() => navigate(-1)}>
           Go back
         </Button>
       </Footer>

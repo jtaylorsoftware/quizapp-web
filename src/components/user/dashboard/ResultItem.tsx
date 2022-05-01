@@ -1,4 +1,4 @@
-import { ResultListing } from 'api'
+import { ResultListing } from 'api/models'
 import React from 'react'
 import { Row, Col, Button } from 'react-bootstrap'
 
@@ -17,8 +17,8 @@ const ResultItem = ({
     user: userId,
     quizTitle: title,
     score,
-    ownerUsername: createdBy
-  }
+    ownerUsername: createdBy,
+  },
 }: Props) => {
   const navigate = useNavigate()
   const goToResult = () => {
@@ -26,15 +26,15 @@ const ResultItem = ({
   }
   return (
     <>
-      <Row className="mb-1 align-items-center">
-        <Col className="d-flex align-items-center justify-content-start">
-          <h4 className="mb-0">{title}</h4>
+      <Row className='mb-1 align-items-center'>
+        <Col className='d-flex align-items-center justify-content-start'>
+          <h4 className='mb-0'>{title}</h4>
         </Col>
-        <Col className="d-flex align-items-center justify-content-end">
+        <Col className='d-flex align-items-center justify-content-end'>
           <Button
-            variant="primary"
-            size="sm"
-            className="ms-1"
+            variant='primary'
+            size='sm'
+            className='ms-1'
             onClick={() => goToResult()}>
             Details
           </Button>
@@ -42,12 +42,12 @@ const ResultItem = ({
       </Row>
       <Row>
         <Col>
-          <small className="text-muted text-start">by {createdBy} </small>
+          <small className='text-muted text-start'>by {createdBy} </small>
         </Col>
       </Row>
       <Row>
         <Col>
-          <p className="mb-1">Score: {(score * 100.0).toFixed(2)}%</p>
+          <p className='mb-1'>Score: {(score * 100.0).toFixed(2)}%</p>
         </Col>
       </Row>
     </>

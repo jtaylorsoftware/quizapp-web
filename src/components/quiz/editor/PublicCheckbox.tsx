@@ -11,10 +11,10 @@ const PublicCheckbox = ({ defaultValue, onChange, validate }: Props) => {
   const [checked, setChecked] = useState(defaultValue)
 
   return (
-    <Row className="mb-4">
-      <Col className="d-flex align-items-center">
+    <Row className='mb-4'>
+      <Col className='d-flex align-items-center'>
         <Form.Switch
-          id="publicCheckbox"
+          id='publicCheckbox'
           checked={checked}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const checked = e.target.checked

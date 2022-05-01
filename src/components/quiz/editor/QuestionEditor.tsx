@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import MultipleChoiceEditor from './MultipleChoice/QuestionEditor'
 import FillInEditor from './Fillin/QuestionEditor'
 
-import { FillInQuestion, MultipleChoiceQuestion, Question } from 'api'
+import { FillInQuestion, MultipleChoiceQuestion, Question } from 'api/models'
 
 type Props = {
   id: string
@@ -23,14 +23,19 @@ const QuestionBody = (props: Props) => {
   if (type === 'FillIn') {
     return <FillInEditor value={question as FillInQuestion} {...rest} />
   } else {
-    return <MultipleChoiceEditor value={question as MultipleChoiceQuestion} {...rest} />
+    return (
+      <MultipleChoiceEditor
+        value={question as MultipleChoiceQuestion}
+        {...rest}
+      />
+    )
   }
 }
 
 const QuestionEditor = (props: Props) => {
   return (
     <>
-      <Row className="mb-2">
+      <Row className='mb-2'>
         <Col>
           <QuestionBody {...props} />
         </Col>

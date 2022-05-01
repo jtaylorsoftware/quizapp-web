@@ -8,13 +8,13 @@ import {
   LOAD_USER_ERROR,
   LOGOUT,
   UserActionTypes,
-  UserState
+  UserState,
 } from './types'
 
 const initialState: UserState = {
   loading: true,
   user: null,
-  error: null
+  error: null,
 }
 
 export function userReducer(state = initialState, action: UserActionTypes) {
@@ -23,26 +23,26 @@ export function userReducer(state = initialState, action: UserActionTypes) {
       return {
         user: { ...action.payload },
         loading: false,
-        error: null
+        error: null,
       }
     case DELETE_QUIZ:
-      const quizzes = state.user!.quizzes.filter(id => id !== action.payload)
+      const quizzes = state.user!.quizzes.filter((id) => id !== action.payload)
       return {
         loading: false,
         error: null,
-        user: { ...state.user!, quizzes }
+        user: { ...state.user!, quizzes },
       }
     case CHANGE_USER_EMAIL:
       return {
         loading: false,
         error: null,
-        user: { ...state.user!, email: action.payload }
+        user: { ...state.user!, email: action.payload },
       }
     case CHANGE_USER_PASSWORD:
       return {
         loading: false,
         error: null,
-        user: { ...state.user! }
+        user: { ...state.user! },
       }
     case CHANGE_USER_INFO_ERROR:
     case DELETE_USER_ERROR:

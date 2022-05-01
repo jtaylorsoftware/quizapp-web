@@ -1,44 +1,38 @@
-import { parseError } from 'util/parse-error'
+import API from 'api'
+import { ID } from 'api/models'
+import { Failure, isSuccess } from 'api/result'
 import { createAlert } from '../alerts/thunks'
+import { clearAuth } from '../auth/thunks'
 import { Thunk } from '../store'
-import { User } from './types'
 import {
-  changeUserPassword as changePasswordAction,
   changeUserEmail as changeEmailAction,
+  changeUserPassword as changePasswordAction,
+  deleteQuiz as deleteQuizAction,
+  deleteQuizError,
+  deleteUser as deleteUserAction,
+  deleteUserError,
   loadUser as loadUserAction,
   loadUserError,
-  deleteUser as deleteUserAction,
   logoutUser,
-  deleteUserError,
-  deleteQuiz as deleteQuizAction,
-  deleteQuizError
 } from './actions'
-import { clearAuth } from '../auth/thunks'
-import { ApiError, ID, config } from 'api'
+
 /**
  * Loads data for the User represented by the current JWT.
  * Dispatches an action of type LOAD_USER on success and
  * LOAD_USER_ERROR otherwise.
  */
 export function loadUser(): Thunk<Promise<void>> {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${config.baseUrl}/users/me/`, {
-        method: 'GET',
-        headers: {
-          'x-auth-token': localStorage.getItem('token') ?? ''
-        }
-      })
-      if (response.ok) {
-        const data: User = await response.json()
-        dispatch(loadUserAction(data))
+      const result = await API.User.getProfile()
+      if (isSuccess(result)) {
+        dispatch(loadUserAction(result.data))
       } else {
-        const error = await parseError(response)
-        dispatch(loadUserError(error))
+        dispatch(loadUserError(result))
         dispatch(
           createAlert({
             msg: "We couldn't load your account right now.",
-            type: 'danger'
+            type: 'danger',
           })
         )
       }
@@ -50,77 +44,58 @@ export function loadUser(): Thunk<Promise<void>> {
 /**
  * Changes a User's email. Dispatches an action with type CHANGE_USER_INFO
  * on success and CHANGE_USER_INFO_ERROR otherwise.
- * @param {string} email New email to replace current
- * @param {function(object)} callback Callback when action completed, potentially with error
+ * @param email New email to replace current
  */
-export function changeUserEmail(
-  email: string
-): Thunk<Promise<ApiError | undefined>> {
-  return async dispatch => {
+export function changeUserEmail(email: string): Thunk<Promise<Failure | null>> {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${config.baseUrl}/users/me/email/`, {
-        method: 'PUT',
-        headers: {
-          'x-auth-token': localStorage.getItem('token') ?? '',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-      })
-      if (response.ok) {
+      const result = await API.User.changeEmail(email)
+      if (isSuccess(result)) {
         dispatch(changeEmailAction(email))
-
         dispatch(
           createAlert({
             msg: 'Your email was changed successfully',
-            type: 'success'
+            type: 'success',
           })
         )
         dispatch(loadUser())
-        return undefined
+        return null
       } else {
-        const error = await parseError(response)
-        return error
+        return result
       }
     } catch (error) {
       console.error(error)
+      return new Failure(500, [])
     }
   }
 }
 /**
  * Changes a User's login password. Dispatches an action with type CHANGE_USER_INFO
  * on success and CHANGE_USER_INFO_ERROR otherwise.
- * @param {string} password New password to replace current
- * @param {function(object)} callback Callback when action completed, possibly with error
+ * @param password New password to replace current
  */
 export function changeUserPassword(
   password: string
-): Thunk<Promise<ApiError | undefined>> {
-  return async dispatch => {
+): Thunk<Promise<Failure | null>> {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${config.baseUrl}/users/me/password/`, {
-        method: 'PUT',
-        headers: {
-          'x-auth-token': localStorage.getItem('token') ?? '',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ password })
-      })
-      if (response.ok) {
+      const result = await API.User.changePassword(password)
+      if (isSuccess(result)) {
         dispatch(changePasswordAction())
 
         dispatch(
           createAlert({
             msg: 'Your pssword was changed successfully',
-            type: 'success'
+            type: 'success',
           })
         )
-        return undefined
+        return null
       } else {
-        const error = await parseError(response)
-        return error
+        return result
       }
     } catch (error) {
       console.error(error)
+      return new Failure(500, [])
     }
   }
 }
@@ -128,20 +103,14 @@ export function changeUserPassword(
  * Deletes the user's account (irreversable) and clears auth.
  */
 export function deleteUser(): Thunk<Promise<void>> {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${config.baseUrl}/users/me/`, {
-        method: 'DELETE',
-        headers: {
-          'x-auth-token': localStorage.getItem('token') ?? ''
-        }
-      })
-      if (response.ok) {
+      const result = await API.User.deleteUser()
+      if (isSuccess(result)) {
         dispatch(deleteUserAction())
         dispatch(clearAuth())
       } else {
-        const error = await parseError(response)
-        dispatch(deleteUserError(error))
+        dispatch(deleteUserError(result))
       }
     } catch (error) {
       console.error(error)
@@ -149,30 +118,27 @@ export function deleteUser(): Thunk<Promise<void>> {
   }
 }
 
+/**
+ * Logs out the current user.
+ */
 export function logout(): Thunk {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(logoutUser())
     dispatch(clearAuth())
   }
 }
 
 /**
- * Deletes a user's quiz
+ * Deletes the current user's quiz by its id.
  */
 export function deleteQuiz(quizId: ID): Thunk<Promise<void>> {
-  return async dispatch => {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${config.baseUrl}/quizzes/${quizId}`, {
-        method: 'DELETE',
-        headers: {
-          'x-auth-token': localStorage.getItem('token') ?? ''
-        }
-      })
-      if (response.ok) {
+      const result = await API.Quiz.deleteQuiz(quizId)
+      if (isSuccess(result)) {
         dispatch(deleteQuizAction(quizId))
       } else {
-        const error = await parseError(response)
-        dispatch(deleteQuizError(error))
+        dispatch(deleteQuizError(result))
       }
     } catch (error) {
       console.error(error)

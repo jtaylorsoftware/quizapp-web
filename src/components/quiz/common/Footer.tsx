@@ -10,11 +10,11 @@ type Props = {
  */
 const Footer = ({ children }: Props) => {
   return (
-    <footer className="footer">
-      <Container fluid className="h-100">
+    <footer className='footer'>
+      <Container fluid className='h-100'>
         <Col
           sm={8}
-          className="mx-auto h-100 d-flex align-items-center justify-content-end">
+          className='mx-auto h-100 d-flex align-items-center justify-content-end'>
           {children}
         </Col>
       </Container>

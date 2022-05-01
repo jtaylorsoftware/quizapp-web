@@ -3,18 +3,20 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import moment from 'moment'
 
-import Api, { ApiError } from 'api'
+import API from 'api'
 import { useBeforeUnload } from 'hooks'
 import { createAlert } from 'store/alerts/thunks'
 import { loadUser } from 'store/user/thunks'
 import { connect, ConnectedProps } from 'react-redux'
 
-import { Quiz } from 'api'
+import { Quiz } from 'api/models'
+import { Failure, isSuccess } from 'api/result'
+
 import QuizEditorForm from './QuizEditorForm'
 
 const mapDispatch = {
   createAlert,
-  loadUser
+  loadUser,
 }
 
 const connector = connect(undefined, mapDispatch)
@@ -33,11 +35,11 @@ const QuizCreator = ({ createAlert, loadUser }: Props) => {
     allowedUsers: [],
     date: moment().toISOString(),
     expiration: moment().add(1, 'd').toISOString(),
-    questions: []
+    questions: [],
   }
-  const [submitError, setSubmitError] = useState<ApiError>()
+  const [submitError, setSubmitError] = useState<Failure | null>()
 
-  useBeforeUnload(e => {
+  useBeforeUnload((e) => {
     e.returnValue =
       'Are you sure you want to reload? Changes will not be saved.'
   })
@@ -47,17 +49,17 @@ const QuizCreator = ({ createAlert, loadUser }: Props) => {
   }
 
   const submitQuiz = (quiz: Quiz) => {
-    Api.quiz.post(quiz).then(res => {
-      if (res.error) {
-        setSubmitError(res.error)
+    API.Quiz.uploadQuiz(quiz).then((result) => {
+      if (!isSuccess(result)) {
+        setSubmitError(result)
         createAlert({
           msg: 'Failed to create quiz - are there invalid fields?',
-          type: 'danger'
+          type: 'danger',
         })
       } else {
         createAlert({
           msg: 'Quiz created successfully',
-          type: 'success'
+          type: 'success',
         })
         loadUser().then(() => goToDashboard())
       }

@@ -1,92 +1,80 @@
-import { loadUser } from '../user/thunks'
-import { parseError } from 'util/parse-error'
+import API from 'api'
+import { UserLogin, UserRegistration } from 'api/models'
+import { Failure, isSuccess } from 'api/result'
 import { createAlert } from '../alerts/thunks'
-import { setAuthUser, clearAuthUser } from './actions'
-import { Token, UserLogin, UserRegistration } from './types'
 import { Thunk } from '../store'
-import { config } from 'api'
+import { loadUser } from '../user/thunks'
+import { clearAuthUser, setAuthUser } from './actions'
 
 /**
  * Registers a new User with the server.
- * @param { UserRegistration } userRegistration Registration info for a new user
- * @param {function(object)} callback Function called with error after all dispatches fired
+ *
+ * @param userRegistration Registration info for a new user
  */
-export function register(
-  { username, email, password }: UserRegistration,
-  callback: (error: {} | null) => void
-): Thunk<Promise<void>> {
-  return async dispatch => {
+export function register({
+  username,
+  email,
+  password,
+}: UserRegistration): Thunk<Promise<Failure | null>> {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${config.baseUrl}/users/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, email, password })
-      })
-      if (response.ok) {
-        const json: { token: Token } = await response.json()
-        dispatch(setAuthUser(json.token))
+      const result = await API.User.register({ username, email, password })
+      if (isSuccess(result)) {
+        dispatch(setAuthUser(result.data.token))
         dispatch(loadUser())
         dispatch(
           createAlert({
             msg: 'Welcome to QuizNow!',
-            type: 'success'
+            type: 'success',
           })
         )
-        callback(null)
+        return null
       } else {
-        const error = await parseError(response)
         dispatch(clearAuthUser())
-        callback(error)
+        return result
       }
     } catch (error) {
       console.error(error)
+      return new Failure(500, [])
     }
   }
 }
 
 /**
- * Logs a User in, fetching their JWT
+ * Logs a User in, fetching their JWT.
+ *
  * Dispatches an action of type LOGIN_USER on success and LOGIN_ERROR otherwise.
- * @param { UserLogin } userLogin Login info for an existing user
- * @param {function(object)} callback  Function called with error after all dispatches fired
+ *
+ * @param userLogin Login info for an existing user
  */
-export function login(
-  { username, password }: UserLogin,
-  callback: (error: {} | null) => void
-): Thunk<Promise<void>> {
-  return async dispatch => {
+export function login({
+  username,
+  password,
+}: UserLogin): Thunk<Promise<Failure | null>> {
+  return async (dispatch) => {
     try {
-      const response = await fetch(`${config.baseUrl}/users/auth/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      })
-      if (response.ok) {
-        const json: { token: Token } = await response.json()
-        dispatch(setAuthUser(json.token))
+      const result = await API.User.login({ username, password })
+      if (isSuccess(result)) {
+        dispatch(setAuthUser(result.data.token))
         dispatch(loadUser())
         dispatch(
           createAlert({
             msg: 'Welcome back!',
-            type: 'success'
+            type: 'success',
           })
         )
-        callback(null)
+        return null
       } else {
-        const error = await parseError(response)
         dispatch(clearAuthUser())
-        callback(error)
+        return result
       }
     } catch (error) {
       console.error(error)
+      return new Failure(500, [])
     }
   }
 }
 /**
  * Clears the auth data (token, isAuthenticated)
  */
-export const clearAuth = (): Thunk => dispatch => dispatch(clearAuthUser())
+export const clearAuth = (): Thunk => (dispatch) => dispatch(clearAuthUser())

@@ -10,7 +10,7 @@ export function alertReducer(
     case SET_ALERT:
       return [...state, action.payload]
     case CLEAR_ALERT:
-      return state.filter(alert => alert.id !== action.id)
+      return state.filter((alert) => alert.id !== action.id)
     default:
       return state
   }

@@ -1,59 +1,69 @@
-import { Quiz, QuizFormat, QuizType } from './types'
-import { parseError } from 'util/parse-error'
-import { ApiResponse } from './response'
+import { ID, IdResult, Quiz, QuizFormat, QuizType } from './models'
+import { ApiResult, parseResponse } from './result'
 import { config } from './config'
 
-export const get = async <T extends QuizFormat>(
+/**
+ * Get a single Quiz in either full or listing format.
+ */
+export const getQuiz = async <T extends QuizFormat>(
   id: string,
   format: T
-): Promise<ApiResponse<QuizType<T>>> => {
+): Promise<ApiResult<QuizType<T>>> => {
   const response = await fetch(
     `${config.baseUrl}/quizzes/${id}${format === 'full' ? '' : '/form'}`,
     {
       method: 'GET',
       headers: {
-        'x-auth-token': localStorage.getItem('token') ?? ''
-      }
+        'x-auth-token': localStorage.getItem('token') ?? '',
+      },
     }
   )
-  if (!response.ok) {
-    const error = await parseError(response)
-    return { error }
-  }
 
-  const quiz = await response.json()
-  return { data: quiz as QuizType<T> }
+  return parseResponse(response)
 }
 
-export const post = async (quiz: Quiz): Promise<ApiResponse> => {
+/**
+ * Uploads a new Quiz, returning the id of the created Quiz.
+ */
+export const uploadQuiz = async (quiz: Quiz): Promise<ApiResult<IdResult>> => {
   const response = await fetch(`${config.baseUrl}/quizzes/`, {
     method: 'POST',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? '',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(quiz)
+    body: JSON.stringify(quiz),
   })
-  if (!response.ok) {
-    const error = await parseError(response)
-    return { error }
-  }
-  return {}
+
+  return parseResponse<IdResult>(response)
 }
 
-export const put = async (quiz: Quiz): Promise<ApiResponse> => {
+/**
+ * Uploads edits to a Quiz.
+ */
+export const editQuiz = async (quiz: Quiz): Promise<ApiResult<void>> => {
   const response = await fetch(`${config.baseUrl}/quizzes/${quiz._id!}/edit`, {
     method: 'PUT',
     headers: {
       'x-auth-token': localStorage.getItem('token') ?? '',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(quiz)
+    body: JSON.stringify(quiz),
   })
-  if (!response.ok) {
-    const error = await parseError(response)
-    return { error }
-  }
 
-  return {}
+  return parseResponse(response)
+}
+
+/**
+ * Deletes a quiz that the current user owns.
+ */
+export const deleteQuiz = async (id: ID): Promise<ApiResult<void>> => {
+  const response = await fetch(`${config.baseUrl}/quizzes/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'x-auth-token': localStorage.getItem('token') ?? '',
+    },
+  })
+
+  return parseResponse(response)
 }

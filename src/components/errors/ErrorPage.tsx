@@ -14,7 +14,7 @@ const ErrorPage = ({ status }: Props) => {
   let message = ''
   switch (status) {
     case 404:
-      message = 'That resource wasn\'t found.'
+      message = "That resource wasn't found."
       break
     case 401:
     case 403:

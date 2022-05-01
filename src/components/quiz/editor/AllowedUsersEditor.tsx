@@ -4,15 +4,15 @@ import { Row, Col, Form } from 'react-bootstrap'
 const isValidUsername = (str: string) => /^[a-zA-Z0-9]{5,}$/.test(str)
 
 const parseInvalidUsers = (str: string) => {
-  return str.split(/\s*,+\s*,*/).filter(s => !isValidUsername(s))
+  return str.split(/\s*,+\s*,*/).filter((s) => !isValidUsername(s))
 }
 
 /**
  * Parses allowed users from a comma-separated string.
  */
 const parseAllowedUsers = (str: string) => {
-  const users = str.split(/\s*,+\s*,*/).filter(s => s)
-  if (users.length > 0 && users.every(user => isValidUsername(user))) {
+  const users = str.split(/\s*,+\s*,*/).filter((s) => s)
+  if (users.length > 0 && users.every((user) => isValidUsername(user))) {
     return users
   }
   return []
@@ -42,26 +42,26 @@ const AllowedUsersEditor = (props: Props) => {
     }
   }
   return (
-    <Row className="mb-4">
+    <Row className='mb-4'>
       <Col>
         <Row>
           <Col>
-            <label htmlFor="allowedUsersInput">Allowed users:</label>
+            <label htmlFor='allowedUsersInput'>Allowed users:</label>
           </Col>
         </Row>
         <Row>
           <Col>
             <Form.Control
               className={!isValid ? ' is-invalid' : ''}
-              type="text"
-              placeholder="User1, User2, ..."
-              name="value"
-              id="allowedUsersInput"
+              type='text'
+              placeholder='User1, User2, ...'
+              name='value'
+              id='allowedUsersInput'
               value={users}
               onChange={onChange}
             />
             {!isValid ? (
-              <div className="invalid-feedback">
+              <div className='invalid-feedback'>
                 The following usernames are not valid:
                 {' ' + parseInvalidUsers(users).join(', ')}
               </div>

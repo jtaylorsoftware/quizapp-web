@@ -23,12 +23,12 @@ describe('QuizRoute', () => {
   let mockUser: UserState
   let mockAuth: AuthState
 
-  const MockQuizAnswerForm = jest.mocked(QuizAnswerForm).mockReturnValue(
-    <div>QuizAnswerForm</div>,
-  )
-  const MockQuizResultList = jest.mocked(QuizResultList).mockReturnValue(
-    <div>QuizResultList</div>,
-  )
+  const MockQuizAnswerForm = jest
+    .mocked(QuizAnswerForm)
+    .mockReturnValue(<div>QuizAnswerForm</div>)
+  const MockQuizResultList = jest
+    .mocked(QuizResultList)
+    .mockReturnValue(<div>QuizResultList</div>)
 
   beforeEach(() => {
     MockQuizAnswerForm.mockClear()
@@ -49,10 +49,12 @@ describe('QuizRoute', () => {
     const history = createMemoryHistory()
     history.push(`/quizzes/${quizId}`)
     render(
-      <Routes><Route path='/quizzes/:id' element={<QuizRoute />} /></Routes>,
+      <Routes>
+        <Route path='/quizzes/:id' element={<QuizRoute />} />
+      </Routes>,
       mockStore,
       history,
-      `/quizzes/${quizId}`,
+      `/quizzes/${quizId}`
     )
     expect(screen.queryByText('QuizResultList')).not.toBeNull()
   })
@@ -71,10 +73,12 @@ describe('QuizRoute', () => {
     const history = createMemoryHistory()
 
     render(
-      <Routes><Route path='/quizzes/:id' element={<QuizRoute />} /></Routes>,
+      <Routes>
+        <Route path='/quizzes/:id' element={<QuizRoute />} />
+      </Routes>,
       mockStore,
       history,
-      `/quizzes/${quizId}`,
+      `/quizzes/${quizId}`
     )
     history.push(`/quizzes/${quizId}`)
     expect(screen.queryByText('QuizAnswerForm')).not.toBeNull()

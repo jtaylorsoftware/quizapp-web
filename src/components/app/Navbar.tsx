@@ -7,11 +7,11 @@ import { logout } from 'store/user/thunks'
 import { RootState } from 'store/store'
 
 const mapState = (state: RootState) => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
 })
 
 const mapDispatch = {
-  logout
+  logout,
 }
 
 const connector = connect(mapState, mapDispatch)
@@ -32,36 +32,36 @@ const Navbar = ({ isAuthenticated, logout }: Props) => {
     navigate('/')
   }
   return (
-    <BsNavbar expand="md" variant="dark">
+    <BsNavbar expand='md' variant='dark'>
       <Container fluid>
-        <Link className="navbar-brand" to="/">
+        <Link className='navbar-brand' to='/'>
           QuizNow
         </Link>
-        <BsNavbar.Toggle aria-controls="navMenu" />
-        <BsNavbar.Collapse id="navMenu">
-          <Nav className="ms-auto">
+        <BsNavbar.Toggle aria-controls='navMenu' />
+        <BsNavbar.Collapse id='navMenu'>
+          <Nav className='ms-auto'>
             {isAuthenticated ? (
               <>
-                <Nav.Link as={Link} to="/quizzes/create">
+                <Nav.Link as={Link} to='/quizzes/create'>
                   Create
                 </Nav.Link>
-                <Nav.Link as={Link} to="/dashboard">
+                <Nav.Link as={Link} to='/dashboard'>
                   Dashboard
                 </Nav.Link>
                 <Nav.Link
                   as={Button}
-                  variant="link"
-                  className="text-start"
+                  variant='link'
+                  className='text-start'
                   onClick={logoutToHome}>
                   Logout
                 </Nav.Link>
               </>
             ) : (
               <>
-                <Nav.Link as={Link} to="/login">
+                <Nav.Link as={Link} to='/login'>
                   Login
                 </Nav.Link>
-                <Nav.Link as={Link} to="/register">
+                <Nav.Link as={Link} to='/register'>
                   Sign Up
                 </Nav.Link>
               </>

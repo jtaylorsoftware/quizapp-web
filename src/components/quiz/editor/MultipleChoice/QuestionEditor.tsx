@@ -10,7 +10,7 @@ import CorrectAnswerDisplay from './CorrectAnswerDisplay'
 import AnswerEditor from './AnswerEditor'
 
 import clone from 'clone'
-import { MultipleChoiceQuestion, Question } from 'api'
+import { MultipleChoiceQuestion, Question } from 'api/models'
 import QuestionText from '../QuestionText'
 
 type Props = {
@@ -22,15 +22,14 @@ type Props = {
   onChange: (question: Question) => void
 }
 
-const QuestionEditor = (
-  {
-    id,
-    label,
-    editing,
-    validate,
-    value,
-    onChange,
-  }: Props) => {
+const QuestionEditor = ({
+  id,
+  label,
+  editing,
+  validate,
+  value,
+  onChange,
+}: Props) => {
   return (
     <div>
       <label className='d-flex align-items-center' htmlFor={id}>
@@ -45,10 +44,10 @@ const QuestionEditor = (
       <QuestionText
         id={id}
         defaultValue={value.text}
-        onChange={text => {
+        onChange={(text) => {
           onChange({
             ...value,
-            text
+            text,
           })
         }}
         validate={validate}
@@ -72,7 +71,7 @@ const QuestionEditor = (
             value={answer}
             index={answerIndex}
             correct={value.correctAnswer === answerIndex}
-            onChange={text => {
+            onChange={(text) => {
               const updatedQuestion = {
                 ...value,
                 answers: clone(value.answers),
@@ -80,7 +79,7 @@ const QuestionEditor = (
               updatedQuestion.answers[answerIndex].text = text
               onChange(updatedQuestion)
             }}
-            onChecked={checked => {
+            onChecked={(checked) => {
               if (checked) {
                 const updatedQuestion = {
                   ...value,
@@ -92,9 +91,7 @@ const QuestionEditor = (
             onRemove={() => {
               const updatedQuestion = {
                 ...value,
-                answers: value.answers.filter(
-                  (_, ind) => ind !== answerIndex,
-                ),
+                answers: value.answers.filter((_, ind) => ind !== answerIndex),
               }
               onChange(updatedQuestion)
             }}

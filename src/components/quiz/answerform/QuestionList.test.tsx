@@ -15,7 +15,12 @@ describe('QuestionList', () => {
     mockState = clone(quiz)
   })
   it('renders without crashing', () => {
-    render(<QuestionList questions={mockState.questions} onAnswerChanged={() => {}} />)
+    render(
+      <QuestionList
+        questions={mockState.questions}
+        onAnswerChanged={() => {}}
+      />
+    )
   })
   it('should display questions with errors when error state is not null', () => {
     render(

@@ -3,7 +3,7 @@ import { Col, Row } from 'react-bootstrap'
 
 import Icon from '@mdi/react'
 import { mdiAlertCircle } from '@mdi/js'
-import { Question, QuestionType } from 'api'
+import { Question, QuestionType } from 'api/models'
 import QuestionTypeDropdownButton from './QuestionTypeDropdownButton'
 import QuestionEditorList from './QuestionEditorList'
 import AddQuestionButton from './AddQuestionButton'
@@ -23,26 +23,29 @@ export const displayQuestionType = {
 }
 
 export const questionTypeDisplay = {
-  'FillIn': 'Fill in the blank',
-  'MultipleChoice': 'Multiple choice',
+  FillIn: 'Fill in the blank',
+  MultipleChoice: 'Multiple choice',
 }
 
 /**
  * Presentational component that displays a list of Question components
  */
-const QuestionList = (
-  {
-    editing,
-    validate,
-    questions,
-    onAdd,
-    onRemove,
-    onChange,
-  }: Props) => {
-  const [questionType, setQuestionType] = useState<QuestionType>('' as QuestionType)
+const QuestionList = ({
+  editing,
+  validate,
+  questions,
+  onAdd,
+  onRemove,
+  onChange,
+}: Props) => {
+  const [questionType, setQuestionType] = useState<QuestionType>(
+    '' as QuestionType
+  )
 
   const onTypeSelected = (eventKey: string | null) =>
-    setQuestionType(displayQuestionType[eventKey as keyof typeof displayQuestionType])
+    setQuestionType(
+      displayQuestionType[eventKey as keyof typeof displayQuestionType]
+    )
 
   const addEmptyQuestion = () => {
     let question: Question
@@ -80,14 +83,23 @@ const QuestionList = (
         questions={questions}
         onAdd={onAdd}
         onRemove={onRemove}
-        onChange={onChange} />
+        onChange={onChange}
+      />
       <Row className='mt-4'>
         <Col className='d-flex align-items-center justify-content-start'>
           <QuestionTypeDropdownButton
             disabled={editing}
-            title={(questionType.length !== 0 && questionTypeDisplay[questionType]) || 'Select Question Type'}
-            onSelect={onTypeSelected} />
-          <AddQuestionButton onClick={addEmptyQuestion} disabled={editing || questionType.length === 0} />
+            title={
+              (questionType.length !== 0 &&
+                questionTypeDisplay[questionType]) ||
+              'Select Question Type'
+            }
+            onSelect={onTypeSelected}
+          />
+          <AddQuestionButton
+            onClick={addEmptyQuestion}
+            disabled={editing || questionType.length === 0}
+          />
         </Col>
       </Row>
     </>

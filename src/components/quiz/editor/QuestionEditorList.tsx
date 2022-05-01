@@ -4,14 +4,13 @@ import QuestionEditor from './QuestionEditor'
 import QuestionDeleteButton from './QuestionDeleteButton'
 import { Props, questionTypeDisplay } from './QuestionList'
 
-const QuestionEditorList = (
-  {
-    editing,
-    validate,
-    questions,
-    onRemove,
-    onChange,
-  }: Props) => {
+const QuestionEditorList = ({
+  editing,
+  validate,
+  questions,
+  onRemove,
+  onChange,
+}: Props) => {
   return (
     <>
       {questions.map((question, index) => {
@@ -26,18 +25,24 @@ const QuestionEditorList = (
           <div key={key}>
             <QuestionEditor
               id={`question-${index}`}
-              label={`Question ${index + 1} (${questionTypeDisplay[question.type]}):`}
+              label={`Question ${index + 1} (${
+                questionTypeDisplay[question.type]
+              }):`}
               editing={editing}
               validate={validate}
               value={question}
-              onChange={question => {
+              onChange={(question) => {
                 onChange(index, question)
               }}
               onRemove={() => {
                 onRemove(index)
               }}
             />
-            <QuestionDeleteButton index={index} editing={editing} onRemove={onRemove} />
+            <QuestionDeleteButton
+              index={index}
+              editing={editing}
+              onRemove={onRemove}
+            />
           </div>
         )
       })}

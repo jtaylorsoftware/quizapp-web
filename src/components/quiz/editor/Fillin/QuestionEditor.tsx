@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FillInQuestion, Question } from '../../../../api'
+import { FillInQuestion, Question } from 'api/models'
 import Icon from '@mdi/react'
 import { mdiAlertCircle } from '@mdi/js'
 import { Col, Form, Row } from 'react-bootstrap'
@@ -14,15 +14,14 @@ type Props = {
   onChange: (question: Question) => void
 }
 
-const QuestionEditor = (
-  {
-    id,
-    label,
-    editing,
-    validate,
-    value,
-    onChange,
-  }: Props) => {
+const QuestionEditor = ({
+  id,
+  label,
+  editing,
+  validate,
+  value,
+  onChange,
+}: Props) => {
   const [answer, setAnswer] = useState<string>(value.correctAnswer)
 
   return (
@@ -39,10 +38,10 @@ const QuestionEditor = (
       <QuestionText
         id={id}
         defaultValue={value.text}
-        onChange={text => {
+        onChange={(text) => {
           onChange({
             ...value,
-            text
+            text,
           })
         }}
         validate={validate}
@@ -58,7 +57,7 @@ const QuestionEditor = (
               setAnswer(e.target.value)
               const updatedQuestion = {
                 ...value,
-                correctAnswer: e.target.value
+                correctAnswer: e.target.value,
               }
               onChange(updatedQuestion)
             }}

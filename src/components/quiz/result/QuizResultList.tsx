@@ -12,7 +12,7 @@ import { createAlert } from 'store/alerts/thunks'
 import { useQuiz, useResultList } from 'hooks'
 
 const mapDispatch = {
-  createAlert
+  createAlert,
 }
 
 const connector = connect(undefined, mapDispatch)
@@ -23,7 +23,7 @@ const colSize = {
   sm: 10,
   md: 8,
   lg: 7,
-  xl: 6
+  xl: 6,
 }
 
 /**
@@ -34,7 +34,10 @@ const QuizResultList = ({ createAlert }: Props) => {
   const { id } = useParams<{ id: string }>()
 
   const [quiz, quizError, quizLoading] = useQuiz(id ?? '', 'form')
-  const [results, resultError, resultLoading] = useResultList(id ?? '', 'listing')
+  const [results, resultError, resultLoading] = useResultList(
+    id ?? '',
+    'listing'
+  )
 
   const goToDashboard = () => {
     navigate('/dashboard')
@@ -45,41 +48,41 @@ const QuizResultList = ({ createAlert }: Props) => {
   } else if (quizError) {
     createAlert({
       msg: "We couldn't load your quiz right now.",
-      type: 'danger'
+      type: 'danger',
     })
     return <ErrorPage status={quizError.status} />
   } else if (resultError) {
     createAlert({
       msg: "We couldn't load your quiz results right now.",
-      type: 'danger'
+      type: 'danger',
     })
     return <ErrorPage status={resultError.status} />
   }
 
   return (
     <>
-      <div className="content">
-        <Container fluid className="quiz-results">
+      <div className='content'>
+        <Container fluid className='quiz-results'>
           <Row>
-            <Col {...colSize} className="quiz-results__block mx-auto">
-              <Row className="mb-2 align-items-center">
+            <Col {...colSize} className='quiz-results__block mx-auto'>
+              <Row className='mb-2 align-items-center'>
                 <Col>
-                  <h3 className="mb-0">Results for quiz "{quiz!.title}":</h3>
+                  <h3 className='mb-0'>Results for quiz "{quiz!.title}":</h3>
                 </Col>
               </Row>
 
-              <Row className="mb-2">
+              <Row className='mb-2'>
                 <Col>
                   {results!.length === 0 ? (
-                    <Row className="mb-1 align-items-center">
+                    <Row className='mb-1 align-items-center'>
                       <Col>
-                        <h6 className="mb-0">
+                        <h6 className='mb-0'>
                           Nobody has responded to this quiz!
                         </h6>
                       </Col>
                     </Row>
                   ) : (
-                    <ListGroup className="w-100">
+                    <ListGroup className='w-100'>
                       {results!.map((result, index) => {
                         return (
                           <ListGroup.Item key={index}>
@@ -97,7 +100,7 @@ const QuizResultList = ({ createAlert }: Props) => {
       </div>
 
       <Footer>
-        <Button variant="success" className="ms-1" onClick={goToDashboard}>
+        <Button variant='success' className='ms-1' onClick={goToDashboard}>
           Back to dashboard
         </Button>
       </Footer>

@@ -39,7 +39,7 @@ const DateTimePicker = React.memo(
         onClose: (_, dateStr) => {
           setDateTime(dateStr)
           onChange(moment(dateStr, momentFormat).toISOString())
-        }
+        },
       })
       return () => datePicker.destroy()
     }, [dateTime, minValue, onChange])
@@ -48,17 +48,17 @@ const DateTimePicker = React.memo(
     return (
       <>
         <input
-          type="text"
+          type='text'
           className={
             'form-control date-time-picker' + (!isValid ? ' is-invalid' : '')
           }
           id={id}
-          placeholder="Select date and time"
+          placeholder='Select date and time'
           ref={inputRef}
           readOnly={true}
         />
         {!isValid ? (
-          <div className="invalid-feedback">
+          <div className='invalid-feedback'>
             {errorStr || 'Date is invalid.'}
           </div>
         ) : null}

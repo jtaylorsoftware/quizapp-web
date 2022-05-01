@@ -23,14 +23,13 @@ type Props = ConnectedProps<typeof connector> & {
   redirectTo: string
 }
 
-const RequireAuth = function(
-  {
-    auth,
-    user,
-    clearAuth,
-    redirectTo,
-    children,
-  }: React.PropsWithChildren<Props>) {
+const RequireAuth = function ({
+  auth,
+  user,
+  clearAuth,
+  redirectTo,
+  children,
+}: React.PropsWithChildren<Props>) {
   const location = useLocation()
   let isAuthenticated = auth.isAuthenticated
 
@@ -39,14 +38,20 @@ const RequireAuth = function(
     isAuthenticated = false
   }
 
-  if(isAuthenticated) {
+  if (isAuthenticated) {
     if (user.loading) {
       return <Spinner />
     } else {
-      return <>{ children }</>
+      return <>{children}</>
     }
   } else {
-    return <Navigate to={redirectTo} state={{ referrer: location.pathname }} replace />
+    return (
+      <Navigate
+        to={redirectTo}
+        state={{ referrer: location.pathname }}
+        replace
+      />
+    )
   }
 }
 
