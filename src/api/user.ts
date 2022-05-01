@@ -1,4 +1,4 @@
-import { ApiResult, parseResponse } from './result'
+import { ApiResult, checkResponse, parseResponse } from './result'
 import {
   JWT,
   QuizListType,
@@ -36,7 +36,7 @@ export const changeEmail = async (email: string): Promise<ApiResult<void>> => {
     body: JSON.stringify({ email }),
   })
 
-  return parseResponse<void>(response)
+  return checkResponse(response)
 }
 
 /**
@@ -54,7 +54,7 @@ export const changePassword = async (
     body: JSON.stringify({ password }),
   })
 
-  return parseResponse<void>(response)
+  return checkResponse(response)
 }
 
 /**
@@ -106,7 +106,7 @@ export const deleteUser = async (): Promise<ApiResult<void>> => {
     },
   })
 
-  return parseResponse<void>(response)
+  return checkResponse(response)
 }
 
 /**

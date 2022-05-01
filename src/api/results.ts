@@ -14,7 +14,7 @@ import { config } from './config'
 export const getAllResults = async <T extends ResultFormat>(
   quizId: string,
   format: T
-): Promise<ApiResult<ResultListType<T>>> => {
+): Promise<ApiResult<{ results: ResultListType<T> }>> => {
   const response = await fetch(
     `${config.baseUrl}/results?quiz=${quizId}&format=${format}`,
     {
@@ -25,7 +25,7 @@ export const getAllResults = async <T extends ResultFormat>(
     }
   )
 
-  return parseResponse<ResultListType<T>>(response)
+  return parseResponse<{ results: ResultListType<T> }>(response)
 }
 
 /**

@@ -1,5 +1,5 @@
 import { ID, IdResult, Quiz, QuizFormat, QuizType } from './models'
-import { ApiResult, parseResponse } from './result'
+import { ApiResult, checkResponse, parseResponse } from './result'
 import { config } from './config'
 
 /**
@@ -51,7 +51,7 @@ export const editQuiz = async (quiz: Quiz): Promise<ApiResult<void>> => {
     body: JSON.stringify(quiz),
   })
 
-  return parseResponse(response)
+  return checkResponse(response)
 }
 
 /**
@@ -65,5 +65,5 @@ export const deleteQuiz = async (id: ID): Promise<ApiResult<void>> => {
     },
   })
 
-  return parseResponse(response)
+  return checkResponse(response)
 }

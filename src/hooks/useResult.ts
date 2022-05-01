@@ -19,7 +19,7 @@ export const useResultList = <T extends ResultFormat>(
       API.Results.getAllResults(quizId, format).then((result) => {
         if (status.mounted) {
           if (isSuccess(result)) {
-            setResults(result.data)
+            setResults(result.data.results)
           } else {
             setError(result)
           }

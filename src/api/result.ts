@@ -44,6 +44,24 @@ export async function parseResponse<T>(
   }
 }
 
+/**
+ * Checks if the fetch `Response` was successful or not. This function
+ * ignores the presence or absence of a response body.
+ */
+export async function checkResponse(
+  response: Response
+): Promise<ApiResult<void>> {
+  try {
+    if (!response.ok) {
+      return new Failure(response.status, await parseErrors(response))
+    } else {
+      return new Success(undefined, response.status)
+    }
+  } catch (error) {
+    return new Failure(500, [])
+  }
+}
+
 async function parseBody<T>(response: Response): Promise<T> {
   const contentType = response.headers.get('Content-Type')
   if (contentType && contentType.startsWith('application/json')) {
@@ -51,7 +69,7 @@ async function parseBody<T>(response: Response): Promise<T> {
     // hard to generically check every possibility
     return response.json() as Promise<T>
   } else {
-    throw new Error(`Unknown response Content-Type: ${contentType}`)
+    throw new Error(`Unexpected response Content-Type: ${contentType}`)
   }
 }
 
