@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
-import { MultipleChoiceAnswer as Answer } from 'api'
+import { MultipleChoiceAnswer as Answer } from 'api/models'
 
 import AnswerText from '../AnswerText'
 
@@ -20,18 +20,17 @@ type Props = {
 /**
  * Displays an answer with button to remove itself
  */
-const AnswerEditor = (
-  {
-    id,
-    value,
-    index,
-    correct,
-    editing,
-    validate,
-    onChange,
-    onChecked,
-    onRemove,
-  }: Props) => {
+const AnswerEditor = ({
+  id,
+  value,
+  index,
+  correct,
+  editing,
+  validate,
+  onChange,
+  onChecked,
+  onRemove,
+}: Props) => {
   return (
     <>
       <div className={'p-1 answer' + (correct ? ' answer--selected' : '')}>

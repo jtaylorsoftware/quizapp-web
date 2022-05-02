@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react'
 
-import { useConfirmModal } from 'hooks/useconfirmmodal'
-import { ApiError } from 'api'
+import { useConfirmModal } from 'hooks'
 import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Failure } from 'api/result'
 
 type Props = {
   defaultValue: string
-  changeEmail: (email: string) => Promise<ApiError | undefined>
+  changeEmail: (email: string) => Promise<Failure | null>
 }
 
 /**
@@ -29,7 +29,7 @@ const EmailForm = ({ defaultValue, changeEmail }: Props) => {
   }
 
   const onConfirm = useCallback(() => {
-    changeEmail(email).then(apiError => {
+    changeEmail(email).then((apiError) => {
       if (apiError) {
         if (apiError.status === 409) {
           setFormError('Email already in use.')
@@ -45,7 +45,7 @@ const EmailForm = ({ defaultValue, changeEmail }: Props) => {
   const [Modal, , showModal] = useConfirmModal({
     header: 'Confirm Changes',
     body: 'Are you sure you want to change email?',
-    onConfirm: onConfirm
+    onConfirm: onConfirm,
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,45 +65,45 @@ const EmailForm = ({ defaultValue, changeEmail }: Props) => {
   return (
     <>
       {!isOpen ? (
-        <Row className="my-2">
+        <Row className='my-2'>
           <Col>
-            <Button variant="info" size="sm" onClick={openForm}>
+            <Button variant='info' size='sm' onClick={openForm}>
               Change Email
             </Button>
           </Col>
         </Row>
       ) : (
         <Form onSubmit={handleSubmit}>
-          <Row className="my-2">
+          <Row className='my-2'>
             <Col>
               <Form.Control
                 className={formError ? ' is-invalid' : ''}
-                type="email"
-                placeholder="New email"
-                name="email"
+                type='email'
+                placeholder='New email'
+                name='email'
                 value={email}
                 onChange={handleChange}
                 required
               />
               {formError ? (
-                <div className="invalid-feedback">{formError}</div>
+                <div className='invalid-feedback'>{formError}</div>
               ) : null}
             </Col>
           </Row>
-          <Row className="my-2">
+          <Row className='my-2'>
             <Col>
               <Button
-                type="button"
-                variant="secondary"
-                size="sm"
+                type='button'
+                variant='secondary'
+                size='sm'
                 onClick={closeForm}>
                 Cancel
               </Button>
             </Col>
           </Row>
-          <Row className="my-2">
+          <Row className='my-2'>
             <Col>
-              <Button type="submit" variant="primary" size="sm">
+              <Button type='submit' variant='primary' size='sm'>
                 Change
               </Button>
             </Col>

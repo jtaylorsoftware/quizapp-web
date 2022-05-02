@@ -1,6 +1,6 @@
 import React from 'react'
 import ScoredQuestion from './ScoredQuestion'
-import { FormQuestion, ResultAnswer } from 'api'
+import { FormQuestion, ResultAnswer } from 'api/models'
 
 type Props = {
   questions: FormQuestion[]

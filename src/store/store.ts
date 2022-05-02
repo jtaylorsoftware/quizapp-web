@@ -7,11 +7,11 @@ import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 
 import rootReducer from './reducer'
 
-const createStoreAndPersistor =  () => {
+const createStoreAndPersistor = () => {
   const rootPersistConfig = {
     key: 'root',
     storage,
-    blacklist: ['alerts']
+    blacklist: ['alerts'],
   }
 
   let store = createStore(

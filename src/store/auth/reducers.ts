@@ -3,13 +3,13 @@ import {
   AuthState,
   AUTH_ERROR,
   AUTH_USER,
-  CLEAR_AUTH
+  CLEAR_AUTH,
 } from './types'
 
 export function authReducer(
   state: AuthState = {
     token: localStorage.getItem('token'),
-    isAuthenticated: false
+    isAuthenticated: false,
   },
   action: AuthActionTypes
 ) {
@@ -19,7 +19,7 @@ export function authReducer(
       return {
         ...state,
         token: action.payload!,
-        isAuthenticated: true
+        isAuthenticated: true,
       }
     case AUTH_ERROR:
     case CLEAR_AUTH:
@@ -27,7 +27,7 @@ export function authReducer(
       return {
         ...state,
         token: null,
-        isAuthenticated: false
+        isAuthenticated: false,
       }
     default:
       return state

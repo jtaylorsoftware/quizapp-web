@@ -1,4 +1,4 @@
-import { ID } from 'api'
+import { ID, User } from 'api/models'
 import {
   CHANGE_USER_EMAIL,
   CHANGE_USER_INFO_ERROR,
@@ -10,74 +10,73 @@ import {
   LOAD_USER,
   LOAD_USER_ERROR,
   LOGOUT,
-  User,
   UserActionTypes,
-  UserError
+  UserError,
 } from './types'
 
 export function loadUser(user: User): UserActionTypes {
   return {
     type: LOAD_USER,
-    payload: user
+    payload: user,
   }
 }
 
 export function loadUserError(error: UserError): UserActionTypes {
   return {
     type: LOAD_USER_ERROR,
-    payload: error
+    payload: error,
   }
 }
 
 export function logoutUser(): UserActionTypes {
   return {
-    type: LOGOUT
+    type: LOGOUT,
   }
 }
 
 export function deleteQuiz(quizId: ID): UserActionTypes {
   return {
     type: DELETE_QUIZ,
-    payload: quizId
+    payload: quizId,
   }
 }
 
 export function deleteQuizError(error: UserError): UserActionTypes {
   return {
     type: DELETE_QUIZ_ERROR,
-    payload: error
+    payload: error,
   }
 }
 
 export function changeUserPassword(): UserActionTypes {
   return {
-    type: CHANGE_USER_PASSWORD
+    type: CHANGE_USER_PASSWORD,
   }
 }
 
 export function changeUserEmail(email: string): UserActionTypes {
   return {
     type: CHANGE_USER_EMAIL,
-    payload: email
+    payload: email,
   }
 }
 
 export function changeUserInfoError(error: UserError): UserActionTypes {
   return {
     type: CHANGE_USER_INFO_ERROR,
-    payload: error
+    payload: error,
   }
 }
 
 export function deleteUser(): UserActionTypes {
   return {
-    type: DELETE_USER
+    type: DELETE_USER,
   }
 }
 
 export function deleteUserError(error: UserError): UserActionTypes {
   return {
     type: DELETE_USER_ERROR,
-    payload: error
+    payload: error,
   }
 }

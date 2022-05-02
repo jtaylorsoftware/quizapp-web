@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, ListGroup, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-import { QuizListing } from 'api'
+import { QuizListing } from 'api/models'
 
 import Spinner from 'components/common/Spinner'
 import QuizItem from './QuizItem'
@@ -19,21 +19,21 @@ type Props = {
 const QuizList = ({ loading, quizzes }: Props) => {
   return (
     <>
-      <Row className="row mb-2 align-items-center">
+      <Row className='row mb-2 align-items-center'>
         <Col>
-          <h3 className="mb-0">Quizzes You Created:</h3>
+          <h3 className='mb-0'>Quizzes You Created:</h3>
         </Col>
       </Row>
 
-      <Row className="mb-1">
+      <Row className='mb-1'>
         <Col>
           {loading ? (
             <Spinner />
           ) : (
             <>
-              <Row className="mb-2 align-items-center">
+              <Row className='mb-2 align-items-center'>
                 <Col>
-                  <h6 className="mb-0">
+                  <h6 className='mb-0'>
                     {quizzes.length === 0
                       ? "You haven't made any quizzes!"
                       : ''}
@@ -41,17 +41,17 @@ const QuizList = ({ loading, quizzes }: Props) => {
                 </Col>
               </Row>
 
-              <Row className="mb-1 align-items-center">
+              <Row className='mb-1 align-items-center'>
                 <Col>
                   <Link
-                    to="/quizzes/create"
-                    className="btn btn-success btn-sm ms-auto">
+                    to='/quizzes/create'
+                    className='btn btn-success btn-sm ms-auto'>
                     Create A Quiz
                   </Link>
                 </Col>
               </Row>
 
-              <ListGroup className="w-100">
+              <ListGroup className='w-100'>
                 {quizzes.map((quiz, index) => {
                   return (
                     <ListGroup.Item key={index}>

@@ -3,7 +3,6 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from 'util/test-utils'
 
-
 import Navbar from './Navbar'
 
 import { logout } from 'store/user/thunks'
@@ -17,8 +16,8 @@ describe('Navbar', () => {
       alerts: [],
       auth: {
         token: '',
-        isAuthenticated: false
-      }
+        isAuthenticated: false,
+      },
     }
 
     render(<Navbar />, mockStore)
@@ -28,8 +27,8 @@ describe('Navbar', () => {
       alerts: [],
       auth: {
         token: '',
-        isAuthenticated: false
-      }
+        isAuthenticated: false,
+      },
     }
 
     render(<Navbar />, mockStore)
@@ -40,8 +39,8 @@ describe('Navbar', () => {
       alerts: [],
       auth: {
         token: '',
-        isAuthenticated: false
-      }
+        isAuthenticated: false,
+      },
     }
 
     render(<Navbar />, mockStore)
@@ -54,8 +53,8 @@ describe('Navbar', () => {
       alerts: [],
       auth: {
         token: '',
-        isAuthenticated: true
-      }
+        isAuthenticated: true,
+      },
     }
 
     render(<Navbar />, mockStore)
@@ -68,13 +67,13 @@ describe('Navbar', () => {
       alerts: [],
       auth: {
         token: '',
-        isAuthenticated: true
-      }
+        isAuthenticated: true,
+      },
     }
 
     render(<Navbar />, mockStore)
 
-    logoutMock.mockReturnValueOnce(dispatch => {})
+    logoutMock.mockReturnValueOnce((dispatch) => {})
 
     const logoutBtn = screen.getByText('Logout')
     fireEvent.click(logoutBtn)

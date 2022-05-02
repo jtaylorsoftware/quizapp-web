@@ -8,7 +8,7 @@ import App from './App'
 describe('App', () => {
   const mockStore = {
     alerts: [],
-    auth: { token: '', isAuthenticated: false }
+    auth: { token: '', isAuthenticated: false },
   }
   it('renders without crashing', () => {
     render(<App />, mockStore)

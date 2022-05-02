@@ -9,15 +9,17 @@ import clone from 'clone'
 jest.mock('store/user/thunks')
 import { deleteQuiz } from 'store/user/thunks'
 
-import { QuizListing } from 'api'
+import { QuizListing } from 'api/models'
 
 import { quizzes } from 'mocks/state'
 import QuizItem from './QuizItem'
 import moment from 'moment'
-import { calculateTimeDifference, createTimestamp } from '../../../util/date'
+import { calculateTimeDifference, createTimestamp } from 'util/date'
 
 describe('QuizItem', () => {
-  const deleteQuizMock = jest.mocked(deleteQuiz).mockReturnValue(async dispatch => {})
+  const deleteQuizMock = jest
+    .mocked(deleteQuiz)
+    .mockReturnValue(async (dispatch) => {})
   let mockState: QuizListing[]
 
   beforeEach(() => {
@@ -53,7 +55,9 @@ describe('QuizItem', () => {
     const quiz = mockState[0]
     quiz.date = moment().subtract(2, 'y').toISOString()
     render(<QuizItem quiz={quiz} />)
-    const timestamp = createTimestamp(calculateTimeDifference(moment(), moment(quiz.date)))
+    const timestamp = createTimestamp(
+      calculateTimeDifference(moment(), moment(quiz.date))
+    )
     expect(screen.queryByText(`Created ${timestamp}`)).not.toBeNull()
   })
 

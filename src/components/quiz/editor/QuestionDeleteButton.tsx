@@ -7,7 +7,11 @@ export type DeleteButtonProps = {
   onRemove: (index: number) => void
 }
 
-const QuestionDeleteButton = ({ index, onRemove, editing }: DeleteButtonProps) => {
+const QuestionDeleteButton = ({
+  index,
+  onRemove,
+  editing,
+}: DeleteButtonProps) => {
   return (
     <>
       <Row className='mt-2'>

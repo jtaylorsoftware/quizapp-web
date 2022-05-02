@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from 'react'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
-import { ApiError } from 'api'
-import { useConfirmModal } from 'hooks/useconfirmmodal'
+import { useConfirmModal } from 'hooks'
+import { Failure } from 'api/result'
 
 type Props = {
-  changePassword: (password: string) => Promise<ApiError | undefined>
+  changePassword: (password: string) => Promise<Failure | null>
 }
 
 /**
@@ -14,7 +14,7 @@ type Props = {
 const PasswordForm = ({ changePassword }: Props) => {
   const [passwordInput, setPasswordInput] = useState({
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   })
 
   const { password, confirmPassword } = passwordInput
@@ -34,7 +34,7 @@ const PasswordForm = ({ changePassword }: Props) => {
   }
 
   const onConfirm = useCallback(() => {
-    changePassword(password).then(apiError => {
+    changePassword(password).then((apiError) => {
       if (apiError) {
         setFormError('Cannot change password at this time.')
       } else {
@@ -46,14 +46,14 @@ const PasswordForm = ({ changePassword }: Props) => {
   const [Modal, , showModal] = useConfirmModal({
     header: 'Confirm Changes',
     body: 'Are you sure you want to change email?',
-    onConfirm: onConfirm
+    onConfirm: onConfirm,
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormError('')
     setPasswordInput({
       ...passwordInput,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
@@ -73,9 +73,9 @@ const PasswordForm = ({ changePassword }: Props) => {
   return (
     <>
       {!isOpen ? (
-        <Row className="my-2">
+        <Row className='my-2'>
           <Col>
-            <Button variant="info" size="sm" onClick={openForm}>
+            <Button variant='info' size='sm' onClick={openForm}>
               Change Password
             </Button>
           </Col>
@@ -84,13 +84,13 @@ const PasswordForm = ({ changePassword }: Props) => {
         <Form onSubmit={handleSubmit}>
           <Row>
             <Col>
-              <Row className="my-2">
+              <Row className='my-2'>
                 <Col>
                   <Form.Control
                     className={formError ? ' is-invalid' : ''}
-                    type="password"
-                    placeholder="New password"
-                    name="password"
+                    type='password'
+                    placeholder='New password'
+                    name='password'
                     value={password}
                     onChange={handleChange}
                     minLength={8}
@@ -98,33 +98,33 @@ const PasswordForm = ({ changePassword }: Props) => {
                   />
                 </Col>
               </Row>
-              <Row className="my-2">
+              <Row className='my-2'>
                 <Col>
                   <Form.Control
                     className={formError ? ' is-invalid' : ''}
-                    type="password"
-                    placeholder="Confirm new password"
-                    name="confirmPassword"
+                    type='password'
+                    placeholder='Confirm new password'
+                    name='confirmPassword'
                     value={confirmPassword}
                     onChange={handleChange}
                     minLength={8}
                     maxLength={20}
                   />
                   {formError ? (
-                    <div className="invalid-feedback">{formError}</div>
+                    <div className='invalid-feedback'>{formError}</div>
                   ) : null}
                 </Col>
               </Row>
-              <Row className="my-2">
+              <Row className='my-2'>
                 <Col>
-                  <Button variant="secondary" size="sm" onClick={closeForm}>
+                  <Button variant='secondary' size='sm' onClick={closeForm}>
                     Cancel
                   </Button>
                 </Col>
               </Row>
-              <Row className="my-2">
+              <Row className='my-2'>
                 <Col>
-                  <Button type="submit" variant="primary" size="sm">
+                  <Button type='submit' variant='primary' size='sm'>
                     Change
                   </Button>
                 </Col>

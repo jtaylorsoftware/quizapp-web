@@ -6,9 +6,9 @@ import { Container } from 'react-bootstrap'
  */
 const Spinner = () => {
   return (
-    <Container fluid className="spinner-container">
-      <div className="spinner spinner-border" role="status">
-        <span className="visually-hidden">Loading...</span>
+    <Container fluid className='spinner-container'>
+      <div className='spinner spinner-border' role='status'>
+        <span className='visually-hidden'>Loading...</span>
       </div>
     </Container>
   )

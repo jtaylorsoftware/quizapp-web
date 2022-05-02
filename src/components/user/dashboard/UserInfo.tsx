@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 import {
   deleteUser,
   changeUserEmail,
-  changeUserPassword
+  changeUserPassword,
 } from 'store/user/thunks'
 import { dateToLongLocaleString } from 'util/date'
 import { RootState } from 'store/store'
@@ -16,13 +16,13 @@ import EmailForm from './EmailForm'
 import DeleteButton from './DeleteButton'
 
 const mapState = (state: RootState) => ({
-  user: state.user.user
+  user: state.user.user,
 })
 
 const mapDispatch = {
   deleteUser,
   changeUserEmail,
-  changeUserPassword
+  changeUserPassword,
 }
 
 const connector = connect(mapState, mapDispatch)
@@ -37,13 +37,14 @@ const UserInfo = ({
   user,
   changeUserEmail,
   changeUserPassword,
-  deleteUser
+  deleteUser,
 }: Props) => {
   const { username, email, date } = user!
   const dateString = dateToLongLocaleString(date)
-  const changeEmail = useCallback((email: string) => changeUserEmail(email), [
-    changeUserEmail
-  ])
+  const changeEmail = useCallback(
+    (email: string) => changeUserEmail(email),
+    [changeUserEmail]
+  )
   const changePassword = useCallback(
     (password: string) => changeUserPassword(password),
     [changeUserPassword]
@@ -57,9 +58,9 @@ const UserInfo = ({
           </h1>
         </Col>
       </Row>
-      <Row className="mb-1">
+      <Row className='mb-1'>
         <Col>
-          <h4 className="mb-0">
+          <h4 className='mb-0'>
             Email: <span>{email}</span>
           </h4>
         </Col>
@@ -74,17 +75,16 @@ const UserInfo = ({
 
       <EmailForm defaultValue={email} changeEmail={changeEmail} />
       <PasswordForm changePassword={changePassword} />
-      <Row className="my-2">
+      <Row className='my-2'>
         <Col>
           <DeleteButton
-            text="Delete Account"
+            text='Delete Account'
             onClick={() => deleteUser()}
             confirm={true}
             modalConfig={{
               header: 'Confirm Account Deletion',
-              body:
-                'Are you sure you want to delete your account? This action is irreversible!',
-              confirmText: 'Yes, delete my account.'
+              body: 'Are you sure you want to delete your account? This action is irreversible!',
+              confirmText: 'Yes, delete my account.',
             }}
           />
         </Col>

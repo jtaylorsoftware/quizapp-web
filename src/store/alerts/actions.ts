@@ -3,18 +3,18 @@ import {
   SET_ALERT,
   CLEAR_ALERT,
   AlertActionTypes,
-  AlertId
+  AlertId,
 } from './types'
 
 export function setAlert(alert: Alert): AlertActionTypes {
   return {
     type: SET_ALERT,
-    payload: alert
+    payload: alert,
   }
 }
 export function clearAlert(alertId: AlertId): AlertActionTypes {
   return {
     type: CLEAR_ALERT,
-    id: alertId
+    id: alertId,
   }
 }

@@ -13,7 +13,7 @@ COPY tsconfig.json .
 
 FROM base AS dev
 
-ENV REACT_APP_API_HOST="http://localhost:8080/api/v1"
+ENV REACT_APP_API_HOST="http://localhost:8080/api/v2"
 ENTRYPOINT ["npm", "start"]
 
 FROM base AS test
@@ -26,7 +26,7 @@ FROM base AS build
 
 ENV NODE_ENV=production
 ENV GENERATE_SOURCEMAP=false
-ENV REACT_APP_API_HOST="http://www.makequizzes.online/api/v1"
+ENV REACT_APP_API_HOST="http://www.makequizzes.online/api/v2"
 RUN SKIP_PREFLIGHT_CHECK=true npm run build
 
 FROM nginx:1.21.6 AS prod

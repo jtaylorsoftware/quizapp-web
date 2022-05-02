@@ -7,14 +7,14 @@ import {
   render,
   screen,
   waitFor,
-  within
+  within,
 } from 'util/test-utils'
 
 import EmailForm from './EmailForm'
 
 describe('EmailForm', () => {
   const mockChangeUserEmail = jest.fn(async (email: string) => {
-    return undefined
+    return null
   })
 
   const renderForm = () => {

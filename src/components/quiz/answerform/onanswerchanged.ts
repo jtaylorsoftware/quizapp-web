@@ -1,5 +1,9 @@
-import { FillInResponse, MultipleChoiceResponse, QuestionType } from '../../../api'
+import { FillInResponse, MultipleChoiceResponse } from 'api/models'
 
-export type ResponseValue = MultipleChoiceResponse['choice'] | FillInResponse['answer']
-export type OnAnswerChanged =
-  (answer: ResponseValue, questionIndex: number) => void
+export type ResponseValue =
+  | MultipleChoiceResponse['choice']
+  | FillInResponse['answer']
+export type OnAnswerChanged = (
+  answer: ResponseValue,
+  questionIndex: number
+) => void

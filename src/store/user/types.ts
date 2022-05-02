@@ -1,15 +1,7 @@
-import { ID } from 'api'
+import { ID, User } from 'api/models'
+import { Failure } from 'api/result'
 
-export type UserError = { status: number; errors: any[] }
-
-export interface User {
-  _id: string
-  date: string
-  username: string
-  email: string
-  quizzes: ID[]
-  results: ID[]
-}
+export type UserError = Failure
 
 export interface UserState {
   loading: boolean

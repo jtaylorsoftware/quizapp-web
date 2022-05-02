@@ -38,11 +38,13 @@ const Landing = () => {
       </div>
       <Container fluid>
         <Row className='info info--about'>
-          <Col {...contentSize} className='mx-auto d-flex flex-column justify-content-center align-items-center'>
+          <Col
+            {...contentSize}
+            className='mx-auto d-flex flex-column justify-content-center align-items-center'>
             <h2>Features</h2>
             <p className='text-justify mb-4'>
-              QuizNow is packed with features without overcomplicating
-              things, allowing you to make quizzes fast.
+              QuizNow is packed with features without overcomplicating things,
+              allowing you to make quizzes fast.
             </p>
             <Row>
               <Col>
@@ -72,11 +74,13 @@ const Landing = () => {
           </Col>
         </Row>
         <Row className='info info--quickstart'>
-          <Col {...contentSize} className='mx-auto d-flex flex-column justify-content-center align-items-center'>
+          <Col
+            {...contentSize}
+            className='mx-auto d-flex flex-column justify-content-center align-items-center'>
             <h2>How it works</h2>
             <p className='text-justify mb-4'>
-              The process of making and delivering quizzes is quicker than
-              ever with QuizNow and takes only a few steps.
+              The process of making and delivering quizzes is quicker than ever
+              with QuizNow and takes only a few steps.
             </p>
             <Row>
               <Col>
@@ -116,7 +120,7 @@ const Landing = () => {
         <Row className='h-100'>
           <Col className='d-flex align-items-center justify-content-end'>
             <p className='mb-0'>
-              A project by {' '}
+              A project by{' '}
               <a
                 href='https://github.com/jtaylorsoftware/'
                 target='_blank'

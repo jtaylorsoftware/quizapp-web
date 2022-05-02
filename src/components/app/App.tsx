@@ -25,31 +25,46 @@ const App = () => {
         <Route path='/' element={<Landing />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/dashboard' element={
-          <RequireAuth redirectTo={'/login'}>
-            <Dashboard />
-          </RequireAuth>
-        } />
-        <Route path='/quizzes/create' element={
-          <RequireAuth redirectTo={'/login'}>
-            <QuizCreator />
-          </RequireAuth>
-        } />
-        <Route path='/quizzes/:id/edit' element={
-          <RequireAuth redirectTo={'/login'}>
-            <QuizEditor />
-          </RequireAuth>
-        } />
-        <Route path='/quizzes/:id' element={
-          <RequireAuth redirectTo={'/login'}>
-            <QuizRoute />
-          </RequireAuth>
-        } />
-        <Route path='/results' element={
-          <RequireAuth redirectTo={'/login'}>
-            <QuizResult />
-          </RequireAuth>
-        } />
+        <Route
+          path='/dashboard'
+          element={
+            <RequireAuth redirectTo={'/login'}>
+              <Dashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/quizzes/create'
+          element={
+            <RequireAuth redirectTo={'/login'}>
+              <QuizCreator />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/quizzes/:id/edit'
+          element={
+            <RequireAuth redirectTo={'/login'}>
+              <QuizEditor />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/quizzes/:id'
+          element={
+            <RequireAuth redirectTo={'/login'}>
+              <QuizRoute />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path='/results'
+          element={
+            <RequireAuth redirectTo={'/login'}>
+              <QuizResult />
+            </RequireAuth>
+          }
+        />
         <Route element={<ErrorPage status={404} />} />
       </Routes>
     </>

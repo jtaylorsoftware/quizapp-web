@@ -6,7 +6,7 @@ import {
   QuizListing,
   Result,
   ResultListing,
-} from 'api'
+} from 'api/models'
 import moment from 'moment'
 import { AuthState } from 'store/auth/types'
 import { UserState } from 'store/user/types'
@@ -23,7 +23,7 @@ const username = (n: number) => `username-${n}`
 
 export const auth: AuthState = {
   token: '',
-  isAuthenticated: false
+  isAuthenticated: false,
 }
 
 export const user: UserState = {
@@ -35,8 +35,8 @@ export const user: UserState = {
     username: username(0),
     email: 'email@email.com',
     quizzes: [quizid(0)],
-    results: []
-  }
+    results: [],
+  },
 }
 
 export const quiz: QuizForm = {
@@ -50,8 +50,8 @@ export const quiz: QuizForm = {
       type: 'MultipleChoice',
       text: 'Q1',
       answers: [{ text: 'A1' }, { text: 'A2' }],
-    } as FormQuestion
-  ]
+    } as FormQuestion,
+  ],
 }
 
 export const scoredQuiz: Quiz = {
@@ -63,8 +63,13 @@ export const scoredQuiz: Quiz = {
   allowedUsers: [],
   isPublic: true,
   questions: [
-    { type: 'MultipleChoice', text: 'Q1', correctAnswer: 0, answers: [{ text: 'A1' }, { text: 'A2' }] }
-  ]
+    {
+      type: 'MultipleChoice',
+      text: 'Q1',
+      correctAnswer: 0,
+      answers: [{ text: 'A1' }, { text: 'A2' }],
+    },
+  ],
 }
 
 export const quizResults: ResultListing[] = [
@@ -76,8 +81,8 @@ export const quizResults: ResultListing[] = [
     quizTitle: 'quiz0',
     ownerUsername: username(0),
     score: 0,
-    username: username(1)
-  }
+    username: username(1),
+  },
 ]
 
 export const result: Result = {
@@ -85,11 +90,13 @@ export const result: Result = {
   date: now,
   user: userid(1),
   quiz: quizid(0),
-  answers: [{ type: 'MultipleChoice', choice: 0, isCorrect: false, correctAnswer: 1 }],
+  answers: [
+    { type: 'MultipleChoice', choice: 0, isCorrect: false, correctAnswer: 1 },
+  ],
   score: 0,
   quizTitle: 'quiz0',
   ownerUsername: username(0),
-  username: username(1)
+  username: username(1),
 }
 
 export const quizzes: QuizListing[] = [
@@ -100,6 +107,6 @@ export const quizzes: QuizListing[] = [
     expiration: expiration,
     questionCount: 1,
     resultsCount: 1,
-    isPublic: true
-  }
+    isPublic: true,
+  },
 ]

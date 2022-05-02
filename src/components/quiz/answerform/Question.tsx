@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import Icon from '@mdi/react'
 import { mdiAlertCircle } from '@mdi/js'
-import { FormQuestion } from 'api'
 import { Col, Row } from 'react-bootstrap'
 
 import MultipleChoiceInput from './MultipleChoice/Input'
 import FillInInput from './Fillin/Input'
 import { OnAnswerChanged, ResponseValue } from './onanswerchanged'
-
+import { FormQuestion } from 'api/models'
 
 type Props = {
   index: number
@@ -28,39 +27,48 @@ type BodyProps = {
 /**
  * Displays the inputs for a Question based on its type.
  */
-const QuestionBody = ({ questionIndex, question, currentAnswer, onAnswerChanged }: BodyProps) => {
+const QuestionBody = ({
+  questionIndex,
+  question,
+  currentAnswer,
+  onAnswerChanged,
+}: BodyProps) => {
   if (question.type === 'FillIn') {
-    return <FillInInput questionIndex={questionIndex} onChange={
-      (text: string) => {
-        onAnswerChanged(text, questionIndex)
-      }
-    }  />
+    return (
+      <FillInInput
+        questionIndex={questionIndex}
+        onChange={(text: string) => {
+          onAnswerChanged(text, questionIndex)
+        }}
+      />
+    )
   } else {
-    return <>
-      {question.answers.map((answer, index) => (
-        <MultipleChoiceInput
-          key={index}
-          questionIndex={questionIndex}
-          index={index}
-          text={answer.text}
-          selected={currentAnswer !== null && currentAnswer === index}
-          onChecked={() => onAnswerChanged(index, questionIndex)}
-        />
-      ))}
-    </>
+    return (
+      <>
+        {question.answers.map((answer, index) => (
+          <MultipleChoiceInput
+            key={index}
+            questionIndex={questionIndex}
+            index={index}
+            text={answer.text}
+            selected={currentAnswer !== null && currentAnswer === index}
+            onChecked={() => onAnswerChanged(index, questionIndex)}
+          />
+        ))}
+      </>
+    )
   }
 }
 
 /**
  * Displays one Question from a quiz.
  */
-const Question = (
-  {
-    index: questionIndex,
-    question,
-    highlightMissing,
-    onAnswerChanged,
-  }: Props) => {
+const Question = ({
+  index: questionIndex,
+  question,
+  highlightMissing,
+  onAnswerChanged,
+}: Props) => {
   const [answer, setAnswer] = useState<ResponseValue>()
 
   const selectAnswer: OnAnswerChanged = (answer, questionIndex) => {
@@ -76,7 +84,9 @@ const Question = (
         {answer == null && highlightMissing ? (
           <Row className='mb-2'>
             <Col className='d-flex align-items-center'>
-              <h5 className='text-danger mb-0'>Please input or choose an answer. </h5>
+              <h5 className='text-danger mb-0'>
+                Please input or choose an answer.{' '}
+              </h5>
               <Icon path={mdiAlertCircle} size={1} color='red' />
             </Col>
           </Row>
@@ -85,7 +95,8 @@ const Question = (
           questionIndex={questionIndex}
           question={question}
           currentAnswer={answer}
-          onAnswerChanged={selectAnswer} />
+          onAnswerChanged={selectAnswer}
+        />
       </Col>
     </Row>
   )

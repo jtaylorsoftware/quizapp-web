@@ -5,7 +5,7 @@ import { changeInput, fireEvent, render, screen } from 'util/test-utils'
 
 import QuizEditorForm from './QuizEditorForm'
 import moment from 'moment'
-import { QuestionType } from '../../../api'
+import { QuestionType } from 'api/models'
 
 const mockQuiz = {
   title: '',
@@ -17,10 +17,8 @@ const mockQuiz = {
 }
 
 describe('QuizEditorForm', () => {
-  const mockOnSubmit = jest.fn(() => {
-  })
-  const mockCancel = jest.fn(() => {
-  })
+  const mockOnSubmit = jest.fn(() => {})
+  const mockCancel = jest.fn(() => {})
   const renderForm = (editing?: boolean, validate?: boolean) => {
     render(
       <QuizEditorForm
@@ -29,7 +27,7 @@ describe('QuizEditorForm', () => {
         onSubmit={mockOnSubmit}
         editing={editing ?? false}
         validate={validate ?? false}
-      />,
+      />
     )
   }
 
@@ -91,21 +89,27 @@ describe('QuizEditorForm', () => {
   it('can add a MultipleChoice question when clicking "Add Question"', async () => {
     renderForm()
     await addQuestion('MultipleChoice')
-    expect(screen.queryByText(/question \d \(multiple choice\)/i)).not.toBeNull()
+    expect(
+      screen.queryByText(/question \d \(multiple choice\)/i)
+    ).not.toBeNull()
   })
 
   it('can add a FillIn question when clicking "Add Question"', async () => {
     renderForm()
     await addQuestion('FillIn')
-    expect(screen.getByText(/question \d \(fill in the blank\)/i)).not.toBeNull()
+    expect(
+      screen.getByText(/question \d \(fill in the blank\)/i)
+    ).not.toBeNull()
   })
 
   it('can input the answer to a FillIn Question', async () => {
     renderForm()
     await addQuestion('FillIn')
-    const input = await screen.findByPlaceholderText<HTMLInputElement>('Answer text...')
+    const input = await screen.findByPlaceholderText<HTMLInputElement>(
+      'Answer text...'
+    )
     const answerText = 'my answer'
-    fireEvent.change(input, { target: { value: answerText }})
+    fireEvent.change(input, { target: { value: answerText } })
     expect(input.value).toEqual(answerText)
   })
 
@@ -159,7 +163,7 @@ describe('QuizEditorForm', () => {
     const placeholder = /question prompt/i
 
     // Fill out the question text
-    for (const question of questions){
+    for (const question of questions) {
       await addQuestion()
     }
 
@@ -177,7 +181,7 @@ describe('QuizEditorForm', () => {
       allQuestions = screen.getAllByPlaceholderText(placeholder)
       for (let j = 0; j < allQuestions.length; j++) {
         expect((allQuestions[j] as HTMLInputElement).value).toEqual(
-          questions[j],
+          questions[j]
         )
       }
     }
@@ -242,7 +246,9 @@ const changeAndBlurIput = (input: HTMLElement, value: string) => {
   fireEvent.change(input, { target: { value } })
   fireEvent.blur(input)
 }
-const chooseQuestionType = async (questionType: QuestionType = 'MultipleChoice') => {
+const chooseQuestionType = async (
+  questionType: QuestionType = 'MultipleChoice'
+) => {
   const selector = await screen.findByRole('button', { expanded: false })
   fireEvent.click(selector)
   const dropdownItem = await screen.findByTestId(`dropdown-${questionType}`)

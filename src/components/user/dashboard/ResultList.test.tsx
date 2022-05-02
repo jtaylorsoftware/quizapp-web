@@ -6,7 +6,7 @@ import { render, screen } from 'util/test-utils'
 import clone from 'clone'
 
 import { quizResults } from 'mocks/state'
-import { ResultListing } from 'api'
+import { ResultListing } from 'api/models'
 
 import ResultList from './ResultList'
 
@@ -43,7 +43,7 @@ describe('ResultList', () => {
 
   it('should render whatever results are availble', () => {
     mockState.results?.push({
-      ...clone(mockState.results[0])
+      ...clone(mockState.results[0]),
     })
     renderList()
     expect(screen.queryAllByText(/Score:/).length).toEqual(

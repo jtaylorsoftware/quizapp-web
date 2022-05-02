@@ -1,4 +1,34 @@
+export interface User {
+  _id: string
+  date: string
+  username: string
+  email: string
+  quizzes: ID[]
+  results: ID[]
+}
+
+export interface UserRegistration {
+  username: string
+  email: string
+  password: string
+}
+
+export interface UserLogin {
+  username: string
+  password: string
+}
+
 export type ID = string
+
+/**
+ * Models a response where the data is just an id.
+ */
+export type IdResult = { id: string }
+
+/**
+ * A response containing a JWT.
+ */
+export type JWT = { token: string }
 
 export type FillInType = 'FillIn'
 export type MultipleChoiceType = 'MultipleChoice'
@@ -87,7 +117,7 @@ export type FormAnswer = Answer
 // https://stackoverflow.com/questions/57103834/typescript-omit-a-property-from-all-interfaces-in-a-union-but-keep-the-union-s
 type DistributiveOmit<T, K extends keyof any> = T extends any
   ? Omit<T, K>
-  : never;
+  : never
 
 // A question as part of a QuizForm that a user is interacting with as they take a Quiz.
 export type FormQuestion = DistributiveOmit<Question, 'correctAnswer'>
@@ -129,7 +159,6 @@ export interface ResultListing {
   ownerUsername: string
   username: string
 }
-
 
 // A graded FillInAnswer (a Result response)
 export interface FillInResult {

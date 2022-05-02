@@ -10,8 +10,8 @@ describe('AlertBar', () => {
       alerts: [],
       auth: {
         token: '',
-        isAuthenticated: false
-      }
+        isAuthenticated: false,
+      },
     }
     render(<AlertBar />, mockStore)
     expect(screen.getByTestId('alertbar')).toBeInTheDocument()
@@ -22,18 +22,18 @@ describe('AlertBar', () => {
         {
           id: 'alert1',
           msg: 'This is alert1',
-          type: 'success'
+          type: 'success',
         },
         {
           id: 'alert2',
           msg: 'This is alert2',
-          type: 'success'
-        }
+          type: 'success',
+        },
       ],
       auth: {
         token: '',
-        isAuthenticated: false
-      }
+        isAuthenticated: false,
+      },
     }
     render(<AlertBar />, mockStore)
 

@@ -12,13 +12,13 @@ const AnswerText = ({ defaultValue, validate, onChange }: Props) => {
   const isInvalid = validate && text.length === 0
 
   return (
-    <Row className="mb-1">
+    <Row className='mb-1'>
       <Col>
         <Form.Control
-          type="text"
-          size="sm"
+          type='text'
+          size='sm'
           className={isInvalid ? ' is-invalid' : ''}
-          onChange={e => {
+          onChange={(e) => {
             setText(e.target.value)
           }}
           onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
@@ -31,7 +31,7 @@ const AnswerText = ({ defaultValue, validate, onChange }: Props) => {
           minLength={1}
         />
         {isInvalid ? (
-          <div className="invalid-feedback">
+          <div className='invalid-feedback'>
             Please enter at least one character.
           </div>
         ) : null}

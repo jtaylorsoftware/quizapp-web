@@ -9,7 +9,11 @@ export type DropdownButtonProps = {
   onSelect: (key: string | null) => void
 }
 
-const QuestionTypeDropdownButton = ({ disabled, title, onSelect }: DropdownButtonProps) => {
+const QuestionTypeDropdownButton = ({
+  disabled,
+  title,
+  onSelect,
+}: DropdownButtonProps) => {
   return (
     <>
       <DropdownButton
@@ -17,15 +21,19 @@ const QuestionTypeDropdownButton = ({ disabled, title, onSelect }: DropdownButto
         variant='secondary'
         disabled={disabled}
         title={title}
-        onSelect={onSelect}
-      >
-        {
-          (Object.keys(displayQuestionType) as Array<keyof typeof displayQuestionType>)
-            .map((display, ind) =>
-              <Dropdown.Item key={ind} eventKey={display} data-testid={`dropdown-${displayQuestionType[display]}`}>
-                {display}
-              </Dropdown.Item>)
-        }
+        onSelect={onSelect}>
+        {(
+          Object.keys(displayQuestionType) as Array<
+            keyof typeof displayQuestionType
+          >
+        ).map((display, ind) => (
+          <Dropdown.Item
+            key={ind}
+            eventKey={display}
+            data-testid={`dropdown-${displayQuestionType[display]}`}>
+            {display}
+          </Dropdown.Item>
+        ))}
       </DropdownButton>
     </>
   )

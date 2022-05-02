@@ -6,7 +6,7 @@ import { render, screen } from 'util/test-utils'
 import clone from 'clone'
 import { quiz, result } from 'mocks/state'
 
-import { FormQuestion as QuizQuestion, ResultAnswer } from 'api'
+import { FormQuestion as QuizQuestion, ResultAnswer } from 'api/models'
 
 import ScoredQuestionList from './ScoredQuestionList'
 

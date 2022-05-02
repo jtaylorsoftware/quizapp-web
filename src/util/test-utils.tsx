@@ -20,32 +20,53 @@ const defaultMockStore = mockStore({})
 
 interface AllContextsProps {
   children: React.ReactNode
-  location: string | Partial<{ pathname: string, state?: { referrer: string } }>
+  location: string | Partial<{ pathname: string; state?: { referrer: string } }>
   history: History
   store?: MockStore
 }
 
-const AllContextsWrapper = ({ children, store, location, history }: AllContextsProps) => {
-    return (
+const AllContextsWrapper = ({
+  children,
+  store,
+  location,
+  history,
+}: AllContextsProps) => {
+  return (
     <Provider store={store != null ? mockStore(store) : defaultMockStore}>
-      <Router navigator={history} location={location}>{children}</Router>
+      <Router navigator={history} location={location}>
+        {children}
+      </Router>
     </Provider>
   )
 }
 
 const renderWithAllContexts = (
-  ui: React.ReactElement<any,
-    string
-    | ((props: any) => React.ReactElement<any, string | any | (new (props: any) => React.Component<any, any, any>)> | null)
-    | (new (props: any) => React.Component<any, any, any>)>,
+  ui: React.ReactElement<
+    any,
+    | string
+    | ((
+        props: any
+      ) => React.ReactElement<
+        any,
+        string | any | (new (props: any) => React.Component<any, any, any>)
+      > | null)
+    | (new (props: any) => React.Component<any, any, any>)
+  >,
   mockStore?: MockStore,
   history?: History,
-  initialLocation?: string | Partial<{ pathname: string, state?: { referrer: string } }>,
-  options?: Pick<RenderOptions<typeof import('@testing-library/dom/types/queries')>,
-    'container' | 'baseElement' | 'hydrate' | 'wrapper'>,
+  initialLocation?:
+    | string
+    | Partial<{ pathname: string; state?: { referrer: string } }>,
+  options?: Pick<
+    RenderOptions<typeof import('@testing-library/dom/types/queries')>,
+    'container' | 'baseElement' | 'hydrate' | 'wrapper'
+  >
 ) => {
   const Wrapper: React.FC<{}> = ({ children }) => (
-    <AllContextsWrapper store={mockStore} history={history ?? createMemoryHistory()} location={initialLocation ?? '/'}>
+    <AllContextsWrapper
+      store={mockStore}
+      history={history ?? createMemoryHistory()}
+      location={initialLocation ?? '/'}>
       {children}
     </AllContextsWrapper>
   )

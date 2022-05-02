@@ -5,7 +5,7 @@ import { fireEvent, render, screen } from 'util/test-utils'
 import { createMemoryHistory } from 'history'
 import clone from 'clone'
 
-import { ResultListing } from 'api'
+import { ResultListing } from 'api/models'
 import { quizResults } from 'mocks/state'
 
 import ResultItem from './ResultItem'

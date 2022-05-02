@@ -15,7 +15,7 @@ describe('RequireAuth', () => {
   const tokenIsExpiredMock = jest.mocked(tokenIsExpired)
   const mockAuth: AuthState = {
     token: '',
-    isAuthenticated: false
+    isAuthenticated: false,
   }
   const mockUser: UserState = {
     loading: false,
@@ -26,8 +26,8 @@ describe('RequireAuth', () => {
       username: 'username',
       email: 'email@email.com',
       quizzes: [],
-      results: []
-    }
+      results: [],
+    },
   }
   beforeEach(() => {
     tokenIsExpiredMock.mockClear()
@@ -35,7 +35,7 @@ describe('RequireAuth', () => {
 
   it('renders without crashing', () => {
     const mockStore = {
-      auth: mockAuth
+      auth: mockAuth,
     }
     render(<RequireAuth redirectTo='/login' />, mockStore)
   })
@@ -44,8 +44,8 @@ describe('RequireAuth', () => {
     const mockStore = {
       auth: {
         ...mockAuth,
-        isAuthenticated: true
-      }
+        isAuthenticated: true,
+      },
     }
     tokenIsExpiredMock.mockReturnValueOnce(true)
     const history = createMemoryHistory()
@@ -58,24 +58,29 @@ describe('RequireAuth', () => {
     const mockStore = {
       auth: {
         ...mockAuth,
-        isAuthenticated: true
+        isAuthenticated: true,
       },
-      user: mockUser
+      user: mockUser,
     }
-    render(<RequireAuth redirectTo='/login'><p>Success</p></RequireAuth>, mockStore)
-    expect(screen.queryByText("Success")).not.toBeNull()
+    render(
+      <RequireAuth redirectTo='/login'>
+        <p>Success</p>
+      </RequireAuth>,
+      mockStore
+    )
+    expect(screen.queryByText('Success')).not.toBeNull()
   })
 
   it('renders spinner if authenticated but user is loading', () => {
     const mockStore = {
       auth: {
         ...mockAuth,
-        isAuthenticated: true
+        isAuthenticated: true,
       },
       user: {
         ...mockUser,
-        loading: true
-      }
+        loading: true,
+      },
     }
     render(<RequireAuth redirectTo='/login' />, mockStore)
     expect(screen.queryByRole('status')).not.toBeNull()
@@ -83,7 +88,7 @@ describe('RequireAuth', () => {
 
   it('redirects the user if not authenticated', () => {
     const mockStore = {
-      auth: mockAuth
+      auth: mockAuth,
     }
     const history = createMemoryHistory()
     render(<RequireAuth redirectTo='/login' />, mockStore, history)

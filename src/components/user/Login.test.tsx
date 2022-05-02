@@ -8,7 +8,6 @@ import '@testing-library/jest-dom'
 
 jest.mock('store/auth/thunks')
 import { login } from 'store/auth/thunks'
-import { UserLogin } from 'store/auth/types'
 
 import clone from 'clone'
 import * as state from 'mocks/state'

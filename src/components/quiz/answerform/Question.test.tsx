@@ -7,7 +7,7 @@ import { quiz } from 'mocks/state'
 import clone from 'clone'
 
 import Question from './Question'
-import { MultipleChoiceQuestion } from '../../../api'
+import { MultipleChoiceQuestion } from 'api/models'
 
 describe('Question', () => {
   let mockState: typeof quiz
@@ -46,7 +46,9 @@ describe('Question', () => {
 
   it('renders whatever answers are given', () => {
     const questionIndex = 0
-    const question = mockState.questions[questionIndex] as MultipleChoiceQuestion
+    const question = mockState.questions[
+      questionIndex
+    ] as MultipleChoiceQuestion
     const answers = question.answers
     render(
       <Question
@@ -63,7 +65,9 @@ describe('Question', () => {
 
   it('does not display an error if an answer is selected', () => {
     const questionIndex = 0
-    const question = mockState.questions[questionIndex] as MultipleChoiceQuestion
+    const question = mockState.questions[
+      questionIndex
+    ] as MultipleChoiceQuestion
     const answers = question.answers
     render(
       <Question
@@ -80,7 +84,9 @@ describe('Question', () => {
 
   it('displays an error message if no answer is selected', () => {
     const questionIndex = 0
-    const question = mockState.questions[questionIndex] as MultipleChoiceQuestion
+    const question = mockState.questions[
+      questionIndex
+    ] as MultipleChoiceQuestion
     const answers = question.answers
     render(
       <Question

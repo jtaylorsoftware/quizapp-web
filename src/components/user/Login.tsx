@@ -6,7 +6,7 @@ import { connect, ConnectedProps } from 'react-redux'
 
 import { login } from 'store/auth/thunks'
 import { RootState } from 'store/store'
-import { ApiError } from 'api'
+import { Failure } from 'api/result'
 
 const mapState = (state: RootState) => ({
   isAuthenticated: state.auth.isAuthenticated,
@@ -33,41 +33,46 @@ interface LocationState {
 
 const Login = ({ isAuthenticated, login }: Props) => {
   const location = useLocation()
-  const referrer = (location.state as LocationState | null | undefined)?.referrer
+  const referrer = (location.state as LocationState | null | undefined)
+    ?.referrer
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const [usernameError, setUsernameError] = useState<string | null>(null)
-  const [passwordError, setPasswordError] = useState<string | null>(null)
+  const [usernameError, setUsernameError] = useState<string | undefined>(
+    undefined
+  )
+  const [passwordError, setPasswordError] = useState<string | undefined>(
+    undefined
+  )
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsernameError(null)
+    setUsernameError(undefined)
     setUsername(e.target.value)
   }
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordError(null)
+    setPasswordError(undefined)
     setPassword(e.target.value)
   }
 
-  const handleFailure = (error: ApiError | null) => {
+  const handleFailure = (error: Failure | null) => {
     if (error && error.status === 400) {
       for (const err of error.errors) {
-        if (err.username) {
-          setUsernameError(err.username)
+        if (err.field === 'username') {
+          setUsernameError(err.message)
         }
-        if (err.password) {
-          setPasswordError(err.password)
+        if (err.field === 'password') {
+          setPasswordError(err.message)
         }
       }
     }
   }
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setUsernameError(null)
-    setPasswordError(null)
-    login({ username, password }, handleFailure as (error: {} | null) => void)
+    setUsernameError(undefined)
+    setPasswordError(undefined)
+    login({ username, password }).then((result) => handleFailure(result))
   }
 
   if (isAuthenticated) {

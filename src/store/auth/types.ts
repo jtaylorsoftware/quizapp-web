@@ -5,17 +5,6 @@ export interface AuthState {
   isAuthenticated: boolean
 }
 
-export interface UserRegistration {
-  username: string
-  email: string
-  password: string
-}
-
-export interface UserLogin {
-  username: string
-  password: string
-}
-
 // User has successfully registered or logged in and is authenticated
 export const AUTH_USER = 'AUTH_USER'
 export const AUTH_ERROR = 'AUTH_ERROR'

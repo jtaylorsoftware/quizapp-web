@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 
-import { useConfirmModal, ConfirmModalProps } from 'hooks/useconfirmmodal'
+import { useConfirmModal, ConfirmModalProps } from 'hooks'
 
 type Props = {
   text: string
@@ -20,7 +20,7 @@ const DeleteButton = ({ text, onClick, confirm, modalConfig }: Props) => {
   const [Modal, , showModal] = useConfirmModal(config)
   return (
     <>
-      <Button variant="danger" size="sm" onClick={showModal}>
+      <Button variant='danger' size='sm' onClick={showModal}>
         {text}
       </Button>
       {confirm && Modal}

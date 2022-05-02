@@ -13,7 +13,7 @@ import QuestionList from './QuestionList'
 
 import { useBeforeUnload } from 'hooks'
 
-import { Quiz } from 'api'
+import { Quiz } from 'api/models'
 
 type Props = {
   defaultValue: Quiz
@@ -27,7 +27,7 @@ const colSize = {
   sm: 10,
   md: 8,
   lg: 7,
-  xl: 6
+  xl: 6,
 }
 
 /**
@@ -38,26 +38,26 @@ const QuizEditorForm = ({
   onSubmit,
   cancelSubmit,
   editing,
-  validate
+  validate,
 }: Props) => {
   const [quiz, setQuiz] = useState<Quiz>(defaultValue)
 
-  useBeforeUnload(e => {
+  useBeforeUnload((e) => {
     e.returnValue =
       'Are you sure you want to reload? Changes will not be saved.'
   })
 
   return (
     <>
-      <div className="content">
-        <Container fluid className="quiz-editor">
+      <div className='content'>
+        <Container fluid className='quiz-editor'>
           <Row>
-            <Col {...colSize} className="quiz-editor__block mx-auto">
+            <Col {...colSize} className='quiz-editor__block mx-auto'>
               <TitleEditor
                 defaultValue={quiz.title}
                 validate={validate}
-                onChange={title => {
-                  setQuiz(prev => {
+                onChange={(title) => {
+                  setQuiz((prev) => {
                     return { ...prev, title }
                   })
                 }}
@@ -65,8 +65,8 @@ const QuizEditorForm = ({
               <PublicCheckbox
                 defaultValue={quiz.isPublic}
                 validate={validate}
-                onChange={checked => {
-                  setQuiz(prev => {
+                onChange={(checked) => {
+                  setQuiz((prev) => {
                     return { ...prev, isPublic: checked }
                   })
                 }}
@@ -74,8 +74,8 @@ const QuizEditorForm = ({
               {!quiz.isPublic ? (
                 <AllowedUsersEditor
                   defaultValue={quiz.allowedUsers}
-                  onChange={users => {
-                    setQuiz(prev => {
+                  onChange={(users) => {
+                    setQuiz((prev) => {
                       return { ...prev, allowedUsers: users }
                     })
                   }}
@@ -84,39 +84,39 @@ const QuizEditorForm = ({
               <ExpirationEditor
                 defaultValue={quiz.expiration}
                 editing={editing}
-                onChange={exp => {
-                  setQuiz(prev => {
+                onChange={(exp) => {
+                  setQuiz((prev) => {
                     return { ...prev, expiration: exp }
                   })
                 }}
               />
               <QuestionList
                 questions={quiz.questions}
-                onAdd={question => {
-                  setQuiz(prev => {
+                onAdd={(question) => {
+                  setQuiz((prev) => {
                     return {
                       ...prev,
-                      questions: [...prev.questions, clone(question)]
+                      questions: [...prev.questions, clone(question)],
                     }
                   })
                 }}
-                onRemove={index => {
-                  setQuiz(prev => {
+                onRemove={(index) => {
+                  setQuiz((prev) => {
                     return {
                       ...prev,
                       questions: prev.questions.filter(
                         (_, ind) => ind !== index
-                      )
+                      ),
                     }
                   })
                 }}
                 onChange={(index, question) => {
-                  setQuiz(prev => {
+                  setQuiz((prev) => {
                     const questions = [...prev.questions]
                     questions[index] = clone(question)
                     return {
                       ...prev,
-                      questions
+                      questions,
                     }
                   })
                 }}
@@ -128,12 +128,12 @@ const QuizEditorForm = ({
         </Container>
       </div>
       <Footer>
-        <Button variant="secondary" className="ms-1" onClick={cancelSubmit}>
+        <Button variant='secondary' className='ms-1' onClick={cancelSubmit}>
           Cancel
         </Button>
         <Button
-          variant="success"
-          className="ms-1"
+          variant='success'
+          className='ms-1'
           onClick={() => {
             onSubmit(quiz)
           }}>
