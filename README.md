@@ -26,5 +26,5 @@ to localhost. The image is provided for convenience and is subject to change/may
 
 ## Related projects:
 
-- [React + Redux SPA](https://github.com/jtaylorsoftware/quizapp-web)
+- [Node.js back-end](https://github.com/jtaylorsoftware/quizapp-api)
 - [Android app](https://github.com/jtaylorsoftware/quizapp-android)
