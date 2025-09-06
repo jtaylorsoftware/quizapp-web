@@ -60,7 +60,7 @@ jobs:
       - run:
           command: npm run build
       - persist_to_workspace:
-          root: public
+          root: build
           paths:
             - '*'
   publish:
@@ -69,9 +69,9 @@ jobs:
       - aws-cli/setup:
           profile_name: default
       - attach_workspace:
-          at: public
+          at: build
       - aws-s3/copy:
-          from: public
+          from: build
           to: $S3_BUCKET
           arguments: --recursive
 
