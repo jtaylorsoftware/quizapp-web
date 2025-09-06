@@ -1,7 +1,12 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@7.1.1
+  aws-cli: circleci/aws-cli@5.4.1
+  aws-s3: circleci/aws-s3@4.1.2
+
 jobs:
-  test_and_build:
+  test_and_build_docker:
     machine:
       image: ubuntu-2004:202111-02
       docker_layer_caching: true
@@ -38,14 +43,45 @@ jobs:
           command: |
             echo "$GHCR_PAT" | docker login ghcr.io -u ${CIRCLE_PROJECT_USERNAME} --password-stdin
             docker push ghcr.io/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_BRANCH}
+  test:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm run test
+  build:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          command: npm run build
+      - persist_to_workspace:
+          root: public
+          paths:
+            - '*'
+  publish:
+    executor: aws-s3/default
+    steps:
+      - aws-cli/setup:
+          profile_name: default
+      - attach_workspace:
+          at: public
+      - aws-s3/copy:
+          from: public
+          to: $S3_BUCKET
+          arguments: --recursive
 
 workflows:
-  test_build_push:
+  test_build_push_ghcr:
     jobs:
-      - test_and_build
+      - test_and_build_docker
       - push_ghcr:
           requires:
-            - test_and_build
+            - test_and_build_docker
           context:
             - ghcr
           filters:
@@ -53,4 +89,12 @@ workflows:
               only:
                 - latest
                 - /^\d\.\d\.\d$/
-
+  test_build_publish_s3:
+    jobs:
+      - test
+      - build:
+          requires:
+            - test
+      - publish:
+          requires:
+            - build
