@@ -45,7 +45,7 @@ const PasswordForm = ({ changePassword }: Props) => {
 
   const [Modal, , showModal] = useConfirmModal({
     header: 'Confirm Changes',
-    body: 'Are you sure you want to change email?',
+    body: 'Are you sure you want to change password?',
     onConfirm: onConfirm,
   })
 
