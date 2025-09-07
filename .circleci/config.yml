@@ -21,7 +21,7 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          command: CI=false npm run build
+          command: CI=false REACT_APP_API_HOST="$API_URI" npm run build
       - persist_to_workspace:
           root: build
           paths:
