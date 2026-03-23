@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 
@@ -31,28 +31,37 @@ const RequireAuth = function ({
   children,
 }: React.PropsWithChildren<Props>) {
   const location = useLocation()
-  let isAuthenticated = auth.isAuthenticated
+  const shouldClearAuth = auth.token == null || tokenIsExpired(auth.token)
 
-  if (auth.token == null || tokenIsExpired(auth.token)) {
-    clearAuth()
-    isAuthenticated = false
-  }
+  useEffect(() => {
+    if (shouldClearAuth && auth.isAuthenticated) {
+      clearAuth()
+    }
+  }, [shouldClearAuth, auth.isAuthenticated, clearAuth])
+
+  const isAuthenticated = auth.isAuthenticated && !shouldClearAuth
+  const isUserLoading = user == null || user.loading
+  const isAlreadyAtRedirect = location.pathname === redirectTo
 
   if (isAuthenticated) {
-    if (user.loading) {
+    if (isUserLoading) {
       return <Spinner />
-    } else {
-      return <>{children}</>
     }
-  } else {
-    return (
-      <Navigate
-        to={redirectTo}
-        state={{ referrer: location.pathname }}
-        replace
-      />
-    )
+
+    return <>{children}</>
   }
+
+  if (isAlreadyAtRedirect) {
+    return null
+  }
+
+  return (
+    <Navigate
+      to={redirectTo}
+      state={{ referrer: location.pathname }}
+      replace
+    />
+  )
 }
 
 export default connector(RequireAuth)

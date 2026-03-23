@@ -2,7 +2,6 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
-import { createMemoryHistory } from 'history'
 
 import { user, auth } from 'mocks/state'
 
@@ -46,14 +45,11 @@ describe('QuizRoute', () => {
       },
     }
     const quizId = mockStore.user.user!.quizzes[0]
-    const history = createMemoryHistory()
-    history.push(`/quizzes/${quizId}`)
     render(
       <Routes>
         <Route path='/quizzes/:id' element={<QuizRoute />} />
       </Routes>,
       mockStore,
-      history,
       `/quizzes/${quizId}`
     )
     expect(screen.queryByText('QuizResultList')).not.toBeNull()
@@ -70,17 +66,13 @@ describe('QuizRoute', () => {
     const quizId = mockStore.user.user!.quizzes[0]
     mockStore.user.user!.quizzes = []
 
-    const history = createMemoryHistory()
-
     render(
       <Routes>
         <Route path='/quizzes/:id' element={<QuizRoute />} />
       </Routes>,
       mockStore,
-      history,
       `/quizzes/${quizId}`
     )
-    history.push(`/quizzes/${quizId}`)
     expect(screen.queryByText('QuizAnswerForm')).not.toBeNull()
   })
 })

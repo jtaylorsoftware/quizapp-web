@@ -1,9 +1,7 @@
 import React from 'react'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen, within } from 'util/test-utils'
-
-import { createMemoryHistory } from 'history'
+import { act, fireEvent, render, screen, within } from 'util/test-utils'
 import clone from 'clone'
 
 jest.mock('store/user/thunks')
@@ -69,13 +67,14 @@ describe('QuizItem', () => {
   })
 
   it('redirects to the quiz editor when the edit button is clicked', () => {
-    const history = createMemoryHistory()
-    render(<QuizItem quiz={mockState[0]} />, {}, history)
+    render(<QuizItem quiz={mockState[0]} />)
 
     const editBtn = screen.getByText('Edit')
-    fireEvent.click(editBtn)
+    act(() => {
+      fireEvent.click(editBtn)
+    })
 
-    expect(history.location.pathname + history.location.search).toEqual(
+    expect(screen.getByTestId('router-location').textContent).toContain(
       `/quizzes/${mockState[0]._id}/edit`
     )
   })

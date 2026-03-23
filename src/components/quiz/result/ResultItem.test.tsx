@@ -1,9 +1,7 @@
 import React from 'react'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
-
-import { createMemoryHistory } from 'history'
+import { act, fireEvent, render, screen } from 'util/test-utils'
 
 import clone from 'clone'
 import { result } from 'mocks/state'
@@ -25,11 +23,12 @@ describe('ResultItem', () => {
     expect(screen.queryByText(`Results for ${mockResult.score * 100.0}%`))
   })
   it('redirects to the result page when clicking the details button', () => {
-    const history = createMemoryHistory()
-    render(<ResultItem result={{ ...mockResult }} />, {}, history)
+    render(<ResultItem result={{ ...mockResult }} />)
     const detailsBtn = screen.getByText('Details')
-    fireEvent.click(detailsBtn)
-    expect(history.location.pathname + history.location.search).toEqual(
+    act(() => {
+      fireEvent.click(detailsBtn)
+    })
+    expect(screen.getByTestId('router-location').textContent).toContain(
       `/results?quiz=${mockResult.quiz}&user=${mockResult.user}`
     )
   })

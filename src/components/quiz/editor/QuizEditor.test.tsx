@@ -4,9 +4,7 @@ enableFetchMocks()
 import React from 'react'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen, waitFor } from 'util/test-utils'
-
-import { createMemoryHistory } from 'history'
+import { act, fireEvent, render, screen, waitFor } from 'util/test-utils'
 
 import moment from 'moment'
 import clone from 'clone'
@@ -63,10 +61,9 @@ describe('QuizEditor', () => {
   })
 
   it('redirects to /dashboard and creates an alert after successful submit', async () => {
-    const history = createMemoryHistory()
     mockUseQuiz.mockReturnValueOnce([mockQuiz, null, false])
 
-    render(<QuizEditor />, { alerts: [] }, history)
+    render(<QuizEditor />, { alerts: [] })
     fetchMock.mockResponseOnce(JSON.stringify({}), {
       status: 200,
       headers: {
@@ -75,19 +72,22 @@ describe('QuizEditor', () => {
     })
 
     const submitBtn = screen.getByText('Confirm Edits')
-    fireEvent.click(submitBtn)
+    act(() => {
+      fireEvent.click(submitBtn)
+    })
 
     await waitFor(() => {
-      expect(history.location.pathname).toEqual('/dashboard')
+      expect(screen.getByTestId('router-location').textContent).toContain(
+        '/dashboard'
+      )
       expect(mockCreateAlert).toHaveBeenCalled()
     })
   })
 
   it('shows validation errors if the submission failed', async () => {
-    const history = createMemoryHistory()
     mockUseQuiz.mockReturnValueOnce([mockQuiz, null, false])
 
-    render(<QuizEditor />, {}, history)
+    render(<QuizEditor />)
     fetchMock.mockResponseOnce(JSON.stringify({ errors: [] }), {
       status: 400,
     })

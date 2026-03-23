@@ -8,8 +8,6 @@ import {
   waitFor,
 } from 'util/test-utils'
 
-import { createMemoryHistory } from 'history'
-
 import '@testing-library/jest-dom'
 
 jest.mock('store/auth/thunks')
@@ -38,9 +36,10 @@ describe('Register', () => {
 
   it('redirects to /dashboard if user is authenticated', () => {
     mockState.auth!.isAuthenticated = true
-    const history = createMemoryHistory()
-    render(<Register />, mockState, history)
-    expect(history.location.pathname).toEqual('/dashboard')
+    render(<Register />, mockState)
+    expect(screen.getByTestId('router-location').textContent).toContain(
+      '/dashboard'
+    )
   })
 
   it('displays any errors from register callback when submitting', async () => {

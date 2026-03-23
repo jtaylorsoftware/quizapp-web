@@ -2,8 +2,6 @@ import React from 'react'
 
 import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
-
-import { createMemoryHistory } from 'history'
 jest.mock('util/jwt')
 import { tokenIsExpired } from 'util/jwt'
 
@@ -48,10 +46,9 @@ describe('RequireAuth', () => {
       },
     }
     tokenIsExpiredMock.mockReturnValueOnce(true)
-    const history = createMemoryHistory()
-    render(<RequireAuth redirectTo='/login' />, mockStore, history)
+    render(<RequireAuth redirectTo='/login' />, mockStore)
     expect(tokenIsExpiredMock).toHaveBeenCalled()
-    expect(history.location.pathname).toEqual('/login')
+    expect(screen.getByTestId('router-location').textContent).toContain('/login')
   })
 
   it('calls/renders the render prop when user is authenticated and not loading', () => {
@@ -90,8 +87,7 @@ describe('RequireAuth', () => {
     const mockStore = {
       auth: mockAuth,
     }
-    const history = createMemoryHistory()
-    render(<RequireAuth redirectTo='/login' />, mockStore, history)
-    expect(history.location.pathname).toEqual('/login')
+    render(<RequireAuth redirectTo='/login' />, mockStore)
+    expect(screen.getByTestId('router-location').textContent).toContain('/login')
   })
 })

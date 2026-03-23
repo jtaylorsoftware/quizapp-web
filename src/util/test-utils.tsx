@@ -11,8 +11,7 @@ import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { RootState } from 'store/store'
-import { MemoryRouter, Router } from 'react-router-dom'
-import { createMemoryHistory, History } from 'history'
+import { MemoryRouter, useLocation } from 'react-router-dom'
 
 type MockStore = Partial<RootState>
 const mockStore = configureStore<MockStore>([thunk])
@@ -20,22 +19,42 @@ const defaultMockStore = mockStore({})
 
 interface AllContextsProps {
   children: React.ReactNode
-  location: string | Partial<{ pathname: string; state?: { referrer: string } }>
-  history: History
+  location?:
+    | string
+    | Partial<{
+        pathname: string
+        search: string
+        hash: string
+        state: { referrer: string }
+      }>
   store?: MockStore
+}
+
+const RouterLocationProbe = () => {
+  const location = useLocation()
+  return (
+    <div data-testid='router-location'>
+      {`${location.pathname}${location.search}`}
+    </div>
+  )
 }
 
 const AllContextsWrapper = ({
   children,
   store,
   location,
-  history,
 }: AllContextsProps) => {
   return (
     <Provider store={store != null ? mockStore(store) : defaultMockStore}>
-      <Router navigator={history} location={location}>
+      <MemoryRouter
+        initialEntries={[location ?? '/']}
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}>
         {children}
-      </Router>
+        <RouterLocationProbe />
+      </MemoryRouter>
     </Provider>
   )
 }
@@ -53,20 +72,21 @@ const renderWithAllContexts = (
     | (new (props: any) => React.Component<any, any, any>)
   >,
   mockStore?: MockStore,
-  history?: History,
   initialLocation?:
     | string
-    | Partial<{ pathname: string; state?: { referrer: string } }>,
+    | Partial<{
+        pathname: string
+        search: string
+        hash: string
+        state?: { referrer: string }
+      }>,
   options?: Pick<
-    RenderOptions<typeof import('@testing-library/dom/types/queries')>,
+    RenderOptions,
     'container' | 'baseElement' | 'hydrate' | 'wrapper'
   >
 ) => {
   const Wrapper: React.FC<{}> = ({ children }) => (
-    <AllContextsWrapper
-      store={mockStore}
-      history={history ?? createMemoryHistory()}
-      location={initialLocation ?? '/'}>
+    <AllContextsWrapper store={mockStore} location={initialLocation ?? '/'}>
       {children}
     </AllContextsWrapper>
   )

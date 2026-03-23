@@ -1,8 +1,7 @@
 import React from 'react'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
-import { createMemoryHistory } from 'history'
+import { act, fireEvent, render, screen } from 'util/test-utils'
 import clone from 'clone'
 
 import { quizzes } from 'mocks/state'
@@ -33,18 +32,20 @@ describe('QuizList', () => {
   })
 
   it('redirects when clicking the create quiz button', () => {
-    const history = createMemoryHistory()
     render(
       <QuizList
         loading={mockState.loading}
         quizzes={mockState.quizzes ?? []}
       />,
-      {},
-      history
+      {}
     )
     const createBtn = screen.getByText(/create a quiz/i)
-    fireEvent.click(createBtn)
-    expect(history.location.pathname).toEqual('/quizzes/create')
+    act(() => {
+      fireEvent.click(createBtn)
+    })
+    expect(screen.getByTestId('router-location').textContent).toContain(
+      '/quizzes/create'
+    )
   })
 
   it('should display a message if no quizzes are made', () => {

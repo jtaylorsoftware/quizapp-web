@@ -1,10 +1,9 @@
 import React from 'react'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
+import { act, fireEvent, render, screen, waitFor } from 'util/test-utils'
 
 import moment from 'moment'
-import { createMemoryHistory } from 'history'
 
 jest.mock('hooks/useQuiz')
 import { useQuiz } from 'hooks/useQuiz'
@@ -29,13 +28,10 @@ describe('QuizAnswerForm', () => {
   const mockError400 = { status: 400, errors: [] }
   const mockError403 = { status: 403, errors: [] }
 
-  const history = createMemoryHistory()
-  const renderForm = () => render(<QuizAnswerForm />, { user }, history)
+  const initialLocation = '/quizzes/1234-5678'
+  const renderForm = () => render(<QuizAnswerForm />, { user }, initialLocation)
 
   beforeEach(() => {
-    if (!history.location.pathname.startsWith('/quizzes')) {
-      history.push('/quizzes/1234-5678')
-    }
     mockUseQuiz.mockReset()
     mockUseSingleResult.mockReset()
   })
@@ -106,11 +102,15 @@ describe('QuizAnswerForm', () => {
     mockUseSingleResult.mockReturnValue([null, null, false])
     renderForm()
     const cancelBtn = screen.getByText('Cancel')
-    fireEvent.click(cancelBtn)
-    expect(history.location.pathname).toEqual('/dashboard')
+    act(() => {
+      fireEvent.click(cancelBtn)
+    })
+    expect(screen.getByTestId('router-location').textContent).toContain(
+      '/dashboard'
+    )
   })
 
-  it('calls Api.results.post when clicking submit', () => {
+  it('calls Api.results.post when clicking submit', async () => {
     mockUseQuiz.mockReturnValue([mockQuiz, null, false])
     mockUseSingleResult.mockReturnValue([null, null, false])
     renderForm()
@@ -118,8 +118,17 @@ describe('QuizAnswerForm', () => {
       .mocked(API.Results.uploadResponses)
       .mockResolvedValue(new Success({ id: '12345' }, 204))
     const submitBtn = screen.getByText('Submit')
-    fireEvent.click(submitBtn)
-    expect(mockResultsPost).toHaveBeenCalled()
+
+    act(() => {
+      fireEvent.click(submitBtn)
+    })
+
+    await waitFor(() => {
+      expect(mockResultsPost).toHaveBeenCalled()
+      expect(screen.getByTestId('router-location').textContent).toContain(
+        '/dashboard'
+      )
+    })
   })
 
   it('renders the QuestionList', () => {

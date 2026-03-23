@@ -1,8 +1,7 @@
 import React from 'react'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
-import { createMemoryHistory } from 'history'
+import { act, fireEvent, render, screen } from 'util/test-utils'
 import clone from 'clone'
 
 import { ResultListing } from 'api/models'
@@ -35,11 +34,12 @@ describe('ResultItem', () => {
   })
 
   it('redirects to the results page when clicking details button', () => {
-    const history = createMemoryHistory()
-    render(<ResultItem result={result} />, {}, history)
+    render(<ResultItem result={result} />)
     const detailBtn = screen.getByText(/details/i)
-    fireEvent.click(detailBtn)
-    expect(history.location.pathname + history.location.search).toBe(
+    act(() => {
+      fireEvent.click(detailBtn)
+    })
+    expect(screen.getByTestId('router-location').textContent).toContain(
       `/results?quiz=${result.quiz}&user=${result.user}`
     )
   })

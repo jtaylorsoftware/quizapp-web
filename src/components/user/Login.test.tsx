@@ -1,8 +1,7 @@
 import React from 'react'
+import { Route, Routes } from 'react-router-dom'
 
-import { changeInput, fireEvent, render, screen } from 'util/test-utils'
-
-import { createMemoryHistory } from 'history'
+import { changeInput, fireEvent, render, screen, waitFor } from 'util/test-utils'
 
 import '@testing-library/jest-dom'
 
@@ -31,18 +30,25 @@ describe('Login', () => {
 
   // it('redirects to /dashboard if user is authenticated', () => {
   //   mockState.auth!.isAuthenticated = true
-  //   const history = createMemoryHistory()
-  //   render(<Login />, mockState, history)
-  //   expect(history.location.pathname).toEqual('/dashboard')
+  //   render(<Login />, mockState)
+  //   expect(screen.getByTestId('router-location').textContent).toContain('/dashboard')
   // })
 
-  it('redirects to referrer location if user is authenticated and referrer exists', () => {
+  it('redirects to referrer location if user is authenticated and referrer exists', async () => {
     mockState.auth!.isAuthenticated = true
-    const history = createMemoryHistory()
-    const referrer = '/myroute'
+    const referrer = '/quizzes/create'
     const location = { pathname: '/login', state: { referrer } }
-    render(<Login />, mockState, history, location)
-    expect(history.location.pathname).toEqual(referrer)
+    render(
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/quizzes/create' element={<p>Referrer destination</p>} />
+      </Routes>,
+      mockState,
+      location
+    )
+    await waitFor(() =>
+      expect(screen.getByText('Referrer destination')).toBeInTheDocument()
+    )
   })
 
   // it('displays any errors from login callback when submitting', () => {
