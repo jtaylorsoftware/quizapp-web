@@ -1,7 +1,7 @@
 import React from 'react'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
+import { render, screen } from 'util/test-utils'
 
 import DateTimePicker from './DateTimePicker'
 import moment from 'moment'

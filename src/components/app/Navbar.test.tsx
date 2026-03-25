@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
+import { render, screen } from 'util/test-utils'
 
 import Navbar from './Navbar'
 
@@ -62,7 +63,7 @@ describe('Navbar', () => {
     expect(screen.queryByText('Dashboard')).not.toBeNull()
     expect(screen.queryByText('Logout')).not.toBeNull()
   })
-  it('calls the logout function when logout is clicked', () => {
+  it('calls the logout function when logout is clicked', async () => {
     const mockStore = {
       alerts: [],
       auth: {
@@ -74,9 +75,10 @@ describe('Navbar', () => {
     render(<Navbar />, mockStore)
 
     logoutMock.mockReturnValueOnce((dispatch) => {})
+    const user = userEvent.setup()
 
     const logoutBtn = screen.getByText('Logout')
-    fireEvent.click(logoutBtn)
+    await user.click(logoutBtn)
     expect(logoutMock).toHaveBeenCalledTimes(1)
   })
 })

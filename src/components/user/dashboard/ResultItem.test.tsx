@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { act, fireEvent, render, screen } from 'util/test-utils'
+import { render, screen } from 'util/test-utils'
 import clone from 'clone'
 
 import { ResultListing } from 'api/models'
@@ -33,12 +34,11 @@ describe('ResultItem', () => {
     ).not.toBeNull()
   })
 
-  it('redirects to the results page when clicking details button', () => {
+  it('redirects to the results page when clicking details button', async () => {
     render(<ResultItem result={result} />)
+    const user = userEvent.setup()
     const detailBtn = screen.getByText(/details/i)
-    act(() => {
-      fireEvent.click(detailBtn)
-    })
+    await user.click(detailBtn)
     expect(screen.getByTestId('router-location').textContent).toContain(
       `/results?quiz=${result.quiz}&user=${result.user}`
     )

@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { act, fireEvent, render, screen } from 'util/test-utils'
+import { render, screen } from 'util/test-utils'
 
 import clone from 'clone'
 import { result } from 'mocks/state'
@@ -22,12 +23,11 @@ describe('ResultItem', () => {
     render(<ResultItem result={{ ...mockResult }} />)
     expect(screen.queryByText(`Results for ${mockResult.score * 100.0}%`))
   })
-  it('redirects to the result page when clicking the details button', () => {
+  it('redirects to the result page when clicking the details button', async () => {
     render(<ResultItem result={{ ...mockResult }} />)
+    const user = userEvent.setup()
     const detailsBtn = screen.getByText('Details')
-    act(() => {
-      fireEvent.click(detailsBtn)
-    })
+    await user.click(detailsBtn)
     expect(screen.getByTestId('router-location').textContent).toContain(
       `/results?quiz=${mockResult.quiz}&user=${mockResult.user}`
     )

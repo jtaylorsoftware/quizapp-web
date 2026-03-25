@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { act, fireEvent, render, screen } from 'util/test-utils'
+import { render, screen } from 'util/test-utils'
 import clone from 'clone'
 
 import { quizzes } from 'mocks/state'
@@ -31,7 +32,7 @@ describe('QuizList', () => {
     expect(screen.queryByRole('status')).not.toBeNull()
   })
 
-  it('redirects when clicking the create quiz button', () => {
+  it('redirects when clicking the create quiz button', async () => {
     render(
       <QuizList
         loading={mockState.loading}
@@ -39,10 +40,9 @@ describe('QuizList', () => {
       />,
       {}
     )
+    const user = userEvent.setup()
     const createBtn = screen.getByText(/create a quiz/i)
-    act(() => {
-      fireEvent.click(createBtn)
-    })
+    await user.click(createBtn)
     expect(screen.getByTestId('router-location').textContent).toContain(
       '/quizzes/create'
     )

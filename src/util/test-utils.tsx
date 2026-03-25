@@ -2,8 +2,6 @@ import React from 'react'
 import {
   render,
   RenderOptions,
-  screen,
-  fireEvent,
 } from '@testing-library/react'
 
 import { Provider } from 'react-redux'
@@ -96,11 +94,6 @@ const renderWithAllContexts = (
   })
 }
 
-const changeInput = (placeholder: string, value: string) => {
-  const input = screen.getByPlaceholderText(placeholder)
-  fireEvent.change(input, { target: { value } })
-}
-
 export * from '@testing-library/react'
 
-export { renderWithAllContexts as render, mockStore, changeInput }
+export { renderWithAllContexts as render, mockStore }

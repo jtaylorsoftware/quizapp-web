@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
+import { render, screen } from 'util/test-utils'
 
 import { quiz } from 'mocks/state'
 import clone from 'clone'
@@ -63,7 +64,7 @@ describe('Question', () => {
     )
   })
 
-  it('does not display an error if an answer is selected', () => {
+  it('does not display an error if an answer is selected', async () => {
     const questionIndex = 0
     const question = mockState.questions[
       questionIndex
@@ -77,8 +78,9 @@ describe('Question', () => {
         onAnswerChanged={() => {}}
       />
     )
+    const user = userEvent.setup()
     const answerInput = screen.getByLabelText(`1. ${answers[0].text}`)
-    fireEvent.click(answerInput)
+    await user.click(answerInput)
     expect(screen.queryByText(/please select an answer/i)).toBeNull()
   })
 

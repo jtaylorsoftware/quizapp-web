@@ -2,9 +2,10 @@ import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
 enableFetchMocks()
 
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { act, fireEvent, render, screen, waitFor } from 'util/test-utils'
+import { render, screen, waitFor } from 'util/test-utils'
 
 import moment from 'moment'
 import clone from 'clone'
@@ -50,6 +51,7 @@ describe('QuizCreator', () => {
 
   it('redirects to /dashboard and creates an alert after successful submit', async () => {
     render(<QuizCreator />, { alerts: [] })
+    const user = userEvent.setup()
     fetchMock.mockResponseOnce(JSON.stringify({ id: 'abcdef' }), {
       status: 200,
       headers: {
@@ -58,9 +60,7 @@ describe('QuizCreator', () => {
     })
 
     const submitBtn = screen.getByText('Submit')
-    act(() => {
-      fireEvent.click(submitBtn)
-    })
+    await user.click(submitBtn)
 
     await waitFor(() => {
       expect(screen.getByTestId('router-location').textContent).toContain(
@@ -72,12 +72,13 @@ describe('QuizCreator', () => {
 
   it('shows validation errors if the submission failed', async () => {
     render(<QuizCreator />)
+    const user = userEvent.setup()
     fetchMock.mockResponseOnce(JSON.stringify({ errors: [] }), {
       status: 400,
     })
 
     const submitBtn = screen.getByText('Submit')
-    fireEvent.click(submitBtn)
+    await user.click(submitBtn)
 
     await waitFor(() => {
       expect(

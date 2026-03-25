@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen, within } from 'util/test-utils'
+import { render, screen, within } from 'util/test-utils'
 
 import clone from 'clone'
 
@@ -64,13 +65,14 @@ describe('UserInfo', () => {
     expect(screen.getByText(date)).not.toBeNull()
   })
 
-  it('calls deleteQuiz when confirming modal delete button', () => {
+  it('calls deleteQuiz when confirming modal delete button', async () => {
     render(<UserInfo />, mockState)
+    const user = userEvent.setup()
 
     // Click delete and confirm the modal
-    fireEvent.click(screen.getByText(/delete account/i))
+    await user.click(screen.getByText(/delete account/i))
     const { getByText } = within(screen.getByRole('dialog'))
-    fireEvent.click(getByText(/yes, delete/i))
+    await user.click(getByText(/yes, delete/i))
 
     expect(deleteUserMock).toHaveBeenCalled()
   })

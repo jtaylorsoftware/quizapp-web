@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { act, fireEvent, render, screen, within } from 'util/test-utils'
+import { render, screen, within } from 'util/test-utils'
 import clone from 'clone'
 
 jest.mock('store/user/thunks')
@@ -66,26 +67,26 @@ describe('QuizItem', () => {
     expect(screen.queryByText(/expired/i)).not.toBeNull()
   })
 
-  it('redirects to the quiz editor when the edit button is clicked', () => {
+  it('redirects to the quiz editor when the edit button is clicked', async () => {
     render(<QuizItem quiz={mockState[0]} />)
+    const user = userEvent.setup()
 
     const editBtn = screen.getByText('Edit')
-    act(() => {
-      fireEvent.click(editBtn)
-    })
+    await user.click(editBtn)
 
     expect(screen.getByTestId('router-location').textContent).toContain(
       `/quizzes/${mockState[0]._id}/edit`
     )
   })
 
-  it('calls deleteQuiz when confirming modal delete button', () => {
+  it('calls deleteQuiz when confirming modal delete button', async () => {
     render(<QuizItem quiz={mockState[0]} />)
+    const user = userEvent.setup()
 
     // Click delete and confirm the modal
-    fireEvent.click(screen.getByText('Delete'))
+    await user.click(screen.getByText('Delete'))
     const { getByText } = within(screen.getByRole('dialog'))
-    fireEvent.click(getByText(/yes, delete/i))
+    await user.click(getByText(/yes, delete/i))
 
     expect(deleteQuizMock).toHaveBeenCalled()
   })

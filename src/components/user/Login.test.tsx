@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { changeInput, fireEvent, render, screen, waitFor } from 'util/test-utils'
+import { render, screen, waitFor } from 'util/test-utils'
 
 import '@testing-library/jest-dom'
 
@@ -75,11 +75,13 @@ describe('Login', () => {
   //   render(<Login />, mockState)
 
   //   const value = 'abc123'.repeat(2)
-  //   changeInput('Username', value)
-  //   changeInput('Password', value)
+  //   const usernameInput = screen.getByPlaceholderText('Username')
+  //   const passwordInput = screen.getByPlaceholderText('Password')
+  //   await user.type(usernameInput, value)
+  //   await user.type(passwordInput, value)
 
   //   const submitBtn = screen.getByText('Login')
-  //   fireEvent.click(submitBtn)
+  //   await user.click(submitBtn)
   //   expect(loginMock).toHaveBeenCalled()
   //   expect(screen.getByText(usernameTakenMsg)).not.toBeNull()
   //   expect(screen.queryByText(passwordInvalidMsg)).not.toBeNull()

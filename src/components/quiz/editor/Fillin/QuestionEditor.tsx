@@ -5,6 +5,36 @@ import { mdiAlertCircle } from '@mdi/js'
 import { Col, Form, Row } from 'react-bootstrap'
 import QuestionText from '../QuestionText'
 
+import { useRef } from 'react'
+
+type ImageUploadProps = {
+  onFileSelected: (file: File) => void
+}
+
+const ImageUpload = ({ onFileSelected }: ImageUploadProps) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) onFileSelected(file)
+  }
+
+  return (
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={handleChange}
+      />
+      <button onClick={() => inputRef.current?.click()}>
+        Upload Image
+      </button>
+    </>
+  )
+}
+
 type Props = {
   id: string
   label: string
@@ -26,6 +56,10 @@ const QuestionEditor = ({
 
   return (
     <div>
+      <ImageUpload onFileSelected={(file) => {
+        // Handle the selected file here
+        console.log('Selected file:', file)
+      }}/>
       <label className='d-flex align-items-center' htmlFor={id}>
         {label}
         {validate && value.correctAnswer.length === 0 ? (

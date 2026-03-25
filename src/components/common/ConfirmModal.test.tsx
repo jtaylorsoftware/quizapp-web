@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { fireEvent, render, screen } from 'util/test-utils'
+import { render, screen } from 'util/test-utils'
 
 import ConfirmModal from './ConfirmModal'
 
@@ -39,12 +40,13 @@ describe('ConfirmModal', () => {
     expect(screen.queryByText('Confirm Changes')).not.toBeNull()
   })
 
-  it('calls the button handlers when clicked', () => {
+  it('calls the button handlers when clicked', async () => {
     render(<ConfirmModal {...props} />)
+    const user = userEvent.setup()
     const cancel = screen.getByText(props.cancelText)
     const confirm = screen.getByText(props.confirmText)
-    fireEvent.click(cancel)
-    fireEvent.click(confirm)
+    await user.click(cancel)
+    await user.click(confirm)
     expect(cancelMock).toHaveBeenCalled()
     expect(confirmMock).toHaveBeenCalled()
   })

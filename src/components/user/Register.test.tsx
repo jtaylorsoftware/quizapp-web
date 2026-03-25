@@ -1,8 +1,7 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import {
-  changeInput,
-  fireEvent,
   render,
   screen,
   waitFor,
@@ -44,6 +43,7 @@ describe('Register', () => {
 
   it('displays any errors from register callback when submitting', async () => {
     mockState.auth!.isAuthenticated = false
+    const user = userEvent.setup()
 
     const usernameTakenMsg = 'Username taken'
     const passwordInvalidMsg = 'Password does not meet requirements'
@@ -63,12 +63,12 @@ describe('Register', () => {
 
     render(<Register />, mockState)
     const value = 'abc123'.repeat(2)
-    changeInput('Username', value)
-    changeInput('Password', value)
-    changeInput('Confirm Password', value)
-    changeInput('Email', value)
+    await user.type(screen.getByPlaceholderText('Username'), value)
+    await user.type(screen.getByPlaceholderText('Password'), value)
+    await user.type(screen.getByPlaceholderText('Confirm Password'), value)
+    await user.type(screen.getByPlaceholderText('Email'), value)
     const submitBtn = screen.getByText('Register')
-    fireEvent.click(submitBtn)
+    await user.click(submitBtn)
 
     expect(registerMock).toHaveBeenCalled()
 

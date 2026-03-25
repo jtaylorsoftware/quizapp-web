@@ -1,7 +1,8 @@
 import React from 'react'
+import userEvent from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
-import { act, fireEvent, render, screen, waitFor } from 'util/test-utils'
+import { render, screen, waitFor } from 'util/test-utils'
 
 import moment from 'moment'
 
@@ -97,14 +98,13 @@ describe('QuizAnswerForm', () => {
     expect(screen.queryByText(/already taken this quiz/i)).not.toBeNull()
   })
 
-  it('redirects to /dashboard if cancel is clicked', () => {
+  it('redirects to /dashboard if cancel is clicked', async () => {
     mockUseQuiz.mockReturnValue([mockQuiz, null, false])
     mockUseSingleResult.mockReturnValue([null, null, false])
     renderForm()
+    const user = userEvent.setup()
     const cancelBtn = screen.getByText('Cancel')
-    act(() => {
-      fireEvent.click(cancelBtn)
-    })
+    await user.click(cancelBtn)
     expect(screen.getByTestId('router-location').textContent).toContain(
       '/dashboard'
     )
@@ -114,14 +114,13 @@ describe('QuizAnswerForm', () => {
     mockUseQuiz.mockReturnValue([mockQuiz, null, false])
     mockUseSingleResult.mockReturnValue([null, null, false])
     renderForm()
+    const user = userEvent.setup()
     const mockResultsPost = jest
       .mocked(API.Results.uploadResponses)
       .mockResolvedValue(new Success({ id: '12345' }, 204))
     const submitBtn = screen.getByText('Submit')
 
-    act(() => {
-      fireEvent.click(submitBtn)
-    })
+    await user.click(submitBtn)
 
     await waitFor(() => {
       expect(mockResultsPost).toHaveBeenCalled()

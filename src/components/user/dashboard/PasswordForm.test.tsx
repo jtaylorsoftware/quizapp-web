@@ -1,9 +1,8 @@
 import React from 'react'
+import userEvent, { type UserEvent } from '@testing-library/user-event'
 
 import '@testing-library/jest-dom'
 import {
-  changeInput,
-  fireEvent,
   render,
   screen,
   waitFor,
@@ -28,99 +27,129 @@ describe('PasswordForm', () => {
     renderForm()
   })
 
-  it('opens the form when the change button is clicked', () => {
+  it('opens the form when the change button is clicked', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
+    await openForm(user)
     expect(getPasswordInput()).not.toBeNull()
   })
 
-  it('closes the form when the cancel button is clicked', () => {
+  it('closes the form when the cancel button is clicked', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
-    cancel()
+    await openForm(user)
+    await cancel(user)
     expect(getPasswordInput()).toBeNull()
   })
 
-  it('closes the form when the cancel button is clicked', () => {
+  it('closes the form when the cancel button is clicked', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
+    await openForm(user)
     const cancelBtn = screen.getByText('Cancel')
-    fireEvent.click(cancelBtn)
+    await user.click(cancelBtn)
     expect(getPasswordInput()).toBeNull()
   })
 
-  it('shows an error if passwords do not match', () => {
+  it('shows an error if passwords do not match', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
-    fillOutForm(newPassword, newPassword + 'foo')
-    submit()
+    await openForm(user)
+    await fillOutForm(user, newPassword, newPassword + 'foo')
+    await submit(user)
     expect(screen.getByText(/passwords do not match/i)).toBeInTheDocument()
   })
 
-  it('shows an error if first password input is empty', () => {
+  it('shows an error if first password input is empty', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
-    fillOutForm('', newPassword)
-    submit()
+    await openForm(user)
+    await fillOutForm(user, '', newPassword)
+    await submit(user)
     expect(screen.getByText(/please enter a password/i)).toBeInTheDocument()
   })
 
-  it('shows an error if confirmation input is empty', () => {
+  it('shows an error if confirmation input is empty', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
-    fillOutForm(newPassword, '')
-    submit()
+    await openForm(user)
+    await fillOutForm(user, newPassword, '')
+    await submit(user)
     expect(screen.queryByText(/please enter a password/i)).toBeInTheDocument()
   })
 
-  it('opens the confirmation modal if passwords match', () => {
+  it('opens the confirmation modal if passwords match', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
-    fillOutForm(newPassword, newPassword)
-    submit()
+    await openForm(user)
+    await fillOutForm(user, newPassword, newPassword)
+    await submit(user)
     expect(screen.queryByTestId('confirm-modal')).toBeInTheDocument()
   })
 
   it('calls changeUserPassword when modal is confirmed', async () => {
+    const user = userEvent.setup()
     renderForm()
-    openForm()
-    fillOutForm(newPassword, newPassword)
-    submit()
-    confirm()
+    await openForm(user)
+    await fillOutForm(user, newPassword, newPassword)
+    await submit(user)
+    await confirm(user)
     await waitFor(() => expect(mockChangeUserPassword).toHaveBeenCalled())
   })
 })
 
 const newPassword = 'password'
 
-const openForm = () => {
-  fireEvent.click(screen.getByText('Change Password'))
+const openForm = async (user: UserEvent) => {
+  await user.click(screen.getByText('Change Password'))
 }
 
 const getPasswordInput = () => {
   return screen.queryByPlaceholderText('New password')
 }
-const changePasswordInput = (password: string) => {
-  changeInput('New password', password)
-}
-const changeConfirmInput = (password: string) => {
-  changeInput('Confirm new password', password)
+
+const changePasswordInput = async (
+  user: UserEvent,
+  password: string
+) => {
+  const input = screen.getByPlaceholderText('New password')
+  await user.clear(input)
+  if (password)
+  {
+    await user.type(input, password)
+  }
 }
 
-const cancel = () => {
-  fireEvent.click(screen.getByText('Cancel'))
+const changeConfirmInput = async (
+  user: UserEvent,
+  password: string
+) => {
+  const input = screen.getByPlaceholderText('Confirm new password')
+  await user.clear(input)
+  if (password)
+  {
+    await user.type(input, password)
+  }
 }
 
-const submit = () => {
-  fireEvent.click(screen.getByText('Change'))
+const cancel = async (user: UserEvent) => {
+  await user.click(screen.getByText('Cancel'))
 }
 
-const confirm = () => {
+const submit = async (user: UserEvent) => {
+  await user.click(screen.getByText('Change'))
+}
+
+const confirm = async (user: UserEvent) => {
   const { getByText } = within(screen.getByRole('dialog'))
-  fireEvent.click(getByText('Confirm'))
+  await user.click(getByText('Confirm'))
 }
 
-const fillOutForm = (password: string, confirmPassword: string) => {
-  changePasswordInput(password)
-  changeConfirmInput(confirmPassword)
+const fillOutForm = async (
+  user: UserEvent,
+  password: string,
+  confirmPassword: string
+) => {
+  await changePasswordInput(user, password)
+  await changeConfirmInput(user, confirmPassword)
 }
