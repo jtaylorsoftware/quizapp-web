@@ -14,6 +14,7 @@ const mockQuiz = {
   isPublic: true,
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),
+  publishResults: true,
   questions: [],
 }
 

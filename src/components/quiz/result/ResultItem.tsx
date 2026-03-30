@@ -11,7 +11,7 @@ type Props = {
 }
 
 /**
- * Displays the brief info for a user's quiz result
+ * Displays a list of results for a quiz. This assumes the user is the quiz owner.
  */
 const ResultItem = ({
   result: { quiz: quizId, user: userId, username, score },
@@ -39,7 +39,7 @@ const ResultItem = ({
       </Row>
       <Row>
         <Col>
-          <p className='mb-1'>Score: {(score * 100.0).toFixed(2)}%</p>
+          <p className='mb-1'>Score: {(score! * 100.0).toFixed(2)}%</p>
         </Col>
       </Row>
     </>

@@ -45,6 +45,7 @@ export const quiz: QuizForm = {
   user: username(0),
   title: 'quiz0',
   expiration: expiration,
+  publishResults: true,
   questions: [
     {
       type: 'MultipleChoice',
@@ -60,6 +61,7 @@ export const scoredQuiz: Quiz = {
   user: username(0),
   title: 'quiz0',
   expiration: expiration,
+  publishResults: true,
   allowedUsers: [],
   isPublic: true,
   questions: [

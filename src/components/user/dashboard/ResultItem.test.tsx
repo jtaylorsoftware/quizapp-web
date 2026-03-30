@@ -30,8 +30,14 @@ describe('ResultItem', () => {
   it('renders the quiz score as a percentage', () => {
     render(<ResultItem result={result} />)
     expect(
-      screen.queryByText(RegExp(`${result.score * 100.0}%`))
+      screen.queryByText(RegExp(`${result.score! * 100.0}%`))
     ).not.toBeNull()
+  })
+
+  it('does not render the score when score is undefined', () => {
+    result.score = undefined
+    render(<ResultItem result={result} />)
+    expect(screen.queryByText('Score:')).toBeNull()
   })
 
   it('redirects to the results page when clicking details button', async () => {
@@ -42,5 +48,12 @@ describe('ResultItem', () => {
     expect(screen.getByTestId('router-location').textContent).toContain(
       `/results?quiz=${result.quiz}&user=${result.user}`
     )
+  })
+
+  it('renders the details button as disabled when score is undefined', async () => {
+    result.score = undefined
+    render(<ResultItem result={result} />)
+    const detailBtn = screen.getByText(/details/i)
+    expect(detailBtn).toBeDisabled()
   })
 })

@@ -21,7 +21,7 @@ describe('ResultItem', () => {
   })
   it('renders the result score as a percentage', () => {
     render(<ResultItem result={{ ...mockResult }} />)
-    expect(screen.queryByText(`Results for ${mockResult.score * 100.0}%`))
+    expect(screen.queryByText(`Results for ${mockResult.score! * 100.0}%`))
   })
   it('redirects to the result page when clicking the details button', async () => {
     render(<ResultItem result={{ ...mockResult }} />)

@@ -11,9 +11,14 @@ import ErrorPage from 'components/errors/ErrorPage'
 
 import { useQuery, useQuiz, useSingleResult } from 'hooks'
 import { createAlert } from 'store/alerts/thunks'
+import { QuizForm, Result } from 'api/models'
+import { RootState } from 'store/store'
 
+const mapState = (state: RootState) => ({
+  loggedInUsername: state.user.user?.username,
+})
 const mapDispatch = { createAlert }
-const connector = connect(undefined, mapDispatch)
+const connector = connect(mapState, mapDispatch)
 
 type Props = ConnectedProps<typeof connector>
 
@@ -24,10 +29,32 @@ const colSize = {
   xl: 6,
 }
 
+const ScoredQuiz = ({ quiz, result }: { quiz: QuizForm; result: Result }) => {
+  return (<>
+    <Row className='mb-4'>
+      <Col className='d-flex align-items-center'>
+        <h3 className='mb-0'>
+          Overall score: {(result.score! * 100.0).toFixed(2)}%
+        </h3>
+      </Col>
+    </Row>
+    <hr />
+    <Row className='mb-4'>
+      <Col className='d-flex align-items-center'>
+        <h3 className='mb-0'>Graded questions:</h3>
+      </Col>
+    </Row>
+    <ScoredQuestionList
+      questions={quiz!.questions}
+      results={result!.answers}
+    />
+  </>)
+}
+
 /**
  * Displays a single quiz result.
  */
-const QuizResult = ({ createAlert }: Props) => {
+const QuizResult = ({ createAlert, loggedInUsername }: Props) => {
   const navigate = useNavigate()
   const query = useQuery()
   const quizId = query.get('quiz')
@@ -75,23 +102,12 @@ const QuizResult = ({ createAlert }: Props) => {
                 </Col>
               </Row>
               <hr />
-              <Row className='mb-4'>
-                <Col className='d-flex align-items-center'>
-                  <h3 className='mb-0'>
-                    Overall score: {(result!.score * 100.0).toFixed(2)}%
-                  </h3>
-                </Col>
-              </Row>
-              <hr />
-              <Row className='mb-4'>
-                <Col className='d-flex align-items-center'>
-                  <h3 className='mb-0'>Graded questions:</h3>
-                </Col>
-              </Row>
-              <ScoredQuestionList
-                questions={quiz!.questions}
-                results={result!.answers}
-              />
+              {(quiz!.user !== loggedInUsername && !quiz!.publishResults) ?
+                <h3 className='mb-0'>
+                  Results for this quiz are not published.
+                </h3> :
+                <ScoredQuiz quiz={quiz!} result={result!} />
+                }
             </Col>
           </Row>
         </Container>

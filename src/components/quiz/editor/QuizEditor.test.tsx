@@ -1,5 +1,4 @@
 import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
-enableFetchMocks()
 
 import React from 'react'
 import userEvent from '@testing-library/user-event'
@@ -10,18 +9,20 @@ import { render, screen, waitFor } from 'util/test-utils'
 import moment from 'moment'
 import clone from 'clone'
 
-jest.mock('hooks/useQuiz')
 import { useQuiz } from 'hooks/useQuiz'
 
-jest.mock('store/alerts/thunks')
 import { createAlert } from 'store/alerts/thunks'
 
-jest.mock('store/user/thunks')
 import { loadUser } from 'store/user/thunks'
 
 import { Quiz } from 'api/models'
 
 import QuizEditor from './QuizEditor'
+
+enableFetchMocks()
+jest.mock('hooks/useQuiz')
+jest.mock('store/alerts/thunks')
+jest.mock('store/user/thunks')
 
 const quiz: Quiz = {
   _id: 'quizid',
@@ -30,6 +31,7 @@ const quiz: Quiz = {
   isPublic: true,
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),
+  publishResults: true,
   questions: [],
 }
 

@@ -35,6 +35,7 @@ const ResultItem = ({
             variant='primary'
             size='sm'
             className='ms-1'
+            disabled={score === undefined}
             onClick={() => goToResult()}>
             Details
           </Button>
@@ -47,7 +48,9 @@ const ResultItem = ({
       </Row>
       <Row>
         <Col>
-          <p className='mb-1'>Score: {(score * 100.0).toFixed(2)}%</p>
+          {score !== undefined ? 
+            <p className='mb-1'>Score: {(score * 100.0).toFixed(2)}%</p> : 
+            <p className='mb-1'>Results not available</p>}
         </Col>
       </Row>
     </>

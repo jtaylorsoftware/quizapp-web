@@ -5,15 +5,17 @@ import { render, screen } from 'util/test-utils'
 
 import moment from 'moment'
 
-jest.mock('hooks/useQuiz')
 import { useQuiz } from 'hooks/useQuiz'
 
-jest.mock('hooks/useResult')
 import { useResultList } from 'hooks/useResult'
 
 import { Quiz, ResultListing } from 'api/models'
 
 import QuizResultList from './QuizResultList'
+
+jest.mock('hooks/useQuiz')
+jest.mock('hooks/useResult')
+
 
 describe('QuizResultList', () => {
   const mockUseQuiz = jest.mocked(useQuiz)
@@ -25,6 +27,7 @@ describe('QuizResultList', () => {
     isPublic: true,
     allowedUsers: [],
     expiration: moment().add(1, 'd').toISOString(),
+    publishResults: true,
     questions: [],
   }
   const mockResults: ResultListing[] = [

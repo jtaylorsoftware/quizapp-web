@@ -84,6 +84,7 @@ export interface Quiz {
   results?: Result[]
   isPublic: boolean
   expiration: string
+  publishResults: boolean
 }
 
 // A brief format of a Quiz, shown to a Quiz creator. It includes extra
@@ -130,6 +131,7 @@ export interface QuizForm {
   user: string
   title: string
   expiration: string
+  publishResults: boolean
   questions: FormQuestion[]
 }
 
@@ -155,7 +157,7 @@ export interface ResultListing {
   user: string
   quiz: string
   quizTitle: string
-  score: number
+  score?: number
   ownerUsername: string
   username: string
 }
@@ -200,7 +202,7 @@ export interface Result {
   quiz: string
   quizTitle: string
   answers: ResultAnswer[]
-  score: number
+  score?: number
   ownerUsername: string
   username: string
 }

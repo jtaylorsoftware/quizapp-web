@@ -14,6 +14,7 @@ import QuestionList from './QuestionList'
 import { useBeforeUnload } from 'hooks'
 
 import { Quiz } from 'api/models'
+import PublishResultsCheckbox from './PublishResultsCheckbox'
 
 type Props = {
   defaultValue: Quiz
@@ -68,6 +69,15 @@ const QuizEditorForm = ({
                 onChange={(checked) => {
                   setQuiz((prev) => {
                     return { ...prev, isPublic: checked }
+                  })
+                }}
+              />
+              <PublishResultsCheckbox
+                defaultValue={quiz.publishResults}
+                validate={validate}
+                onChange={(checked) => {
+                  setQuiz((prev) => {
+                    return { ...prev, publishResults: checked }
                   })
                 }}
               />
