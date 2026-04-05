@@ -85,6 +85,7 @@ export interface Quiz {
   isPublic: boolean
   expiration: string
   publishResults: boolean
+  showCorrectAnswers: boolean
 }
 
 // A brief format of a Quiz, shown to a Quiz creator. It includes extra

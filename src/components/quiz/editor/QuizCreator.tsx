@@ -36,6 +36,7 @@ const QuizCreator = ({ createAlert, loadUser }: Props) => {
     date: moment().toISOString(),
     expiration: moment().add(1, 'd').toISOString(),
     publishResults: true,
+    showCorrectAnswers: true,
     questions: [],
   }
   const [submitError, setSubmitError] = useState<Failure | null>()

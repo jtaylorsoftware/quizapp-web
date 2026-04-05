@@ -6,7 +6,7 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 
 import Footer from 'components/quiz/common/Footer'
 import AllowedUsersEditor from './AllowedUsersEditor'
-import PublicCheckbox from './PublicCheckbox'
+import Checkbox from './Checkbox'
 import TitleEditor from './TitleEditor'
 import ExpirationEditor from './ExpirationEditor'
 import QuestionList from './QuestionList'
@@ -14,7 +14,6 @@ import QuestionList from './QuestionList'
 import { useBeforeUnload } from 'hooks'
 
 import { Quiz } from 'api/models'
-import PublishResultsCheckbox from './PublishResultsCheckbox'
 
 type Props = {
   defaultValue: Quiz
@@ -63,21 +62,33 @@ const QuizEditorForm = ({
                   })
                 }}
               />
-              <PublicCheckbox
+              <Checkbox
                 defaultValue={quiz.isPublic}
-                validate={validate}
+                id='publicCheckbox'
+                label='Public'
                 onChange={(checked) => {
                   setQuiz((prev) => {
                     return { ...prev, isPublic: checked }
                   })
                 }}
               />
-              <PublishResultsCheckbox
+              <Checkbox
                 defaultValue={quiz.publishResults}
-                validate={validate}
+                id='publishResultsCheckbox'
+                label='Publish Results'
                 onChange={(checked) => {
                   setQuiz((prev) => {
                     return { ...prev, publishResults: checked }
+                  })
+                }}
+              />
+              <Checkbox
+                defaultValue={quiz.showCorrectAnswers}
+                id='showCorrectAnswersCheckbox'
+                label='Show Correct Answers'
+                onChange={(checked) => {
+                  setQuiz((prev) => {
+                    return { ...prev, showCorrectAnswers: checked }
                   })
                 }}
               />

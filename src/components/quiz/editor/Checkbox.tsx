@@ -4,28 +4,29 @@ import { Row, Col, Form } from 'react-bootstrap'
 type Props = {
   defaultValue: boolean
   onChange: (checked: boolean) => void
-  validate: boolean
+  id: string
+  label: string
 }
 
-const PublishResultsCheckbox = ({ defaultValue, onChange, validate }: Props) => {
+const Checkbox = ({ defaultValue, onChange, id, label }: Props) => {
   const [checked, setChecked] = useState(defaultValue)
 
   return (
     <Row className='mb-4'>
       <Col className='d-flex align-items-center'>
         <Form.Switch
-          id='publishResultsCheckbox'
+          id={id}
           checked={checked}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
             const checked = e.target.checked
             setChecked(checked)
             onChange(checked)
           }}
-          label={'Publish Results'}
+          label={label}
         />
       </Col>
     </Row>
   )
 }
 
-export default PublishResultsCheckbox
+export default Checkbox

@@ -62,6 +62,7 @@ export const scoredQuiz: Quiz = {
   title: 'quiz0',
   expiration: expiration,
   publishResults: true,
+  showCorrectAnswers: true,
   allowedUsers: [],
   isPublic: true,
   questions: [

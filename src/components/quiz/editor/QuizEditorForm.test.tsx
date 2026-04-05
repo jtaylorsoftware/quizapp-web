@@ -15,6 +15,7 @@ const mockQuiz = {
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),
   publishResults: true,
+  showCorrectAnswers: true,
   questions: [],
 }
 
@@ -89,6 +90,51 @@ describe('QuizEditorForm', () => {
 
     // text should still be the same
     expect(screen.queryByDisplayValue(usernames)).not.toBeNull()
+  })
+
+  it('renders isPublic checkbox and updates isPublic state when toggled', async () => {
+    const user = userEvent.setup()
+    renderForm()
+    const checkbox = screen.getByLabelText(/public/i) as HTMLInputElement
+    // uncheck the box, it's checked by default (isPublic is true by default)
+    await user.click(checkbox)
+    expect(checkbox.checked).toBe(false)
+    
+    // submit the quiz and check that isPublic is false in the submitted quiz
+    await user.click(screen.getByRole('button', { name: /submit/i }))
+    expect(mockOnSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ isPublic: false })
+    )
+  })
+
+  it('renders publishResults checkbox and updates publishResults state when toggled', async () => {
+    const user = userEvent.setup()
+    renderForm()
+    const checkbox = screen.getByLabelText(/publish results/i) as HTMLInputElement
+    // uncheck the box, it's checked by default (publishResults is true by default)
+    await user.click(checkbox)
+    expect(checkbox.checked).toBe(false)
+
+    // submit the quiz and check that publishResults is false in the submitted quiz
+    await user.click(screen.getByRole('button', { name: /submit/i }))
+    expect(mockOnSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ publishResults: false })
+    )
+  })
+
+  it('renders showCorrectAnswers checkbox and updates showCorrectAnswers state when toggled', async () => {
+    const user = userEvent.setup()
+    renderForm()
+    const checkbox = screen.getByLabelText(/show correct answers/i) as HTMLInputElement
+    // uncheck the box, it's checked by default (showCorrectAnswers is true by default)
+    await user.click(checkbox)
+    expect(checkbox.checked).toBe(false)
+
+    // submit the quiz and check that showCorrectAnswers is false in the submitted quiz
+    await user.click(screen.getByRole('button', { name: /submit/i }))
+    expect(mockOnSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ showCorrectAnswers: false })
+    )
   })
 
   it('can add a MultipleChoice question when clicking "Add Question"', async () => {

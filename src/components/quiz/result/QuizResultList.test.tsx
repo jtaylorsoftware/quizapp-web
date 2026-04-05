@@ -28,6 +28,7 @@ describe('QuizResultList', () => {
     allowedUsers: [],
     expiration: moment().add(1, 'd').toISOString(),
     publishResults: true,
+    showCorrectAnswers: true,
     questions: [],
   }
   const mockResults: ResultListing[] = [

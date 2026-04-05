@@ -29,6 +29,7 @@ const quiz: Quiz = {
   allowedUsers: [],
   expiration: moment().add(1, 'd').toISOString(),
   publishResults: true,
+  showCorrectAnswers: true,
   questions: [],
 }
 
