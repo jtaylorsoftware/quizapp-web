@@ -1,6 +1,5 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import DateTimePicker from './DateTimePicker'
@@ -10,8 +9,8 @@ const momentFormat = 'MM-DD-YYYY h:mm A'
 
 describe('DateTimePicker', () => {
   const now = moment().toISOString()
-  const changeMock = jest.fn()
-  const validateMock = jest.fn(() => true)
+  const changeMock = vi.fn()
+  const validateMock = vi.fn(() => true)
   const props = {
     id: 'test-datepicker',
     defaultValue: now,

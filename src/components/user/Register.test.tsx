@@ -7,9 +7,8 @@ import {
   waitFor,
 } from 'util/test-utils'
 
-import '@testing-library/jest-dom'
 
-jest.mock('store/auth/thunks')
+vi.mock('store/auth/thunks')
 import { register } from 'store/auth/thunks'
 
 import clone from 'clone'
@@ -22,7 +21,7 @@ import { Failure } from 'api/result'
 
 describe('Register', () => {
   let mockState: Partial<RootState>
-  const registerMock = jest.mocked(register)
+  const registerMock = vi.mocked(register)
 
   beforeEach(() => {
     mockState = { auth: clone(state.auth) }

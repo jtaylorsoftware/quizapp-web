@@ -1,11 +1,10 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen, within } from 'util/test-utils'
 import clone from 'clone'
 
-jest.mock('store/user/thunks')
+vi.mock('store/user/thunks')
 import { deleteQuiz } from 'store/user/thunks'
 
 import { QuizListing } from 'api/models'
@@ -16,7 +15,7 @@ import moment from 'moment'
 import { calculateTimeDifference, createTimestamp } from 'util/date'
 
 describe('QuizItem', () => {
-  const deleteQuizMock = jest
+  const deleteQuizMock = vi
     .mocked(deleteQuiz)
     .mockReturnValue(async (dispatch) => {})
   let mockState: QuizListing[]

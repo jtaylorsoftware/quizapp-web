@@ -1,7 +1,7 @@
-import jwt_decode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 export const tokenIsExpired = (token: string) => {
-  const decoded = jwt_decode(token) as { exp: number }
+  const decoded = jwtDecode(token) as { exp: number }
   if (!decoded) {
     return true
   }

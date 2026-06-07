@@ -1,18 +1,17 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen, waitFor } from 'util/test-utils'
 
 import moment from 'moment'
 
-jest.mock('hooks/useQuiz')
+vi.mock('hooks/useQuiz')
 import { useQuiz } from 'hooks/useQuiz'
 
-jest.mock('hooks/useResult')
+vi.mock('hooks/useResult')
 import { useSingleResult } from 'hooks/useResult'
 
-jest.mock('api')
+vi.mock('api')
 import API from 'api'
 
 import { user, quiz, result } from 'mocks/state'
@@ -21,8 +20,8 @@ import QuizAnswerForm from './QuizAnswerForm'
 import { Failure, Success } from 'api/result'
 
 describe('QuizAnswerForm', () => {
-  const mockUseQuiz = jest.mocked(useQuiz)
-  const mockUseSingleResult = jest.mocked(useSingleResult)
+  const mockUseQuiz = vi.mocked(useQuiz)
+  const mockUseSingleResult = vi.mocked(useSingleResult)
   const mockQuiz = quiz
   const mockResult = result
   const mockError404 = { status: 404, errors: [] }
@@ -115,7 +114,7 @@ describe('QuizAnswerForm', () => {
     mockUseSingleResult.mockReturnValue([null, null, false])
     renderForm()
     const user = userEvent.setup()
-    const mockResultsPost = jest
+    const mockResultsPost = vi
       .mocked(API.Results.uploadResponses)
       .mockResolvedValue(new Success({ id: '12345' }, 204))
     const submitBtn = screen.getByText('Submit')

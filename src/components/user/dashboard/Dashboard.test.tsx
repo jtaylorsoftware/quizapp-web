@@ -1,6 +1,5 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import clone from 'clone'
@@ -9,6 +8,17 @@ import * as state from 'mocks/state'
 
 import Dashboard from './Dashboard'
 import { RootState } from 'store/store'
+
+vi.mock('hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('hooks')>()
+  return {
+    ...actual,
+    useDashboard: vi.fn(() => ({
+      quizzes: { loading: false, data: [] },
+      results: { loading: false, data: [] },
+    })),
+  }
+})
 
 describe('Dashboard', () => {
   let mockState: Partial<RootState>

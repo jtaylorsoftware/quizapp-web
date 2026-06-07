@@ -1,6 +1,5 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import { quiz, result } from 'mocks/state'
@@ -14,13 +13,13 @@ import clone from 'clone'
 
 import * as state from 'mocks/state'
 
-jest.mock('hooks/useQuiz')
-jest.mock('hooks/useResult')
+vi.mock('hooks/useQuiz')
+vi.mock('hooks/useResult')
 
 describe('QuizResult', () => {
   let mockState: Partial<RootState>
-  const mockUseQuiz = jest.mocked(useQuiz)
-  const mockUseSingleResult = jest.mocked(useSingleResult)
+  const mockUseQuiz = vi.mocked(useQuiz)
+  const mockUseSingleResult = vi.mocked(useSingleResult)
   const mockQuiz = quiz
   const mockResult = result
   const mockError404 = { status: 404, errors: [] }

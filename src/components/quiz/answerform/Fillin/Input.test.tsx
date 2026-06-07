@@ -1,7 +1,6 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 
 import Input from './Input'
 import { render, screen } from 'util/test-utils'

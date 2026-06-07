@@ -1,8 +1,7 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
-jest.mock('util/jwt')
+vi.mock('util/jwt')
 import { tokenIsExpired } from 'util/jwt'
 
 import RequireAuth from './RequireAuth'
@@ -10,7 +9,7 @@ import { AuthState } from 'store/auth/types'
 import { UserState } from 'store/user/types'
 
 describe('RequireAuth', () => {
-  const tokenIsExpiredMock = jest.mocked(tokenIsExpired)
+  const tokenIsExpiredMock = vi.mocked(tokenIsExpired)
   const mockAuth: AuthState = {
     token: '',
     isAuthenticated: false,

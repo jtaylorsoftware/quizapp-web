@@ -1,6 +1,5 @@
 import React from 'react'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import moment from 'moment'
@@ -13,13 +12,13 @@ import { Quiz, ResultListing } from 'api/models'
 
 import QuizResultList from './QuizResultList'
 
-jest.mock('hooks/useQuiz')
-jest.mock('hooks/useResult')
+vi.mock('hooks/useQuiz')
+vi.mock('hooks/useResult')
 
 
 describe('QuizResultList', () => {
-  const mockUseQuiz = jest.mocked(useQuiz)
-  const mockUseResultList = jest.mocked(useResultList)
+  const mockUseQuiz = vi.mocked(useQuiz)
+  const mockUseResultList = vi.mocked(useResultList)
   const mockQuiz: Quiz = {
     _id: 'quizid0',
     title: 'My Quiz',

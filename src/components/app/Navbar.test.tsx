@@ -1,16 +1,15 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import Navbar from './Navbar'
 
 import { logout } from 'store/user/thunks'
-jest.mock('store/user/thunks')
+vi.mock('store/user/thunks')
 
 describe('Navbar', () => {
-  const logoutMock = jest.mocked(logout)
+  const logoutMock = vi.mocked(logout)
 
   it('renders without crashing', () => {
     const mockStore = {

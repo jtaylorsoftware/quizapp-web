@@ -3,9 +3,8 @@ import { Route, Routes } from 'react-router-dom'
 
 import { render, screen, waitFor } from 'util/test-utils'
 
-import '@testing-library/jest-dom'
 
-jest.mock('store/auth/thunks')
+vi.mock('store/auth/thunks')
 import { login } from 'store/auth/thunks'
 
 import clone from 'clone'
@@ -16,7 +15,7 @@ import Login from './Login'
 
 describe('Login', () => {
   let mockState: Partial<RootState>
-  const loginMock = jest.mocked(login)
+  const loginMock = vi.mocked(login)
 
   beforeEach(() => {
     mockState = { auth: clone(state.auth) }

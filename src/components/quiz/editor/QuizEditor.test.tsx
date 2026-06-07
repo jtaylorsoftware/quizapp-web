@@ -1,9 +1,6 @@
-import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
-
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen, waitFor } from 'util/test-utils'
 
 import moment from 'moment'
@@ -19,10 +16,11 @@ import { Quiz } from 'api/models'
 
 import QuizEditor from './QuizEditor'
 
-enableFetchMocks()
-jest.mock('hooks/useQuiz')
-jest.mock('store/alerts/thunks')
-jest.mock('store/user/thunks')
+const mockFetch = vi.fn()
+vi.stubGlobal('fetch', mockFetch)
+vi.mock('hooks/useQuiz')
+vi.mock('store/alerts/thunks')
+vi.mock('store/user/thunks')
 
 const quiz: Quiz = {
   _id: 'quizid',
@@ -38,11 +36,11 @@ const quiz: Quiz = {
 
 describe('QuizEditor', () => {
   let mockQuiz: Quiz
-  const mockUseQuiz = jest.mocked(useQuiz).mockReturnValue([null, null, false])
-  const mockCreateAlert = jest
+  const mockUseQuiz = vi.mocked(useQuiz).mockReturnValue([null, null, false])
+  const mockCreateAlert = vi
     .mocked(createAlert)
     .mockReturnValue(async () => {})
-  const mockLoadUser = jest
+  const mockLoadUser = vi
     .mocked(loadUser)
     .mockReturnValue(async (dispatch) => {})
 
@@ -50,7 +48,7 @@ describe('QuizEditor', () => {
     mockUseQuiz.mockClear()
     mockCreateAlert.mockClear()
     mockQuiz = clone(quiz)
-    fetchMock.mockClear()
+    mockFetch.mockClear()
   })
 
   it('renders without crashing', () => {
@@ -69,12 +67,13 @@ describe('QuizEditor', () => {
 
     render(<QuizEditor />, { alerts: [] })
     const user = userEvent.setup()
-    fetchMock.mockResponseOnce(JSON.stringify({}), {
+    mockFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({}), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
       },
-    })
+    }))
 
     const submitBtn = screen.getByText('Confirm Edits')
     await user.click(submitBtn)
@@ -92,9 +91,11 @@ describe('QuizEditor', () => {
 
     render(<QuizEditor />)
     const user = userEvent.setup()
-    fetchMock.mockResponseOnce(JSON.stringify({ errors: [] }), {
-      status: 400,
-    })
+    mockFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ errors: [] }), {
+        status: 400,
+      })
+    )
 
     const submitBtn = screen.getByText('Confirm Edits')
     await user.click(submitBtn)

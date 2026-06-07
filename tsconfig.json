@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,14 +13,16 @@
     "noImplicitThis": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": "src",
-    "downlevelIteration": true,
-    "noFallthroughCasesInSwitch": true
+    "paths": {
+      "*": ["./src/*"]
+    },
+    "noFallthroughCasesInSwitch": true,
+    "types": ["node", "jest", "vite/client", "vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }

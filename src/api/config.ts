@@ -1,3 +1,3 @@
 export const config = {
-  baseUrl: `${process.env.REACT_APP_API_HOST ?? ''}`,
+  baseUrl: `${import.meta.env.VITE_API_HOST ?? ''}`,
 }

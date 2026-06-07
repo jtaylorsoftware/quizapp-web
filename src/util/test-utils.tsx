@@ -1,12 +1,9 @@
 import React from 'react'
-import {
-  render,
-  RenderOptions,
-} from '@testing-library/react'
+import { render, RenderOptions } from '@testing-library/react'
 
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import { thunk } from 'redux-thunk'
 
 import { RootState } from 'store/store'
 import { MemoryRouter, useLocation } from 'react-router-dom'
@@ -44,12 +41,7 @@ const AllContextsWrapper = ({
 }: AllContextsProps) => {
   return (
     <Provider store={store != null ? mockStore(store) : defaultMockStore}>
-      <MemoryRouter
-        initialEntries={[location ?? '/']}
-        future={{
-          v7_startTransition: true,
-          v7_relativeSplatPath: true,
-        }}>
+      <MemoryRouter initialEntries={[location ?? '/']}>
         {children}
         <RouterLocationProbe />
       </MemoryRouter>
@@ -83,7 +75,7 @@ const renderWithAllContexts = (
     'container' | 'baseElement' | 'hydrate' | 'wrapper'
   >
 ) => {
-  const Wrapper: React.FC<{}> = ({ children }) => (
+  const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <AllContextsWrapper store={mockStore} location={initialLocation ?? '/'}>
       {children}
     </AllContextsWrapper>

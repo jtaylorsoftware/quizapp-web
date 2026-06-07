@@ -1,14 +1,13 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import ConfirmModal from './ConfirmModal'
 
 describe('ConfirmModal', () => {
-  const cancelMock = jest.fn()
-  const confirmMock = jest.fn()
+  const cancelMock = vi.fn()
+  const confirmMock = vi.fn()
   const props = {
     header: 'Confirm?',
     body: 'Are you sure?',

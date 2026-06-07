@@ -1,7 +1,6 @@
 import React from 'react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import {
   render,
   screen,
@@ -12,7 +11,7 @@ import {
 import EmailForm from './EmailForm'
 
 describe('EmailForm', () => {
-  const mockChangeUserEmail = jest.fn(async (email: string) => {
+  const mockChangeUserEmail = vi.fn(async (email: string) => {
     return null
   })
 

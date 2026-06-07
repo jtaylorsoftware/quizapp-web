@@ -1,7 +1,6 @@
 import React from 'react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import {
   render,
   screen,
@@ -12,7 +11,7 @@ import {
 import PasswordForm from './PasswordForm'
 
 describe('PasswordForm', () => {
-  const mockChangeUserPassword = jest.fn(async (password) => {
+  const mockChangeUserPassword = vi.fn(async (password) => {
     return null
   })
 

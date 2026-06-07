@@ -1,9 +1,6 @@
-import fetchMock, { enableFetchMocks } from 'jest-fetch-mock'
-
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen, waitFor } from 'util/test-utils'
 
 import moment from 'moment'
@@ -17,9 +14,10 @@ import { Quiz } from 'api/models'
 
 import QuizCreator from './QuizCreator'
 
-enableFetchMocks()
-jest.mock('store/alerts/thunks')
-jest.mock('store/user/thunks')
+const mockFetch = vi.fn()
+vi.stubGlobal('fetch', mockFetch)
+vi.mock('store/alerts/thunks')
+vi.mock('store/user/thunks')
 
 const quiz: Quiz = {
   _id: 'quizid',
@@ -35,17 +33,17 @@ const quiz: Quiz = {
 
 describe('QuizCreator', () => {
   let mockQuiz: Quiz
-  const mockCreateAlert = jest
+  const mockCreateAlert = vi
     .mocked(createAlert)
     .mockReturnValue(async () => {})
-  const mockLoadUser = jest
+  const mockLoadUser = vi
     .mocked(loadUser)
     .mockReturnValue(async (dispatch) => {})
 
   beforeEach(() => {
     mockCreateAlert.mockClear()
     mockQuiz = clone(quiz)
-    fetchMock.mockClear()
+    mockFetch.mockClear()
   })
 
   it('renders without crashing', () => {
@@ -55,12 +53,13 @@ describe('QuizCreator', () => {
   it('redirects to /dashboard and creates an alert after successful submit', async () => {
     render(<QuizCreator />, { alerts: [] })
     const user = userEvent.setup()
-    fetchMock.mockResponseOnce(JSON.stringify({ id: 'abcdef' }), {
+    mockFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ id: 'abcdef' }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
       },
-    })
+    }))
 
     const submitBtn = screen.getByText('Submit')
     await user.click(submitBtn)
@@ -76,9 +75,10 @@ describe('QuizCreator', () => {
   it('shows validation errors if the submission failed', async () => {
     render(<QuizCreator />)
     const user = userEvent.setup()
-    fetchMock.mockResponseOnce(JSON.stringify({ errors: [] }), {
+    mockFetch.mockResolvedValueOnce(
+      new Response(JSON.stringify({ errors: [] }), {
       status: 400,
-    })
+    }))
 
     const submitBtn = screen.getByText('Submit')
     await user.click(submitBtn)

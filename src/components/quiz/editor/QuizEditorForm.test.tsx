@@ -1,7 +1,6 @@
 import React from 'react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen } from 'util/test-utils'
 
 import QuizEditorForm from './QuizEditorForm'
@@ -20,8 +19,8 @@ const mockQuiz = {
 }
 
 describe('QuizEditorForm', () => {
-  const mockOnSubmit = jest.fn(() => {})
-  const mockCancel = jest.fn(() => {})
+  const mockOnSubmit = vi.fn(() => {})
+  const mockCancel = vi.fn(() => {})
   const renderForm = (editing?: boolean, validate?: boolean) => {
     render(
       <QuizEditorForm

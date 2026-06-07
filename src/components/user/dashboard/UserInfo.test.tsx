@@ -1,12 +1,11 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import '@testing-library/jest-dom'
 import { render, screen, within } from 'util/test-utils'
 
 import clone from 'clone'
 
-jest.mock('store/user/thunks')
+vi.mock('store/user/thunks')
 import { deleteUser } from 'store/user/thunks'
 
 import { dateToLongLocaleString } from 'util/date'
@@ -16,7 +15,7 @@ import * as state from 'mocks/state'
 import UserInfo from './UserInfo'
 
 describe('UserInfo', () => {
-  const deleteUserMock = jest
+  const deleteUserMock = vi
     .mocked(deleteUser)
     .mockReturnValue(async (dispatch) => {})
   let mockState: typeof state
