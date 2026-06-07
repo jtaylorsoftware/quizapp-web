@@ -17,13 +17,6 @@ Required environment variables:
 
 - `REACT_APP_API_HOST` - URL where the API is being hosted
 
-## Docker
-
-The Docker image creates a Nginx server that serves the SPA at `/` and proxies paths
-starting with `/api` to the production server hosting the API. There's also a `dev`
-stage that can be used to run the React development server that will send API requests
-to localhost. The image is provided for convenience and is subject to change/may not be indicative of the production deployment.
-
 ## Related projects:
 
 - [Node.js back-end](https://github.com/jtaylorsoftware/quizapp-api)
