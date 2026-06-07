@@ -6,6 +6,30 @@ import { ThunkAction } from 'redux-thunk'
 
 import rootReducer from './reducer'
 
+export type RootState = ReturnType<typeof rootReducer>
+
+const defaultMiddleware = (getDefaultMiddleware: any) =>
+  getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [
+        'FLUSH',
+        'REHYDRATE',
+        'PAUSE',
+        'PERSIST',
+        'PURGE',
+        'REGISTER',
+      ],
+    },
+  })
+
+export const createAppStore = (preloadedState?: Partial<RootState>) =>
+  configureStore({
+    reducer: rootReducer,
+    preloadedState: preloadedState as RootState,
+    middleware: defaultMiddleware,
+    devTools: process.env.NODE_ENV !== 'production',
+  })
+
 const createStoreAndPersistor = () => {
   const rootPersistConfig = {
     key: 'root',
@@ -15,11 +39,7 @@ const createStoreAndPersistor = () => {
 
   let store = configureStore({
     reducer: persistReducer(rootPersistConfig, rootReducer),
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['FLUSH', 'REHYDRATE', 'PAUSE', 'PERSIST', 'PURGE', 'REGISTER'],
-      }
-    }),
+    middleware: defaultMiddleware,
     devTools: process.env.NODE_ENV !== 'production',
   })
 
@@ -27,7 +47,8 @@ const createStoreAndPersistor = () => {
   return { store, persistor }
 }
 
-export type RootState = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<typeof createAppStore>
+export type AppDispatch = AppStore['dispatch']
 export type Thunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,

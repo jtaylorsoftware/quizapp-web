@@ -1,28 +1,26 @@
 import React from 'react'
-import { render, RenderOptions } from '@testing-library/react'
+import {
+  render,
+  RenderOptions,
+} from '@testing-library/react'
 
 import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
-import { thunk } from 'redux-thunk'
-
-import { RootState } from 'store/store'
+import { AppStore, RootState, createAppStore } from 'store/store'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 
-type MockStore = Partial<RootState>
-const mockStore = configureStore<MockStore>([thunk])
-const defaultMockStore = mockStore({})
+type RouterLocation =
+  | string
+  | Partial<{
+      pathname: string
+      search: string
+      hash: string
+      state: { referrer: string }
+    }>
 
 interface AllContextsProps {
   children: React.ReactNode
-  location?:
-    | string
-    | Partial<{
-        pathname: string
-        search: string
-        hash: string
-        state: { referrer: string }
-      }>
-  store?: MockStore
+  location?: RouterLocation
+  store: AppStore
 }
 
 const RouterLocationProbe = () => {
@@ -40,8 +38,10 @@ const AllContextsWrapper = ({
   location,
 }: AllContextsProps) => {
   return (
-    <Provider store={store != null ? mockStore(store) : defaultMockStore}>
-      <MemoryRouter initialEntries={[location ?? '/']}>
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[location ?? '/']}
+        >
         {children}
         <RouterLocationProbe />
       </MemoryRouter>
@@ -49,43 +49,57 @@ const AllContextsWrapper = ({
   )
 }
 
+interface CustomRenderOptions extends Omit<RenderOptions, 'queries'> {
+  preloadedState?: Partial<RootState>
+  store?: AppStore
+  location?: RouterLocation
+}
+
+const normalizePreloadedState = (
+  preloadedState?: Partial<RootState>
+): Partial<RootState> => {
+  if (preloadedState == null) {
+    return {}
+  }
+
+  const normalized: Partial<RootState> = {}
+
+  if (preloadedState.alerts !== undefined) {
+    normalized.alerts = preloadedState.alerts
+  }
+
+  if (preloadedState.auth !== undefined) {
+    normalized.auth = preloadedState.auth
+  }
+
+  if (preloadedState.user !== undefined) {
+    normalized.user = preloadedState.user
+  }
+
+  return normalized
+}
+
 const renderWithAllContexts = (
-  ui: React.ReactElement<
-    any,
-    | string
-    | ((
-        props: any
-      ) => React.ReactElement<
-        any,
-        string | any | (new (props: any) => React.Component<any, any, any>)
-      > | null)
-    | (new (props: any) => React.Component<any, any, any>)
-  >,
-  mockStore?: MockStore,
-  initialLocation?:
-    | string
-    | Partial<{
-        pathname: string
-        search: string
-        hash: string
-        state?: { referrer: string }
-      }>,
-  options?: Pick<
-    RenderOptions,
-    'container' | 'baseElement' | 'hydrate' | 'wrapper'
-  >
+  ui: React.ReactNode,
+  preloadedState: Partial<RootState> = {},
+  initialLocation: RouterLocation = '/',
+  {
+    store = createAppStore(normalizePreloadedState(preloadedState)),
+    ...renderOptions
+  }: CustomRenderOptions = {}
 ) => {
   const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <AllContextsWrapper store={mockStore} location={initialLocation ?? '/'}>
+    <AllContextsWrapper store={store} location={initialLocation}>
       {children}
     </AllContextsWrapper>
   )
+
   return render(ui, {
     wrapper: Wrapper,
-    ...options,
+    ...renderOptions,
   })
 }
 
 export * from '@testing-library/react'
 
-export { renderWithAllContexts as render, mockStore }
+export { renderWithAllContexts as render }
