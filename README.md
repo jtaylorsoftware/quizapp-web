@@ -15,7 +15,7 @@ You can try out the app at https://quiznow.jtaylorsoftware.com/ (it may not alwa
 
 Required environment variables:
 
-- `REACT_APP_API_HOST` - URL where the API is being hosted
+- `VITE_API_HOST` - URL where the API is being hosted
 
 ## Related projects:
 
