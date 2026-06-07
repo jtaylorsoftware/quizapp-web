@@ -1,34 +1,20 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
 import { Button, Container, Nav, Navbar as BsNavbar } from 'react-bootstrap'
 
 import { logout } from 'store/user/thunks'
-import { RootState } from 'store/store'
-
-const mapState = (state: RootState) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-const mapDispatch = {
-  logout,
-}
-
-const connector = connect(mapState, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 /**
  * Displays the top navigation bar for the site, which is persistent across pages
- * @param {object} props
- * @param {bool} props.isAuthenticated True if user is logged in and authenticated
- * @param {function} props.logout Function to call to log user out
  */
-const Navbar = ({ isAuthenticated, logout }: Props) => {
+const Navbar = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated)
 
   const logoutToHome = () => {
-    logout()
+    dispatch(logout())
     navigate('/')
   }
   return (
@@ -73,4 +59,4 @@ const Navbar = ({ isAuthenticated, logout }: Props) => {
   )
 }
 
-export default connector(Navbar)
+export default Navbar

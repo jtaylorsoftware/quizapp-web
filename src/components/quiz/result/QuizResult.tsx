@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
 
 import { Button, Col, Container, Row } from 'react-bootstrap'
 
@@ -12,15 +11,7 @@ import ErrorPage from 'components/errors/ErrorPage'
 import { useQuery, useQuiz, useSingleResult } from 'hooks'
 import { createAlert } from 'store/alerts/thunks'
 import { QuizForm, Result } from 'api/models'
-import { RootState } from 'store/store'
-
-const mapState = (state: RootState) => ({
-  loggedInUsername: state.user.user?.username,
-})
-const mapDispatch = { createAlert }
-const connector = connect(mapState, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 const colSize = {
   sm: 10,
@@ -54,7 +45,9 @@ const ScoredQuiz = ({ quiz, result }: { quiz: QuizForm; result: Result }) => {
 /**
  * Displays a single quiz result.
  */
-const QuizResult = ({ createAlert, loggedInUsername }: Props) => {
+const QuizResult = () => {
+  const dispatch = useAppDispatch()
+  const loggedInUsername = useAppSelector((state) => state.user.user?.username)
   const navigate = useNavigate()
   const query = useQuery()
   const quizId = query.get('quiz')
@@ -70,16 +63,16 @@ const QuizResult = ({ createAlert, loggedInUsername }: Props) => {
   if (quizLoading || resultLoading) {
     return <Spinner />
   } else if (resultError && resultError.status !== 404) {
-    createAlert({
+    dispatch(createAlert({
       msg: "We couldn't load your quiz results right now.",
       type: 'danger',
-    })
+    }))
     return <ErrorPage status={resultError.status} />
   } else if (quizError) {
-    createAlert({
+    dispatch(createAlert({
       msg: "We couldn't load your quiz right now.",
       type: 'danger',
-    })
+    }))
     return <ErrorPage status={quizError.status} />
   }
 
@@ -122,4 +115,4 @@ const QuizResult = ({ createAlert, loggedInUsername }: Props) => {
   )
 }
 
-export default connector(QuizResult)
+export default QuizResult

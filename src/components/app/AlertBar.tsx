@@ -1,22 +1,14 @@
 import React from 'react'
 
-import { connect, ConnectedProps } from 'react-redux'
 import { Alert, Col, Container, Row } from 'react-bootstrap'
-
-import { RootState } from 'store/store'
-
-const mapState = (state: RootState) => ({
-  alerts: state.alerts,
-})
-
-const connector = connect(mapState)
-
-type Props = ConnectedProps<typeof connector>
+import { useAppSelector } from 'hooks'
 
 /**
  * Contains and renders Alert components
  */
-const AlertBar = ({ alerts }: Props) => {
+const AlertBar = () => {
+  const alerts = useAppSelector((state) => state.alerts)
+
   return (
     <Container data-testid='alertbar' fluid className='alertbar'>
       {alerts.map((alert) => (
@@ -30,4 +22,4 @@ const AlertBar = ({ alerts }: Props) => {
   )
 }
 
-export default connector(AlertBar)
+export default AlertBar

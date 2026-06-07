@@ -11,25 +11,16 @@ import { Failure, isSuccess } from 'api/result'
 import { useQuiz, useBeforeUnload } from 'hooks'
 import { createAlert } from 'store/alerts/thunks'
 import { loadUser } from 'store/user/thunks'
-
-import { connect, ConnectedProps } from 'react-redux'
+import { useAppDispatch } from 'hooks'
 
 import { Quiz } from 'api/models'
 import QuizEditorForm from './QuizEditorForm'
 
-const mapDispatch = {
-  createAlert,
-  loadUser,
-}
-
-const connector = connect(undefined, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
-
 /**
  * Displays forms for editing a quiz and directly handles submission of the quiz.
  */
-const QuizEditor = ({ createAlert, loadUser }: Props) => {
+const QuizEditor = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
@@ -49,16 +40,16 @@ const QuizEditor = ({ createAlert, loadUser }: Props) => {
     API.Quiz.editQuiz(quiz).then((result) => {
       if (!isSuccess(result)) {
         setSubmitError(result)
-        createAlert({
+        dispatch(createAlert({
           msg: 'Failed to create quiz - are there invalid fields?',
           type: 'danger',
-        })
+        }))
       } else {
-        createAlert({
+        dispatch(createAlert({
           msg: 'Quiz edited successfully',
           type: 'success',
-        })
-        loadUser().then(() => goToDashboard())
+        }))
+        dispatch(loadUser()).then(() => goToDashboard())
       }
     })
   }
@@ -80,4 +71,4 @@ const QuizEditor = ({ createAlert, loadUser }: Props) => {
     />
   )
 }
-export default connector(QuizEditor)
+export default QuizEditor

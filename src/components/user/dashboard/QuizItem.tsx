@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 
 import { Link, useNavigate } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
 import moment from 'moment'
 
 import { deleteQuiz } from 'store/user/thunks'
+import { useAppDispatch } from 'hooks'
 import {
   calculateTimeDifference,
   createTimestamp,
@@ -15,9 +15,7 @@ import { QuizListing } from 'api/models'
 
 import DeleteButton from './DeleteButton'
 
-const connector = connect(undefined, { deleteQuiz })
-
-type Props = ConnectedProps<typeof connector> & {
+type Props = {
   quiz: QuizListing
 }
 
@@ -26,8 +24,8 @@ type Props = ConnectedProps<typeof connector> & {
  */
 const QuizItem = ({
   quiz: { _id: id, title, expiration, date, questionCount, resultsCount },
-  deleteQuiz,
 }: Props) => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
   const goToQuizEditor = () => {
@@ -58,7 +56,7 @@ const QuizItem = ({
         <Col className='d-flex align-items-center justify-content-end'>
           <DeleteButton
             text='Delete'
-            onClick={() => deleteQuiz(id!)}
+            onClick={() => dispatch(deleteQuiz(id!))}
             confirm={true}
             modalConfig={{
               header: 'Confirm Quiz Deletion',
@@ -124,4 +122,4 @@ const QuizItem = ({
   )
 }
 
-export default connector(QuizItem)
+export default QuizItem

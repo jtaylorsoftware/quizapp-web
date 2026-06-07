@@ -2,23 +2,10 @@ import React, { useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
 import { Navigate, Link, useLocation } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
 
 import { login } from 'store/auth/thunks'
-import { RootState } from 'store/store'
 import { Failure } from 'api/result'
-
-const mapState = (state: RootState) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-const mapDispatch = {
-  login,
-}
-
-const connector = connect(mapState, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 const colSize = {
   sm: 8,
@@ -31,7 +18,9 @@ interface LocationState {
   referrer: string
 }
 
-const Login = ({ isAuthenticated, login }: Props) => {
+const Login = () => {
+  const dispatch = useAppDispatch()
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const location = useLocation()
   const referrer = (location.state as LocationState | null | undefined)
     ?.referrer
@@ -72,7 +61,7 @@ const Login = ({ isAuthenticated, login }: Props) => {
     e.preventDefault()
     setUsernameError(undefined)
     setPasswordError(undefined)
-    login({ username, password }).then((result) => handleFailure(result))
+    dispatch(login({ username, password })).then((result) => handleFailure(result))
   }
 
   if (isAuthenticated) {
@@ -131,4 +120,4 @@ const Login = ({ isAuthenticated, login }: Props) => {
   )
 }
 
-export default connector(Login)
+export default Login

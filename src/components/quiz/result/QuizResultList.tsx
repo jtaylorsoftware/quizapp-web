@@ -1,6 +1,5 @@
 import React from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
 import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap'
 
 import Footer from 'components/quiz/common/Footer'
@@ -10,14 +9,7 @@ import ResultItem from './ResultItem'
 
 import { createAlert } from 'store/alerts/thunks'
 import { useQuiz, useResultList } from 'hooks'
-
-const mapDispatch = {
-  createAlert,
-}
-
-const connector = connect(undefined, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
+import { useAppDispatch } from 'hooks'
 
 const colSize = {
   sm: 10,
@@ -29,7 +21,8 @@ const colSize = {
 /**
  * Displays a list of results belonging to a quiz. This would only be accessed by the owner of the quiz.
  */
-const QuizResultList = ({ createAlert }: Props) => {
+const QuizResultList = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
@@ -46,16 +39,16 @@ const QuizResultList = ({ createAlert }: Props) => {
   if (quizLoading || resultLoading) {
     return <Spinner />
   } else if (quizError) {
-    createAlert({
+    dispatch(createAlert({
       msg: "We couldn't load your quiz right now.",
       type: 'danger',
-    })
+    }))
     return <ErrorPage status={quizError.status} />
   } else if (resultError) {
-    createAlert({
+    dispatch(createAlert({
       msg: "We couldn't load your quiz results right now.",
       type: 'danger',
-    })
+    }))
     return <ErrorPage status={resultError.status} />
   }
 
@@ -108,4 +101,4 @@ const QuizResultList = ({ createAlert }: Props) => {
   )
 }
 
-export default connector(QuizResultList)
+export default QuizResultList

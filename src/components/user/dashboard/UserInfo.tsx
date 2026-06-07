@@ -1,53 +1,34 @@
 import React, { useCallback } from 'react'
 import { Row, Col } from 'react-bootstrap'
 
-import { connect, ConnectedProps } from 'react-redux'
-
 import {
   deleteUser,
   changeUserEmail,
   changeUserPassword,
 } from 'store/user/thunks'
 import { dateToLongLocaleString } from 'util/date'
-import { RootState } from 'store/store'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 import PasswordForm from './PasswordForm'
 import EmailForm from './EmailForm'
 import DeleteButton from './DeleteButton'
 
-const mapState = (state: RootState) => ({
-  user: state.user.user,
-})
-
-const mapDispatch = {
-  deleteUser,
-  changeUserEmail,
-  changeUserPassword,
-}
-
-const connector = connect(mapState, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
-
 /**
  * Displays the User's info to a dashboard block. Allows editing of password and email
  * through child components.
  */
-const UserInfo = ({
-  user,
-  changeUserEmail,
-  changeUserPassword,
-  deleteUser,
-}: Props) => {
+const UserInfo = () => {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.user.user)
   const { username, email, date } = user!
   const dateString = dateToLongLocaleString(date)
   const changeEmail = useCallback(
-    (email: string) => changeUserEmail(email),
-    [changeUserEmail]
+    (email: string) => dispatch(changeUserEmail(email)),
+    [dispatch]
   )
   const changePassword = useCallback(
-    (password: string) => changeUserPassword(password),
-    [changeUserPassword]
+    (password: string) => dispatch(changeUserPassword(password)),
+    [dispatch]
   )
   return (
     <>
@@ -79,7 +60,7 @@ const UserInfo = ({
         <Col>
           <DeleteButton
             text='Delete Account'
-            onClick={() => deleteUser()}
+            onClick={() => dispatch(deleteUser())}
             confirm={true}
             modalConfig={{
               header: 'Confirm Account Deletion',
@@ -93,4 +74,4 @@ const UserInfo = ({
   )
 }
 
-export default connector(UserInfo)
+export default UserInfo

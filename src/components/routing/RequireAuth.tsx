@@ -1,43 +1,31 @@
 import React, { useEffect } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
 
 import Spinner from 'components/common/Spinner'
 import { clearAuth } from 'store/auth/thunks'
 
 import { tokenIsExpired } from 'util/jwt'
-import { RootState } from 'store/store'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
-const mapState = (state: RootState) => ({
-  auth: state.auth,
-  user: state.user,
-})
-
-const mapDispatch = {
-  clearAuth,
-}
-
-const connector = connect(mapState, mapDispatch)
-
-type Props = ConnectedProps<typeof connector> & {
+type Props = {
   redirectTo: string
 }
 
 const RequireAuth = function ({
-  auth,
-  user,
-  clearAuth,
   redirectTo,
   children,
 }: React.PropsWithChildren<Props>) {
+  const dispatch = useAppDispatch()
+  const auth = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.user)
   const location = useLocation()
   const shouldClearAuth = auth.token == null || tokenIsExpired(auth.token)
 
   useEffect(() => {
     if (shouldClearAuth && auth.isAuthenticated) {
-      clearAuth()
+      dispatch(clearAuth())
     }
-  }, [shouldClearAuth, auth.isAuthenticated, clearAuth])
+  }, [shouldClearAuth, auth.isAuthenticated, dispatch])
 
   const isAuthenticated = auth.isAuthenticated && !shouldClearAuth
   const isUserLoading = user == null || user.loading
@@ -64,4 +52,4 @@ const RequireAuth = function ({
   )
 }
 
-export default connector(RequireAuth)
+export default RequireAuth

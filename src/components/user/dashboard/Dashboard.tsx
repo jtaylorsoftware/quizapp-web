@@ -1,23 +1,12 @@
 import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 
-import { connect, ConnectedProps } from 'react-redux'
-
-import { RootState } from 'store/store'
-import { useDashboard } from 'hooks'
+import { useAppSelector, useDashboard } from 'hooks'
 
 import UserInfo from './UserInfo'
 import Spinner from 'components/common/Spinner'
 import QuizList from './QuizList'
 import ResultList from './ResultList'
-
-const mapState = (state: RootState) => ({
-  user: state.user,
-})
-
-const connector = connect(mapState)
-
-type Props = ConnectedProps<typeof connector>
 
 const colSize = {
   sm: 10,
@@ -29,7 +18,8 @@ const colSize = {
 /**
  * Dashboard for a user that shows their info and quizzes
  */
-const Dashboard = ({ user }: Props) => {
+const Dashboard = () => {
+  const user = useAppSelector((state) => state.user)
   const data = useDashboard(user.user)
   return user.loading ? (
     <Spinner />
@@ -62,4 +52,4 @@ const Dashboard = ({ user }: Props) => {
   )
 }
 
-export default connector(Dashboard)
+export default Dashboard

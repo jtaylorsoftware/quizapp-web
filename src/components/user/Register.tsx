@@ -1,24 +1,11 @@
 import React, { useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 
-import { connect, ConnectedProps } from 'react-redux'
 import { Navigate, Link } from 'react-router-dom'
 
 import { register } from 'store/auth/thunks'
-import { RootState } from 'store/store'
 import { Failure } from 'api/result'
-
-const mapState = (state: RootState) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-const mapDispatch = {
-  register,
-}
-
-const connector = connect(mapState, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 type FormError = {
   username?: string
@@ -35,7 +22,9 @@ const colSize = {
 /**
  * Handles user registration through a form.
  */
-const Register = ({ isAuthenticated, register }: Props) => {
+const Register = () => {
+  const dispatch = useAppDispatch()
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [passwordInput, setPasswordInput] = useState({
@@ -91,7 +80,7 @@ const Register = ({ isAuthenticated, register }: Props) => {
     e.preventDefault()
     if (password === passwordConfirm) {
       setFormError({ password: undefined })
-      register({ username, email, password }).then(handleFailure)
+      dispatch(register({ username, email, password })).then(handleFailure)
     } else {
       setFormError({
         password: 'Passwords do not match.',
@@ -197,4 +186,4 @@ const Register = ({ isAuthenticated, register }: Props) => {
   )
 }
 
-export default connector(Register)
+export default Register

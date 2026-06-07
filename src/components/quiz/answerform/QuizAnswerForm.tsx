@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
-import { connect, ConnectedProps } from 'react-redux'
 
 import { Button, Col, Container, Row } from 'react-bootstrap'
 
@@ -13,7 +12,7 @@ import QuizTakenError from './QuizTakenError'
 import QuizExpiredError from './QuizExpiredError'
 
 import { createAlert } from 'store/alerts/thunks'
-import { RootState } from 'store/store'
+import { useAppDispatch, useAppSelector } from 'hooks'
 
 import { isDateInPast } from 'util/date'
 
@@ -23,22 +22,12 @@ import { ResponseValue } from './onanswerchanged'
 import { Failure, isSuccess } from 'api/result'
 import { FormResponse } from 'api/models'
 
-const mapState = (state: RootState) => ({
-  userId: state.user.user?._id,
-})
-
-const mapDispatch = {
-  createAlert,
-}
-
-const connector = connect(mapState, mapDispatch)
-
-type Props = ConnectedProps<typeof connector>
-
 /**
  * Displays a form for a user to take/answer a quiz.
  */
-const QuizAnswerForm = ({ userId, createAlert }: Props) => {
+const QuizAnswerForm = () => {
+  const dispatch = useAppDispatch()
+  const userId = useAppSelector((state) => state.user.user?._id)
   const navigate = useNavigate()
   const { id: quizId } = useParams<{ id: string }>()
 
@@ -75,16 +64,16 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
   const submitAnswers = () => {
     API.Results.uploadResponses(quizId!, responses.current!).then((result) => {
       if (!isSuccess(result)) {
-        createAlert({
+        dispatch(createAlert({
           msg: 'Failed to submit answers - are there invalid or missing answers?',
           type: 'danger',
-        })
+        }))
         setSubmitError(result)
       } else {
-        createAlert({
+        dispatch(createAlert({
           msg: 'Quiz answers submitted successfully',
           type: 'success',
-        })
+        }))
         goToDashboard()
       }
     })
@@ -147,4 +136,4 @@ const QuizAnswerForm = ({ userId, createAlert }: Props) => {
   )
 }
 
-export default connector(QuizAnswerForm)
+export default QuizAnswerForm

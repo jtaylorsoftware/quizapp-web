@@ -8,25 +8,25 @@ import rootReducer from './reducer'
 
 export type RootState = ReturnType<typeof rootReducer>
 
-const defaultMiddleware = (getDefaultMiddleware: any) =>
-  getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [
-        'FLUSH',
-        'REHYDRATE',
-        'PAUSE',
-        'PERSIST',
-        'PURGE',
-        'REGISTER',
-      ],
-    },
-  })
+const ignoredPersistActions = [
+  'FLUSH',
+  'REHYDRATE',
+  'PAUSE',
+  'PERSIST',
+  'PURGE',
+  'REGISTER',
+]
 
 export const createAppStore = (preloadedState?: Partial<RootState>) =>
   configureStore({
     reducer: rootReducer,
     preloadedState: preloadedState as RootState,
-    middleware: defaultMiddleware,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ignoredPersistActions,
+        },
+      }),
     devTools: process.env.NODE_ENV !== 'production',
   })
 
@@ -39,7 +39,12 @@ const createStoreAndPersistor = () => {
 
   let store = configureStore({
     reducer: persistReducer(rootPersistConfig, rootReducer),
-    middleware: defaultMiddleware,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: ignoredPersistActions,
+        },
+      }),
     devTools: process.env.NODE_ENV !== 'production',
   })
 
