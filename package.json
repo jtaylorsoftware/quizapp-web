@@ -6,6 +6,7 @@
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
     "@redux-devtools/extension": "^4.0.0",
+    "@reduxjs/toolkit": "^2.12.0",
     "bootstrap": "^5.3.8",
     "clone": "^2.1.2",
     "flatpickr": "^4.6.13",
@@ -18,7 +19,6 @@
     "react-dom": "^19.2.6",
     "react-redux": "^9.3.0",
     "react-router-dom": "^7.16.0",
-    "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^3.1.0",
     "uuid": "^14.0.0"

@@ -1,5 +1,5 @@
 import { Thunk } from '../store'
-import { setAlert, clearAlert } from './actions'
+import { setAlert, clearAlert } from './slice'
 import { Alert } from './types'
 import { v4 as uuidv4 } from 'uuid'
 

@@ -1,9 +1,8 @@
-import { createStore, applyMiddleware, Action } from 'redux'
+import { configureStore, Action } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
-import { thunk, ThunkAction } from 'redux-thunk'
-import { composeWithDevTools } from '@redux-devtools/extension'
+import { ThunkAction } from 'redux-thunk'
 
 import rootReducer from './reducer'
 
@@ -14,16 +13,19 @@ const createStoreAndPersistor = () => {
     blacklist: ['alerts'],
   }
 
-  let store = createStore(
-    persistReducer<RootState>(rootPersistConfig, rootReducer),
-    {},
-    composeWithDevTools(applyMiddleware(thunk))
-  )
+  let store = configureStore({
+    reducer: persistReducer(rootPersistConfig, rootReducer),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['FLUSH', 'REHYDRATE', 'PAUSE', 'PERSIST', 'PURGE', 'REGISTER'],
+      }
+    }),
+    devTools: process.env.NODE_ENV !== 'production',
+  })
+
   let persistor = persistStore(store)
   return { store, persistor }
 }
-
-export default createStoreAndPersistor
 
 export type RootState = ReturnType<typeof rootReducer>
 export type Thunk<ReturnType = void> = ThunkAction<
@@ -32,3 +34,5 @@ export type Thunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >
+
+export default createStoreAndPersistor

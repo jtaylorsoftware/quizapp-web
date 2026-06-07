@@ -4,7 +4,7 @@ import { Failure, isSuccess } from 'api/result'
 import { createAlert } from '../alerts/thunks'
 import { Thunk } from '../store'
 import { loadUser } from '../user/thunks'
-import { clearAuthUser, setAuthUser } from './actions'
+import { clearAuthUser, setAuthUser } from './slice'
 
 /**
  * Registers a new User with the server.
@@ -20,6 +20,7 @@ export function register({
     try {
       const result = await API.User.register({ username, email, password })
       if (isSuccess(result)) {
+        localStorage.setItem('token', result.data.token)
         dispatch(setAuthUser(result.data.token))
         dispatch(loadUser())
         dispatch(
@@ -30,6 +31,7 @@ export function register({
         )
         return null
       } else {
+        localStorage.removeItem('token')
         dispatch(clearAuthUser())
         return result
       }
@@ -55,6 +57,7 @@ export function login({
     try {
       const result = await API.User.login({ username, password })
       if (isSuccess(result)) {
+        localStorage.setItem('token', result.data.token)
         dispatch(setAuthUser(result.data.token))
         dispatch(loadUser())
         dispatch(
@@ -65,6 +68,7 @@ export function login({
         )
         return null
       } else {
+        localStorage.removeItem('token')
         dispatch(clearAuthUser())
         return result
       }
@@ -77,4 +81,7 @@ export function login({
 /**
  * Clears the auth data (token, isAuthenticated)
  */
-export const clearAuth = (): Thunk => (dispatch) => dispatch(clearAuthUser())
+export const clearAuth = (): Thunk => (dispatch) => {
+  localStorage.removeItem('token')
+  dispatch(clearAuthUser())
+}

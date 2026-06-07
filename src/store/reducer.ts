@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from '@reduxjs/toolkit'
 
-import { alertReducer as alerts } from './alerts/reducers'
-import { authReducer as auth } from './auth/reducers'
-import { userReducer as user } from './user/reducers'
+import { default as alerts } from './alerts/slice'
+import { default as auth } from './auth/slice'
+import { default as user } from './user/slice'
 
 const rootReducer = combineReducers({
   alerts,

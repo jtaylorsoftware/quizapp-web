@@ -14,7 +14,7 @@ import {
   loadUser as loadUserAction,
   loadUserError,
   logoutUser,
-} from './actions'
+} from './slice'
 
 /**
  * Loads data for the User represented by the current JWT.
