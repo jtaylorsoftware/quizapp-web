@@ -47,7 +47,9 @@ describe('RequireAuth', () => {
     tokenIsExpiredMock.mockReturnValueOnce(true)
     render(<RequireAuth redirectTo='/login' />, mockStore)
     expect(tokenIsExpiredMock).toHaveBeenCalled()
-    expect(screen.getByTestId('router-location').textContent).toContain('/login')
+    expect(screen.getByTestId('router-location').textContent).toContain(
+      '/login'
+    )
   })
 
   it('calls/renders the render prop when user is authenticated and not loading', () => {
@@ -87,6 +89,8 @@ describe('RequireAuth', () => {
       auth: mockAuth,
     }
     render(<RequireAuth redirectTo='/login' />, mockStore)
-    expect(screen.getByTestId('router-location').textContent).toContain('/login')
+    expect(screen.getByTestId('router-location').textContent).toContain(
+      '/login'
+    )
   })
 })

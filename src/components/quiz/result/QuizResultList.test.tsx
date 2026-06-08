@@ -15,7 +15,6 @@ import QuizResultList from './QuizResultList'
 vi.mock('hooks/useQuiz')
 vi.mock('hooks/useResult')
 
-
 describe('QuizResultList', () => {
   const mockUseQuiz = vi.mocked(useQuiz)
   const mockUseResultList = vi.mocked(useResultList)

@@ -1,12 +1,7 @@
 import React from 'react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
 
-import {
-  render,
-  screen,
-  waitFor,
-  within,
-} from 'util/test-utils'
+import { render, screen, waitFor, within } from 'util/test-utils'
 
 import EmailForm from './EmailForm'
 
@@ -84,10 +79,7 @@ const getEmailInput = () => {
   return screen.queryByPlaceholderText('New email') as Element
 }
 
-const changeEmailInput = async (
-  user: UserEvent,
-  email: string
-) => {
+const changeEmailInput = async (user: UserEvent, email: string) => {
   const input = screen.getByPlaceholderText('New email')
   await user.clear(input)
   await user.type(input, email)

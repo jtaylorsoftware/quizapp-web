@@ -98,7 +98,7 @@ describe('QuizEditorForm', () => {
     // uncheck the box, it's checked by default (isPublic is true by default)
     await user.click(checkbox)
     expect(checkbox.checked).toBe(false)
-    
+
     // submit the quiz and check that isPublic is false in the submitted quiz
     await user.click(screen.getByRole('button', { name: /submit/i }))
     expect(mockOnSubmit).toHaveBeenCalledWith(
@@ -109,7 +109,9 @@ describe('QuizEditorForm', () => {
   it('renders publishResults checkbox and updates publishResults state when toggled', async () => {
     const user = userEvent.setup()
     renderForm()
-    const checkbox = screen.getByLabelText(/publish results/i) as HTMLInputElement
+    const checkbox = screen.getByLabelText(
+      /publish results/i
+    ) as HTMLInputElement
     // uncheck the box, it's checked by default (publishResults is true by default)
     await user.click(checkbox)
     expect(checkbox.checked).toBe(false)
@@ -124,7 +126,9 @@ describe('QuizEditorForm', () => {
   it('renders showCorrectAnswers checkbox and updates showCorrectAnswers state when toggled', async () => {
     const user = userEvent.setup()
     renderForm()
-    const checkbox = screen.getByLabelText(/show correct answers/i) as HTMLInputElement
+    const checkbox = screen.getByLabelText(
+      /show correct answers/i
+    ) as HTMLInputElement
     // uncheck the box, it's checked by default (showCorrectAnswers is true by default)
     await user.click(checkbox)
     expect(checkbox.checked).toBe(false)
@@ -158,9 +162,8 @@ describe('QuizEditorForm', () => {
     const user = userEvent.setup()
     renderForm()
     await addQuestion(user, 'FillIn')
-    const input = await screen.findByPlaceholderText<HTMLInputElement>(
-      'Answer text...'
-    )
+    const input =
+      await screen.findByPlaceholderText<HTMLInputElement>('Answer text...')
     const answerText = 'my answer'
     await user.type(input, answerText)
     expect(input.value).toEqual(answerText)
@@ -298,24 +301,15 @@ const addQuestion = async (
   await user.click(screen.getByText('Add Question'))
 }
 
-const deleteQuestion = async (
-  user: UserEvent,
-  index: number
-) => {
+const deleteQuestion = async (user: UserEvent, index: number) => {
   await user.click(screen.getAllByText('Delete Question')[index])
 }
 
-const addAnswerToQuestion = async (
-  user: UserEvent,
-  index: number
-) => {
+const addAnswerToQuestion = async (user: UserEvent, index: number) => {
   await user.click(screen.getAllByText('Add Answer')[index])
 }
 
-const deleteAnswer = async (
-  user: UserEvent,
-  index: number
-) => {
+const deleteAnswer = async (user: UserEvent, index: number) => {
   await user.click(screen.getAllByText('Delete')[index])
 }
 

@@ -39,16 +39,20 @@ const QuizResultList = () => {
   if (quizLoading || resultLoading) {
     return <Spinner />
   } else if (quizError) {
-    dispatch(createAlert({
-      msg: "We couldn't load your quiz right now.",
-      type: 'danger',
-    }))
+    dispatch(
+      createAlert({
+        msg: "We couldn't load your quiz right now.",
+        type: 'danger',
+      })
+    )
     return <ErrorPage status={quizError.status} />
   } else if (resultError) {
-    dispatch(createAlert({
-      msg: "We couldn't load your quiz results right now.",
-      type: 'danger',
-    }))
+    dispatch(
+      createAlert({
+        msg: "We couldn't load your quiz results right now.",
+        type: 'danger',
+      })
+    )
     return <ErrorPage status={resultError.status} />
   }
 

@@ -9,14 +9,20 @@ export type ApiResult<T> = Success<T> | Failure
  * Models the response for a successful fetch request.
  */
 export class Success<T> {
-  constructor(public data: T, public status: number) {}
+  constructor(
+    public data: T,
+    public status: number
+  ) {}
 }
 
 /**
  * Models the response for a failing fetch request.
  */
 export class Failure {
-  constructor(public status: number, public errors: ValidationError[]) {}
+  constructor(
+    public status: number,
+    public errors: ValidationError[]
+  ) {}
 }
 
 /**

@@ -61,7 +61,9 @@ const Login = () => {
     e.preventDefault()
     setUsernameError(undefined)
     setPasswordError(undefined)
-    dispatch(login({ username, password })).then((result) => handleFailure(result))
+    dispatch(login({ username, password })).then((result) =>
+      handleFailure(result)
+    )
   }
 
   if (isAuthenticated) {

@@ -37,9 +37,7 @@ const quiz: Quiz = {
 describe('QuizEditor', () => {
   let mockQuiz: Quiz
   const mockUseQuiz = vi.mocked(useQuiz).mockReturnValue([null, null, false])
-  const mockCreateAlert = vi
-    .mocked(createAlert)
-    .mockReturnValue(async () => {})
+  const mockCreateAlert = vi.mocked(createAlert).mockReturnValue(async () => {})
   const mockLoadUser = vi
     .mocked(loadUser)
     .mockReturnValue(async (dispatch) => {})
@@ -69,11 +67,12 @@ describe('QuizEditor', () => {
     const user = userEvent.setup()
     mockFetch.mockResolvedValueOnce(
       new Response(JSON.stringify({}), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }))
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    )
 
     const submitBtn = screen.getByText('Confirm Edits')
     await user.click(submitBtn)

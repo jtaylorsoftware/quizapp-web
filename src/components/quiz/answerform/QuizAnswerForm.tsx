@@ -64,16 +64,20 @@ const QuizAnswerForm = () => {
   const submitAnswers = () => {
     API.Results.uploadResponses(quizId!, responses.current!).then((result) => {
       if (!isSuccess(result)) {
-        dispatch(createAlert({
-          msg: 'Failed to submit answers - are there invalid or missing answers?',
-          type: 'danger',
-        }))
+        dispatch(
+          createAlert({
+            msg: 'Failed to submit answers - are there invalid or missing answers?',
+            type: 'danger',
+          })
+        )
         setSubmitError(result)
       } else {
-        dispatch(createAlert({
-          msg: 'Quiz answers submitted successfully',
-          type: 'success',
-        }))
+        dispatch(
+          createAlert({
+            msg: 'Quiz answers submitted successfully',
+            type: 'success',
+          })
+        )
         goToDashboard()
       }
     })

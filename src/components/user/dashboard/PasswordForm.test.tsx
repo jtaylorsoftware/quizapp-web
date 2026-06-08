@@ -1,12 +1,7 @@
 import React from 'react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
 
-import {
-  render,
-  screen,
-  waitFor,
-  within,
-} from 'util/test-utils'
+import { render, screen, waitFor, within } from 'util/test-utils'
 
 import PasswordForm from './PasswordForm'
 
@@ -107,26 +102,18 @@ const getPasswordInput = () => {
   return screen.queryByPlaceholderText('New password')
 }
 
-const changePasswordInput = async (
-  user: UserEvent,
-  password: string
-) => {
+const changePasswordInput = async (user: UserEvent, password: string) => {
   const input = screen.getByPlaceholderText('New password')
   await user.clear(input)
-  if (password)
-  {
+  if (password) {
     await user.type(input, password)
   }
 }
 
-const changeConfirmInput = async (
-  user: UserEvent,
-  password: string
-) => {
+const changeConfirmInput = async (user: UserEvent, password: string) => {
   const input = screen.getByPlaceholderText('Confirm new password')
   await user.clear(input)
-  if (password)
-  {
+  if (password) {
     await user.type(input, password)
   }
 }

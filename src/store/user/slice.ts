@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ID } from 'api/models'
-import {
-  UserError,
-  UserState,
-} from './types'
+import { UserError, UserState } from './types'
 
 const initialState: UserState = {
   loading: true,
@@ -24,7 +21,9 @@ const userSlice = createSlice({
       if (!state.user) {
         return
       }
-      state.user.quizzes = state.user.quizzes.filter((id) => id !== action.payload)
+      state.user.quizzes = state.user.quizzes.filter(
+        (id) => id !== action.payload
+      )
       state.loading = false
       state.error = null
     },

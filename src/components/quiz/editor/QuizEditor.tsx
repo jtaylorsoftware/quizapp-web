@@ -40,15 +40,19 @@ const QuizEditor = () => {
     API.Quiz.editQuiz(quiz).then((result) => {
       if (!isSuccess(result)) {
         setSubmitError(result)
-        dispatch(createAlert({
-          msg: 'Failed to create quiz - are there invalid fields?',
-          type: 'danger',
-        }))
+        dispatch(
+          createAlert({
+            msg: 'Failed to create quiz - are there invalid fields?',
+            type: 'danger',
+          })
+        )
       } else {
-        dispatch(createAlert({
-          msg: 'Quiz edited successfully',
-          type: 'success',
-        }))
+        dispatch(
+          createAlert({
+            msg: 'Quiz edited successfully',
+            type: 'success',
+          })
+        )
         dispatch(loadUser()).then(() => goToDashboard())
       }
     })

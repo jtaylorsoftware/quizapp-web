@@ -33,9 +33,7 @@ const quiz: Quiz = {
 
 describe('QuizCreator', () => {
   let mockQuiz: Quiz
-  const mockCreateAlert = vi
-    .mocked(createAlert)
-    .mockReturnValue(async () => {})
+  const mockCreateAlert = vi.mocked(createAlert).mockReturnValue(async () => {})
   const mockLoadUser = vi
     .mocked(loadUser)
     .mockReturnValue(async (dispatch) => {})
@@ -55,11 +53,12 @@ describe('QuizCreator', () => {
     const user = userEvent.setup()
     mockFetch.mockResolvedValueOnce(
       new Response(JSON.stringify({ id: 'abcdef' }), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }))
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    )
 
     const submitBtn = screen.getByText('Submit')
     await user.click(submitBtn)
@@ -77,8 +76,9 @@ describe('QuizCreator', () => {
     const user = userEvent.setup()
     mockFetch.mockResolvedValueOnce(
       new Response(JSON.stringify({ errors: [] }), {
-      status: 400,
-    }))
+        status: 400,
+      })
+    )
 
     const submitBtn = screen.getByText('Submit')
     await user.click(submitBtn)

@@ -140,15 +140,15 @@ export type QuizFormat = 'full' | 'form'
 export type QuizType<FormatType> = FormatType extends 'full'
   ? Quiz
   : FormatType extends 'form'
-  ? QuizForm
-  : never
+    ? QuizForm
+    : never
 
 export type QuizListFormat = 'full' | 'listing'
 export type QuizListType<FormatType> = FormatType extends 'full'
   ? Quiz[]
   : FormatType extends 'listing'
-  ? QuizListing[]
-  : never
+    ? QuizListing[]
+    : never
 
 // A brief format of a Quiz Result, shown to a Quiz creator or taker. It includes extra
 // computed data such as the graded score.
@@ -212,11 +212,11 @@ export type ResultFormat = 'full' | 'listing'
 export type SingleResultType<FormatType> = FormatType extends 'full'
   ? Result
   : FormatType extends 'listing'
-  ? ResultListing
-  : never
+    ? ResultListing
+    : never
 
 export type ResultListType<FormatType> = FormatType extends 'full'
   ? Result[]
   : FormatType extends 'listing'
-  ? ResultListing[]
-  : never
+    ? ResultListing[]
+    : never

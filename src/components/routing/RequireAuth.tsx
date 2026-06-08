@@ -44,11 +44,7 @@ const RequireAuth = function ({
   }
 
   return (
-    <Navigate
-      to={redirectTo}
-      state={{ referrer: location.pathname }}
-      replace
-    />
+    <Navigate to={redirectTo} state={{ referrer: location.pathname }} replace />
   )
 }
 

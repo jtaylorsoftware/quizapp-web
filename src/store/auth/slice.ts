@@ -1,8 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import {
-  AuthState,
-  Token,
-} from './types'
+import { AuthState, Token } from './types'
 
 const initialState: AuthState = {
   token: localStorage.getItem('token'),

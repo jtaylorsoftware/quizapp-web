@@ -21,25 +21,27 @@ const colSize = {
 }
 
 const ScoredQuiz = ({ quiz, result }: { quiz: QuizForm; result: Result }) => {
-  return (<>
-    <Row className='mb-4'>
-      <Col className='d-flex align-items-center'>
-        <h3 className='mb-0'>
-          Overall score: {(result.score! * 100.0).toFixed(2)}%
-        </h3>
-      </Col>
-    </Row>
-    <hr />
-    <Row className='mb-4'>
-      <Col className='d-flex align-items-center'>
-        <h3 className='mb-0'>Graded questions:</h3>
-      </Col>
-    </Row>
-    <ScoredQuestionList
-      questions={quiz!.questions}
-      results={result!.answers}
-    />
-  </>)
+  return (
+    <>
+      <Row className='mb-4'>
+        <Col className='d-flex align-items-center'>
+          <h3 className='mb-0'>
+            Overall score: {(result.score! * 100.0).toFixed(2)}%
+          </h3>
+        </Col>
+      </Row>
+      <hr />
+      <Row className='mb-4'>
+        <Col className='d-flex align-items-center'>
+          <h3 className='mb-0'>Graded questions:</h3>
+        </Col>
+      </Row>
+      <ScoredQuestionList
+        questions={quiz!.questions}
+        results={result!.answers}
+      />
+    </>
+  )
 }
 
 /**
@@ -63,16 +65,20 @@ const QuizResult = () => {
   if (quizLoading || resultLoading) {
     return <Spinner />
   } else if (resultError && resultError.status !== 404) {
-    dispatch(createAlert({
-      msg: "We couldn't load your quiz results right now.",
-      type: 'danger',
-    }))
+    dispatch(
+      createAlert({
+        msg: "We couldn't load your quiz results right now.",
+        type: 'danger',
+      })
+    )
     return <ErrorPage status={resultError.status} />
   } else if (quizError) {
-    dispatch(createAlert({
-      msg: "We couldn't load your quiz right now.",
-      type: 'danger',
-    }))
+    dispatch(
+      createAlert({
+        msg: "We couldn't load your quiz right now.",
+        type: 'danger',
+      })
+    )
     return <ErrorPage status={quizError.status} />
   }
 
@@ -95,12 +101,13 @@ const QuizResult = () => {
                 </Col>
               </Row>
               <hr />
-              {(quiz!.user !== loggedInUsername && !quiz!.publishResults) ?
+              {quiz!.user !== loggedInUsername && !quiz!.publishResults ? (
                 <h3 className='mb-0'>
                   Results for this quiz are not published.
-                </h3> :
+                </h3>
+              ) : (
                 <ScoredQuiz quiz={quiz!} result={result!} />
-                }
+              )}
             </Col>
           </Row>
         </Container>

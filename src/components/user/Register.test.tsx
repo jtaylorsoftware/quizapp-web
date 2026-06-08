@@ -1,12 +1,7 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import {
-  render,
-  screen,
-  waitFor,
-} from 'util/test-utils'
-
+import { render, screen, waitFor } from 'util/test-utils'
 
 vi.mock('store/auth/thunks')
 import { register } from 'store/auth/thunks'

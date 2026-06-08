@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-  render,
-  RenderOptions,
-} from '@testing-library/react'
+import { render, RenderOptions } from '@testing-library/react'
 
 import { Provider } from 'react-redux'
 import { AppStore, RootState, createAppStore } from 'store/store'
@@ -39,9 +36,7 @@ const AllContextsWrapper = ({
 }: AllContextsProps) => {
   return (
     <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[location ?? '/']}
-        >
+      <MemoryRouter initialEntries={[location ?? '/']}>
         {children}
         <RouterLocationProbe />
       </MemoryRouter>

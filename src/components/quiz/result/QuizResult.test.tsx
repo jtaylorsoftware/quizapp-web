@@ -95,7 +95,11 @@ describe('QuizResult', () => {
   })
 
   it('does not render the score or graded questions when quiz results are not published and the user is not the quiz creator', () => {
-    mockUseQuiz.mockReturnValueOnce([{ ...mockQuiz, publishResults: false }, null, false])
+    mockUseQuiz.mockReturnValueOnce([
+      { ...mockQuiz, publishResults: false },
+      null,
+      false,
+    ])
     mockUseSingleResult.mockReturnValueOnce([mockResult, null, false])
     mockState.user!.user!.username = 'some other user'
     render(<QuizResult />, mockState)

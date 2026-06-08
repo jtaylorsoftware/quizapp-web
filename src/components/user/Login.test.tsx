@@ -3,7 +3,6 @@ import { Route, Routes } from 'react-router-dom'
 
 import { render, screen, waitFor } from 'util/test-utils'
 
-
 vi.mock('store/auth/thunks')
 import { login } from 'store/auth/thunks'
 

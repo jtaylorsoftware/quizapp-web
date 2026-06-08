@@ -48,9 +48,11 @@ const ResultItem = ({
       </Row>
       <Row>
         <Col>
-          {score !== undefined ? 
-            <p className='mb-1'>Score: {(score * 100.0).toFixed(2)}%</p> : 
-            <p className='mb-1'>Results not available</p>}
+          {score !== undefined ? (
+            <p className='mb-1'>Score: {(score * 100.0).toFixed(2)}%</p>
+          ) : (
+            <p className='mb-1'>Results not available</p>
+          )}
         </Col>
       </Row>
     </>
