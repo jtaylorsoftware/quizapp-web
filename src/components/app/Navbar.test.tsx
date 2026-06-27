@@ -6,6 +6,8 @@ import { render, screen } from 'util/test-utils'
 import Navbar from './Navbar'
 
 import { logout } from 'store/user/thunks'
+import { RootState } from 'store/store'
+
 vi.mock('store/user/thunks')
 
 describe('Navbar', () => {
@@ -22,6 +24,7 @@ describe('Navbar', () => {
 
     render(<Navbar />, mockStore)
   })
+
   it('contains a link to home', () => {
     const mockStore = {
       alerts: [],
@@ -34,6 +37,7 @@ describe('Navbar', () => {
     render(<Navbar />, mockStore)
     expect(screen.queryByText('QuizNow')).not.toBeNull()
   })
+
   it('does not display links for unauthenticated users', () => {
     const mockStore = {
       alerts: [],
@@ -48,12 +52,26 @@ describe('Navbar', () => {
     expect(screen.queryByText('Dashboard')).toBeNull()
     expect(screen.queryByText('Logout')).toBeNull()
   })
-  it('displays links for authenticated users', () => {
-    const mockStore = {
+
+  it('displays links for authenticated users with teacher role', () => {
+    const mockStore: Partial<RootState> = {
       alerts: [],
       auth: {
         token: '',
         isAuthenticated: true,
+      },
+      user: {
+        loading: false,
+        user: {
+          _id: '',
+          date: '',
+          username: '',
+          email: '',
+          role: 'teacher',
+          quizzes: [],
+          results: [],
+        },
+        error: null,
       },
     }
 
@@ -62,6 +80,35 @@ describe('Navbar', () => {
     expect(screen.queryByText('Dashboard')).not.toBeNull()
     expect(screen.queryByText('Logout')).not.toBeNull()
   })
+
+    it('displays links for authenticated users with student role', () => {
+    const mockStore: Partial<RootState> = {
+      alerts: [],
+      auth: {
+        token: '',
+        isAuthenticated: true,
+      },
+      user: {
+        loading: false,
+        user: {
+          _id: '',
+          date: '',
+          username: '',
+          email: '',
+          role: 'student',
+          quizzes: [],
+          results: [],
+        },
+        error: null,
+      },
+    }
+
+    render(<Navbar />, mockStore)
+    expect(screen.queryByText('Create')).toBeNull()
+    expect(screen.queryByText('Dashboard')).not.toBeNull()
+    expect(screen.queryByText('Logout')).not.toBeNull()
+  })
+
   it('calls the logout function when logout is clicked', async () => {
     const mockStore = {
       alerts: [],

@@ -11,7 +11,10 @@ import { useAppDispatch, useAppSelector } from 'hooks'
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+  const { isAuthenticated, role } = useAppSelector((state) => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    role: state.user?.user?.role,
+  }))
 
   const logoutToHome = () => {
     dispatch(logout())
@@ -28,9 +31,11 @@ const Navbar = () => {
           <Nav className='ms-auto'>
             {isAuthenticated ? (
               <>
-                <Nav.Link as={Link} to='/quizzes/create'>
-                  Create
-                </Nav.Link>
+                {role !== 'student' && (
+                  <Nav.Link as={Link} to='/quizzes/create'>
+                    Create
+                  </Nav.Link>
+                )}
                 <Nav.Link as={Link} to='/dashboard'>
                   Dashboard
                 </Nav.Link>
