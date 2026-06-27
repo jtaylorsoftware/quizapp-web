@@ -14,10 +14,8 @@ const RequireRole = ({
   allowedRoles,
   children,
 }: React.PropsWithChildren<Props>) => {
-  const { auth, user } = useAppSelector((state) => ({
-    auth: state.auth,
-    user: state.user,
-  }))
+  const auth = useAppSelector((state) => state.auth)
+  const user = useAppSelector((state) => state.user)
 
   if (!auth.isAuthenticated) {
     return null

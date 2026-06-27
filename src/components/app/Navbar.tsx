@@ -11,10 +11,8 @@ import { useAppDispatch, useAppSelector } from 'hooks'
 const Navbar = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { isAuthenticated, role } = useAppSelector((state) => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    role: state.user?.user?.role,
-  }))
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+  const role = useAppSelector((state) => state.user?.user?.role)
 
   const logoutToHome = () => {
     dispatch(logout())
