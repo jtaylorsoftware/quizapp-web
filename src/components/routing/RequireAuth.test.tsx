@@ -22,6 +22,7 @@ describe('RequireAuth', () => {
       date: 'date',
       username: 'username',
       email: 'email@email.com',
+      role: 'student',
       quizzes: [],
       results: [],
     },
