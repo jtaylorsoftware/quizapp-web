@@ -15,6 +15,7 @@ import AlertBar from './AlertBar'
 import Navbar from './Navbar'
 import Landing from './Landing'
 import RequireAuth from 'components/routing/RequireAuth'
+import RequireRole from 'components/routing/RequireRole'
 
 const App = () => {
   return (
@@ -37,7 +38,9 @@ const App = () => {
           path='/quizzes/create'
           element={
             <RequireAuth redirectTo={'/login'}>
-              <QuizCreator />
+              <RequireRole allowedRoles={['teacher']}>
+                <QuizCreator />
+              </RequireRole>
             </RequireAuth>
           }
         />
@@ -45,7 +48,9 @@ const App = () => {
           path='/quizzes/:id/edit'
           element={
             <RequireAuth redirectTo={'/login'}>
-              <QuizEditor />
+              <RequireRole allowedRoles={['teacher']}>
+                <QuizEditor />
+              </RequireRole>
             </RequireAuth>
           }
         />
