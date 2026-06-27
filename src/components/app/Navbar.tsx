@@ -31,7 +31,7 @@ const Navbar = () => {
           <Nav className='ms-auto'>
             {isAuthenticated ? (
               <>
-                {role !== 'student' && (
+                {role === 'teacher' && (
                   <Nav.Link as={Link} to='/quizzes/create'>
                     Create
                   </Nav.Link>

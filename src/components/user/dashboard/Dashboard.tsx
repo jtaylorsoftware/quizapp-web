@@ -31,7 +31,7 @@ const Dashboard = () => {
             <UserInfo />
           </Col>
         </Row>
-        {user.user!.role !== 'student' && (
+        {user.user!.role === 'teacher' && (
           <Row className='pt-1 mt-1'>
             <Col {...colSize} className='dashboard__block mx-auto'>
               <QuizList
