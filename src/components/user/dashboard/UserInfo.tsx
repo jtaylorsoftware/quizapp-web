@@ -20,7 +20,7 @@ import DeleteButton from './DeleteButton'
 const UserInfo = () => {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user.user)
-  const { username, email, date } = user!
+  const { username, email, date, role } = user!
   const dateString = dateToLongLocaleString(date)
   const changeEmail = useCallback(
     (email: string) => dispatch(changeUserEmail(email)),
@@ -50,6 +50,13 @@ const UserInfo = () => {
         <Col>
           <h4>
             Joined: <span>{dateString}</span>
+          </h4>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h4>
+            Role: <span>{role}</span>
           </h4>
         </Col>
       </Row>

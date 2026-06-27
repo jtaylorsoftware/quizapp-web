@@ -34,6 +34,7 @@ export const user: UserState = {
     date: now,
     username: username(0),
     email: 'email@email.com',
+    role: 'student',
     quizzes: [quizid(0)],
     results: [],
   },

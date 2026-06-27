@@ -31,14 +31,16 @@ const Dashboard = () => {
             <UserInfo />
           </Col>
         </Row>
-        <Row className='pt-1 mt-1'>
-          <Col {...colSize} className='dashboard__block mx-auto'>
-            <QuizList
-              loading={data.quizzes.loading}
-              quizzes={data.quizzes.data ?? []}
-            />
-          </Col>
-        </Row>
+        {user.user!.role !== 'student' && (
+          <Row className='pt-1 mt-1'>
+            <Col {...colSize} className='dashboard__block mx-auto'>
+              <QuizList
+                loading={data.quizzes.loading}
+                quizzes={data.quizzes.data ?? []}
+              />
+            </Col>
+          </Row>
+        )}
         <Row className='pt-1 mt-1'>
           <Col {...colSize} className='dashboard__block mx-auto'>
             <ResultList

@@ -25,9 +25,11 @@ describe('Dashboard', () => {
   beforeEach(() => {
     mockState = clone(state)
   })
+
   it('renders without crashing', () => {
     render(<Dashboard />, mockState)
   })
+
   it('renders a spinner if user is loading', () => {
     mockState.user!.loading = true
     mockState.auth!.isAuthenticated = true
@@ -42,11 +44,21 @@ describe('Dashboard', () => {
     expect(screen.queryByText(/email:/i)).not.toBeNull()
     expect(screen.queryByText(/joined/i)).not.toBeNull()
   })
-  it('renders the quiz list', () => {
+
+  it('renders the quiz list if the user is a teacher', () => {
     mockState.auth!.isAuthenticated = true
+    mockState.user!.user!.role = 'teacher'
     render(<Dashboard />, mockState)
     expect(screen.queryByText(/quizzes you created/i)).not.toBeNull()
   })
+
+  it('does not render the quiz list if the user is a student', () => {
+    mockState.auth!.isAuthenticated = true
+    mockState.user!.user!.role = 'student'
+    render(<Dashboard />, mockState)
+    expect(screen.queryByText(/quizzes you created/i)).toBeNull()
+  })
+
   it('renders the result list', () => {
     mockState.auth!.isAuthenticated = true
     render(<Dashboard />, mockState)

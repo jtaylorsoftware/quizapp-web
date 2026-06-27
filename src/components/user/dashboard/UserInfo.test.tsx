@@ -64,6 +64,11 @@ describe('UserInfo', () => {
     expect(screen.getByText(date)).not.toBeNull()
   })
 
+  it("renders the user's role", () => {
+    render(<UserInfo />, mockState)
+    expect(screen.getByRole('heading', { name: 'Role: student' })).not.toBeNull()
+  })
+
   it('calls deleteQuiz when confirming modal delete button', async () => {
     render(<UserInfo />, mockState)
     const user = userEvent.setup()
