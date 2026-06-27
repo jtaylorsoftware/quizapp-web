@@ -41,10 +41,20 @@ jobs:
 workflows:
   test_build_publish_s3:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
       - build:
           requires:
             - test
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
       - publish:
           requires:
             - build
