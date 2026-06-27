@@ -112,17 +112,13 @@ export const deleteUser = async (): Promise<ApiResult<void>> => {
 /**
  * Registers a new user.
  */
-export const register = async ({
-  username,
-  email,
-  password,
-}: UserRegistration): Promise<ApiResult<JWT>> => {
+export const register = async (registration: UserRegistration): Promise<ApiResult<JWT>> => {
   const response = await fetch(`${config.baseUrl}/users/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ username, email, password }),
+    body: JSON.stringify(registration),
   })
 
   return parseResponse<JWT>(response)

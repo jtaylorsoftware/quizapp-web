@@ -4,6 +4,7 @@ import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import { Navigate, Link } from 'react-router-dom'
 
 import { register } from 'store/auth/thunks'
+import { UserRole } from 'api/models'
 import { Failure } from 'api/result'
 import { useAppDispatch, useAppSelector } from 'hooks'
 
@@ -11,6 +12,7 @@ type FormError = {
   username?: string
   email?: string
   password?: string
+  role?: string
 }
 
 const colSize = {
@@ -27,6 +29,7 @@ const Register = () => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
+  const [role, setRole] = useState<UserRole | ''>('')
   const [passwordInput, setPasswordInput] = useState({
     password: '',
     passwordConfirm: '',
@@ -53,6 +56,11 @@ const Register = () => {
     })
   }
 
+  const handleRoleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormError((prev) => ({ ...prev, role: undefined }))
+    setRole(e.target.value as UserRole)
+  }
+
   const handleFailure = (failure: Failure | null) => {
     if (failure != null) {
       const formErrors: FormError = {}
@@ -67,6 +75,9 @@ const Register = () => {
           case 'password':
             formErrors.password = err.message
             break
+          case 'role':
+            formErrors.role = err.message
+            break
         }
       }
       setFormError((prev) => ({
@@ -78,9 +89,17 @@ const Register = () => {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (!role) {
+      setFormError((prev) => ({
+        ...prev,
+        role: 'Please select a role.',
+      }))
+      return
+    }
+
     if (password === passwordConfirm) {
-      setFormError({ password: undefined })
-      dispatch(register({ username, email, password })).then(handleFailure)
+      setFormError({ password: undefined, role: undefined })
+      dispatch(register({ username, email, password, role })).then(handleFailure)
     } else {
       setFormError({
         password: 'Passwords do not match.',
@@ -170,6 +189,41 @@ const Register = () => {
                       {formError && formError.password}
                     </div>
                   ) : null}
+                  <Form.Group className='mb-2'>
+                    <Form.Label>Role</Form.Label>
+                    <div
+                      className={
+                        'rounded border p-3 bg-light' +
+                        (formError && formError.role ? ' border-danger' : '')
+                      }
+                    >
+                      <div className='border-bottom mb-2 pb-2'>
+                        <Form.Check
+                          type='checkbox'
+                          id='role-student'
+                          label='Student'
+                          name='role'
+                          value='student'
+                          checked={role === 'student'}
+                          onChange={handleRoleChange}
+                        />
+                      </div>
+                      <Form.Check
+                        type='checkbox'
+                        id='role-teacher'
+                        label='Teacher'
+                        name='role'
+                        value='teacher'
+                        checked={role === 'teacher'}
+                        onChange={handleRoleChange}
+                      />
+                    </div>
+                    {formError && formError.role ? (
+                      <div className='invalid-feedback d-block'>
+                        {formError && formError.role}
+                      </div>
+                    ) : null}
+                  </Form.Group>
                 </Form.Group>
               </fieldset>
               <Button variant='primary' type='submit'>

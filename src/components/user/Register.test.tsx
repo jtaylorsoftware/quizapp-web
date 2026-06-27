@@ -14,6 +14,16 @@ import Register from './Register'
 import { UserRegistration } from 'api/models'
 import { Failure } from 'api/result'
 
+const fillValidRegistrationForm = async (user: ReturnType<typeof userEvent.setup>) => {
+  const value = 'abc123'.repeat(2)
+  await user.type(screen.getByPlaceholderText('Username'), value)
+  await user.type(screen.getByPlaceholderText('Password'), value)
+  await user.type(screen.getByPlaceholderText('Confirm Password'), value)
+  await user.type(screen.getByPlaceholderText('Email'), value)
+
+  return value
+}
+
 describe('Register', () => {
   let mockState: Partial<RootState>
   const registerMock = vi.mocked(register)
@@ -46,21 +56,20 @@ describe('Register', () => {
       username,
       email,
       password,
+      role,
     }: UserRegistration) {
       return async (dispatch) =>
         new Failure(400, [
           { field: 'username', message: usernameTakenMsg },
           { field: 'password', message: passwordInvalidMsg },
           { field: 'email', message: emailTakenMsg },
+          { field: 'role', message: role },
         ])
     })
 
     render(<Register />, mockState)
-    const value = 'abc123'.repeat(2)
-    await user.type(screen.getByPlaceholderText('Username'), value)
-    await user.type(screen.getByPlaceholderText('Password'), value)
-    await user.type(screen.getByPlaceholderText('Confirm Password'), value)
-    await user.type(screen.getByPlaceholderText('Email'), value)
+    await fillValidRegistrationForm(user)
+    await user.click(screen.getByLabelText('Student'))
     const submitBtn = screen.getByText('Register')
     await user.click(submitBtn)
 
@@ -76,6 +85,39 @@ describe('Register', () => {
 
     await waitFor(() =>
       expect(screen.queryByText(emailTakenMsg)).not.toBeNull()
+    )
+
+    await waitFor(() => expect(screen.queryByText('student')).not.toBeNull())
+  })
+
+  it('does not submit before selecting a role', async () => {
+    mockState.auth!.isAuthenticated = false
+    const user = userEvent.setup()
+
+    render(<Register />, mockState)
+    await fillValidRegistrationForm(user)
+    await user.click(screen.getByText('Register'))
+
+    expect(registerMock).not.toHaveBeenCalled()
+    expect(screen.queryByText('Please select a role.')).not.toBeNull()
+  })
+
+  it('submits selected role in registration payload', async () => {
+    mockState.auth!.isAuthenticated = false
+    const user = userEvent.setup()
+
+    registerMock.mockImplementationOnce((registration: UserRegistration) => {
+      return async (dispatch) => null
+    })
+
+    render(<Register />, mockState)
+    await fillValidRegistrationForm(user)
+    await user.click(screen.getByLabelText('Teacher'))
+    await user.click(screen.getByText('Register'))
+
+    await waitFor(() => expect(registerMock).toHaveBeenCalledTimes(1))
+    expect(registerMock).toHaveBeenCalledWith(
+      expect.objectContaining({ role: 'teacher' })
     )
   })
 })

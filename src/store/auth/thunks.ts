@@ -11,14 +11,10 @@ import { clearAuthUser, setAuthUser } from './slice'
  *
  * @param userRegistration Registration info for a new user
  */
-export function register({
-  username,
-  email,
-  password,
-}: UserRegistration): Thunk<Promise<Failure | null>> {
+export function register(registration: UserRegistration): Thunk<Promise<Failure | null>> {
   return async (dispatch) => {
     try {
-      const result = await API.User.register({ username, email, password })
+      const result = await API.User.register(registration)
       if (isSuccess(result)) {
         localStorage.setItem('token', result.data.token)
         dispatch(setAuthUser(result.data.token))

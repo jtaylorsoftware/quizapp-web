@@ -1,8 +1,11 @@
+export type UserRole = 'teacher' | 'student'
+
 export interface User {
   _id: string
   date: string
   username: string
   email: string
+  role: UserRole
   quizzes: ID[]
   results: ID[]
 }
@@ -11,6 +14,7 @@ export interface UserRegistration {
   username: string
   email: string
   password: string
+  role: UserRole
 }
 
 export interface UserLogin {
